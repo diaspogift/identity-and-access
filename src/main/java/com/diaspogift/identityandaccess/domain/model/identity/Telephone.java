@@ -17,9 +17,13 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AssertionConcern;
 
+import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
+@MappedSuperclass
+@Embeddable
 public final class Telephone extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;

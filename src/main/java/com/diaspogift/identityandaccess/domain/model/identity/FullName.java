@@ -18,9 +18,11 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AssertionConcern;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
+@Embeddable
 public final class FullName extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -18,15 +18,54 @@ import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 
+import javax.persistence.*;
+
+@Entity
 public class User extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer _id;
+
+    /**
+     * To enable the user
+     */
+    @Embedded
     private Enablement enablement;
+
+    /**
+     * The user clair text password
+     */
     private String password;
+
+    /**
+     * The person behind the user
+     */
+    //@Embedded
+    @OneToOne
     private Person person;
+
+    /**
+     * Tenant to which belong the user
+     */
+    @AttributeOverride(name="id", column = @Column(name = "tenant_id"))
+    @Embedded
     private TenantId tenantId;
+
+    /**
+     * The username (That uniquelly identify the user)
+     */
+    @Column(unique = true)
     private String username;
+
+    /**
+     *
+     * @param aCurrentPassword
+     * @param aChangedPassword
+     * To change the user password
+     */
 
     public void changePassword(String aCurrentPassword, String aChangedPassword) {
         this.assertArgumentNotEmpty(

@@ -18,6 +18,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AssertionConcern;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,6 +26,7 @@ import java.util.Date;
  * This class is for verify if a specific tenant is enabled or desabled.
  * <p>It can also be used to enable or desable a tenant</p>
  */
+@Embeddable
 public final class Enablement extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;

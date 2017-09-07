@@ -18,8 +18,13 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AssertionConcern;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import java.io.Serializable;
 
+@Embeddable
 public final class ContactInformation extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,21 +32,28 @@ public final class ContactInformation extends AssertionConcern implements Serial
     /**
      *  The e-mail address
      */
+    @Embedded
+
     private EmailAddress emailAddress;
 
     /**
      * The Postal address is constituated of city, country code, postal code, state province and street address
      */
+    @Embedded
     private PostalAddress postalAddress;
 
     /**
      * First User phone number
      */
+    @AttributeOverride(name="number", column = @Column(name = "primary_telephone"))
+    @Embedded
     private Telephone primaryTelephone;
 
     /**
      * Second User phone number
      */
+    @AttributeOverride(name="number", column = @Column(name = "secondary_telephone"))
+    @Embedded
     private Telephone secondaryTelephone;
 
 

@@ -18,13 +18,17 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AssertionConcern;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
+@Embeddable
 public final class EmailAddress extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "email")
     private String address;
 
     public EmailAddress(String anAddress) {
@@ -77,7 +81,15 @@ public final class EmailAddress extends AssertionConcern implements Serializable
         this.assertArgumentTrue(
                 Pattern.matches("\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*", anAddress),
                 "Email address format is invalid.");
-
         this.address = anAddress;
     }
 }
+
+
+
+/**
+ https://play.google.com/about/privacy-security/personal-sensitive/
+ http://www.lesnumeriques.com/mobilite/play-store-pas-regles-confidentialite-application-effacee-n60329.html
+ https://www.iubenda.com/blog/warning-google-play-developer-policy-violation-action-required-policy-issue/
+
+ */

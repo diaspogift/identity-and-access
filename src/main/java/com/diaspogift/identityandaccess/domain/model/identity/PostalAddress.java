@@ -18,8 +18,10 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AssertionConcern;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 
+@Embeddable
 public class PostalAddress extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;

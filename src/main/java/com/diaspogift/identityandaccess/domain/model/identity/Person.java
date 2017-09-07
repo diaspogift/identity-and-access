@@ -18,28 +18,40 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.DomainEventPublisher;
 
+import javax.persistence.*;
+
+@Entity
 public class Person extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer _id;
+
     /**
      * Contact of the person
      */
+    @Embedded
     private ContactInformation contactInformation;
 
     /**
      * <h3>Is constitated of first name and last name</h3>
      */
+    @Embedded
     private FullName name;
 
     /**
      * The id of the tenant
      */
+    @AttributeOverride(name="id", column = @Column(name = "person_tenant_id"))
+    @Embedded
     private TenantId tenantId;
 
     /**
      * User associated to this person
      */
+    @OneToOne
     private User user;
 
     public Person(

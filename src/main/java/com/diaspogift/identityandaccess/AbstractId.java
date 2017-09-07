@@ -14,8 +14,11 @@
 
 package com.diaspogift.identityandaccess;
 
+import javax.persistence.Embeddable;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
+@MappedSuperclass
 public abstract class AbstractId
     extends AssertionConcern
     implements Identity, Serializable {

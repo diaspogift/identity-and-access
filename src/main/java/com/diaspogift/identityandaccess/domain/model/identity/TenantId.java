@@ -18,8 +18,12 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.AbstractId;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.util.UUID;
 
+@Embeddable
 public final class TenantId extends AbstractId {
 
     private static final long serialVersionUID = 1L;
