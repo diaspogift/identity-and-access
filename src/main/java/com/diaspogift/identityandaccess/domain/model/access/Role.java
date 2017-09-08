@@ -15,8 +15,8 @@
 package com.diaspogift.identityandaccess.domain.model.access;
 
 
-import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
-import com.diaspogift.identityandaccess.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.identity.Group;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberService;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;

@@ -1,0 +1,1 @@
+package com.diaspogift.identityandaccess.domain.model;

@@ -15,9 +15,10 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
-import com.diaspogift.identityandaccess.DomainEventPublisher;
-import com.diaspogift.identityandaccess.domain.model.access.*;
+import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.access.Role;
+import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
 
 
 import java.util.*;

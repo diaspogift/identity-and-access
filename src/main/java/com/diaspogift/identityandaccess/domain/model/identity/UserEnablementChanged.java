@@ -15,7 +15,7 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-import com.diaspogift.identityandaccess.DomainEvent;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEvent;
 
 import java.util.Date;
 

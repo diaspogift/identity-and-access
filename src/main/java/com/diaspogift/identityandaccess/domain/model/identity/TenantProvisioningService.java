@@ -15,7 +15,7 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-import com.diaspogift.identityandaccess.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.access.RoleRepository;

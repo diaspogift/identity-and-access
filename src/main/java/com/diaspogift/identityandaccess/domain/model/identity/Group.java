@@ -16,8 +16,8 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 
-import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
-import com.diaspogift.identityandaccess.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
 import java.util.HashSet;
 import java.util.Set;

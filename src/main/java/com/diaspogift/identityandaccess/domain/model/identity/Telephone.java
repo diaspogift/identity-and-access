@@ -15,12 +15,12 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-import com.diaspogift.identityandaccess.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.regex.Pattern;
 
 @MappedSuperclass
 @Embeddable
@@ -28,16 +28,24 @@ public final class Telephone extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String countryCode;
+    private String countryDialingCode;
     private String number;
 
-    public Telephone(String aNumber) {
-        this();
+    public Telephone(String aCountryCode, String aCountryDialingCode, String aNumber) {
 
+        this();
+        //TO DO is this the right place for this process/verification?
+        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(aCountryCode, aCountryDialingCode, aNumber), "Invalid phone number."); moved out into the
+        //TelephoneFactory class
+        this.setCountryCode(aCountryCode);
+        this.setCountryDialingCode(aCountryDialingCode);
         this.setNumber(aNumber);
+
     }
 
     public Telephone(Telephone aTelephone) {
-        this(aTelephone.number());
+        this(aTelephone.countryCode(), aTelephone.countryDialingCode(),aTelephone.number());
     }
 
     public String number() {
@@ -76,11 +84,31 @@ public final class Telephone extends AssertionConcern implements Serializable {
 
     private void setNumber(String aNumber) {
         this.assertArgumentNotEmpty(aNumber, "Telephone number is required.");
-        this.assertArgumentLength(aNumber, 5, 20, "Telephone number may not be more than 20 characters.");
-        this.assertArgumentTrue(
+        /*this.assertArgumentLength(aNumber, 5, 20, "Telephone number may not be more than 20 characters.");
+       this.assertArgumentTrue(
                 Pattern.matches("((\\(\\d{3}\\))|(\\d{3}-))\\d{3}-\\d{4}", aNumber),
-                "Telephone number or its format is invalid.");
+                "Telephone number or its format is invalid.");*/
+        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(this.countryCode(), this.countryDialingCode(), this.number()), "Invalid phone number.");
 
         this.number = aNumber;
+    }
+
+
+    private void setCountryCode(String aCountryCode) {
+        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validateCountryCode(aCountryCode), "Invalid country code.");
+        this.countryCode = aCountryCode;
+    }
+
+    private void setCountryDialingCode(String aCountryDialingCode) {
+        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validateDialingCountryCode(this.countryCode(),aCountryDialingCode ), "Invalid dialing country code.");
+        this.countryDialingCode = aCountryDialingCode;
+    }
+
+    public String countryCode() {
+        return countryCode;
+    }
+
+    public String countryDialingCode() {
+        return countryDialingCode;
     }
 }

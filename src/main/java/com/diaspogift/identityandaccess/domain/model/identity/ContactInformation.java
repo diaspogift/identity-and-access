@@ -16,12 +16,9 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 
-import com.diaspogift.identityandaccess.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Embeddable
@@ -45,15 +42,22 @@ public final class ContactInformation extends AssertionConcern implements Serial
     /**
      * First User phone number
      */
-    @AttributeOverride(name="number", column = @Column(name = "primary_telephone"))
+    @AttributeOverrides({
+            @AttributeOverride(name="number", column = @Column(name = "primary_telephone_number")),
+            @AttributeOverride(name="countryCode", column = @Column(name = "primary_telephone_country_code")),
+            @AttributeOverride(name="countryDialingCode", column = @Column(name = "primary_telephone_country_dialing_code"))}
+    )
     @Embedded
     private Telephone primaryTelephone;
 
     /**
      * Second User phone number
      */
-    @AttributeOverride(name="number", column = @Column(name = "secondary_telephone"))
-    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="number", column = @Column(name = "secondary_telephone_number")),
+            @AttributeOverride(name="countryCode", column = @Column(name = "secondary_telephone_country_code")),
+            @AttributeOverride(name="countryDialingCode", column = @Column(name = "secondary_telephone_country_dialing_code"))}
+    )    @Embedded
     private Telephone secondaryTelephone;
 
 

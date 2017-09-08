@@ -16,7 +16,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 
-import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
+import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 
 import java.util.Date;
 

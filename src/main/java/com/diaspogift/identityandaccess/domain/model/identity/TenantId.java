@@ -16,10 +16,8 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 
-import com.diaspogift.identityandaccess.AbstractId;
+import com.diaspogift.identityandaccess.domain.model.common.AbstractId;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.UUID;
 

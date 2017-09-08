@@ -15,7 +15,7 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-import com.diaspogift.identityandaccess.IdentifiedValueObject;
+import com.diaspogift.identityandaccess.domain.model.common.IdentifiedValueObject;
 
 public class GroupMember extends IdentifiedValueObject {
 

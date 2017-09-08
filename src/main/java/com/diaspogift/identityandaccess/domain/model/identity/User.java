@@ -14,8 +14,8 @@
 
 package com.diaspogift.identityandaccess.domain.model.identity;
 
-import com.diaspogift.identityandaccess.ConcurrencySafeEntity;
-import com.diaspogift.identityandaccess.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 
 import javax.persistence.*;
@@ -36,7 +36,7 @@ public class User extends ConcurrencySafeEntity {
     private Enablement enablement;
 
     /**
-     * The user clair text password
+     * The user encrypted password
      */
     private String password;
 
@@ -63,11 +63,11 @@ public class User extends ConcurrencySafeEntity {
     /**
      *
      * @param aCurrentPassword
-     * @param aChangedPassword
+     * @param aNewPassword
      * To change the user password
      */
 
-    public void changePassword(String aCurrentPassword, String aChangedPassword) {
+    public void changePassword(String aCurrentPassword, String aNewPassword) {
         this.assertArgumentNotEmpty(
                 aCurrentPassword,
                 "Current and new password must be provided.");
@@ -77,7 +77,9 @@ public class User extends ConcurrencySafeEntity {
                 this.asEncryptedValue(aCurrentPassword),
                 "Current password not confirmed.");
 
-        this.protectPassword(aCurrentPassword, aChangedPassword);
+        this.protectPassword(aCurrentPassword, aNewPassword);
+
+        this.setPassword(this.asEncryptedValue(aNewPassword));
 
         DomainEventPublisher
             .instance()
@@ -105,6 +107,10 @@ public class User extends ConcurrencySafeEntity {
                     this.enablement()));
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isEnabled() {
         return this.enablement().isEnablementEnabled();
     }
@@ -228,9 +234,9 @@ public class User extends ConcurrencySafeEntity {
         this.enablement = anEnablement;
     }
 
-    public String internalAccessOnlyEncryptedPassword() {
+    /*public String internalAccessOnlyEncryptedPassword() {
         return this.password();
-    }
+    }*/
 
     protected String password() {
         return this.password;
@@ -253,7 +259,7 @@ public class User extends ConcurrencySafeEntity {
 
         this.assertUsernamePasswordNotSame(aChangedPassword);
 
-        this.setPassword(this.asEncryptedValue(aChangedPassword));
+
     }
 
     protected void setTenantId(TenantId aTenantId) {

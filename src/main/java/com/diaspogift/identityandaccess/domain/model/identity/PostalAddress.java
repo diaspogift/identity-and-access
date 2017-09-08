@@ -16,7 +16,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 
-import com.diaspogift.identityandaccess.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

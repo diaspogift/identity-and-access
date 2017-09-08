@@ -16,7 +16,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 
-import com.diaspogift.identityandaccess.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -98,7 +98,7 @@ public final class FullName extends AssertionConcern implements Serializable {
         this.assertArgumentNotEmpty(aFirstName, "First name is required.");
         this.assertArgumentLength(aFirstName, 1, 50, "First name must be 50 characters or less.");
         this.assertArgumentTrue(
-                Pattern.matches("[A-Z][a-z]*", aFirstName),
+                Pattern.matches("[A-Z][a-z]+(\\s([A-Z][a-z]+))*", aFirstName),
                 "First name must be at least one character in length, starting with a capital letter.");
 
         this.firstName = aFirstName;
