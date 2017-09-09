@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Embeddable;
@@ -39,6 +38,10 @@ public final class FullName extends AssertionConcern implements Serializable {
 
     public FullName(FullName aFullName) {
         this(aFullName.firstName(), aFullName.lastName());
+    }
+
+    protected FullName() {
+        super();
     }
 
     public String asFormattedName() {
@@ -68,8 +71,8 @@ public final class FullName extends AssertionConcern implements Serializable {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             FullName typedObject = (FullName) anObject;
             equalObjects =
-                this.firstName().equals(typedObject.firstName()) &&
-                this.lastName().equals(typedObject.lastName());
+                    this.firstName().equals(typedObject.firstName()) &&
+                            this.lastName().equals(typedObject.lastName());
         }
 
         return equalObjects;
@@ -78,9 +81,9 @@ public final class FullName extends AssertionConcern implements Serializable {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (59151 * 191)
-            + this.firstName().hashCode()
-            + this.lastName().hashCode();
+                +(59151 * 191)
+                        + this.firstName().hashCode()
+                        + this.lastName().hashCode();
 
         return hashCodeValue;
     }
@@ -88,10 +91,6 @@ public final class FullName extends AssertionConcern implements Serializable {
     @Override
     public String toString() {
         return "FullName [firstName=" + firstName + ", lastName=" + lastName + "]";
-    }
-
-    protected FullName() {
-        super();
     }
 
     private void setFirstName(String aFirstName) {

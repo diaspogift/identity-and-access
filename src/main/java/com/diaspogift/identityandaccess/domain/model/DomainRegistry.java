@@ -21,7 +21,11 @@ import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManagerFactory;
+
+@Component
 public class DomainRegistry implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
@@ -67,16 +71,20 @@ public class DomainRegistry implements ApplicationContextAware {
     }
 
     //TO DO
-    public static PhoneNumberValidatorService  phoneNumberValidatorService() {
+    public static PhoneNumberValidatorService phoneNumberValidatorService() {
         return new LocalPhoneNumberValidatorService();
     }
 
+    public static EntityManagerFactory entityManagerFactory() {
+        return (EntityManagerFactory) applicationContext.getBean(EntityManagerFactory.class);
+
+    }
 
 
     @Override
     public synchronized void setApplicationContext(
             ApplicationContext anApplicationContext)
-    throws BeansException {
+            throws BeansException {
 
         if (DomainRegistry.applicationContext == null) {
             DomainRegistry.applicationContext = anApplicationContext;

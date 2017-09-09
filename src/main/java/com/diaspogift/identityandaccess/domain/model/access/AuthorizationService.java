@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.access;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
 

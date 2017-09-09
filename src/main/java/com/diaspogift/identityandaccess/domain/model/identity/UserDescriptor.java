@@ -27,16 +27,20 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
     private TenantId tenantId;
     private String username;
 
-    public static UserDescriptor nullDescriptorInstance() {
-        return new UserDescriptor();
-    }
-
     public UserDescriptor(TenantId aTenantId, String aUsername, String anEmailAddress) {
         super();
 
         this.setEmailAddress(anEmailAddress);
         this.setTenantId(aTenantId);
         this.setUsername(aUsername);
+    }
+
+    private UserDescriptor() {
+        super();
+    }
+
+    public static UserDescriptor nullDescriptorInstance() {
+        return new UserDescriptor();
     }
 
     public String emailAddress() {
@@ -63,8 +67,8 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
             UserDescriptor typedObject = (UserDescriptor) anObject;
             equalObjects =
                     this.emailAddress().equals(typedObject.emailAddress()) &&
-                    this.tenantId().equals(typedObject.tenantId()) &&
-                    this.username().equals(typedObject.username());
+                            this.tenantId().equals(typedObject.tenantId()) &&
+                            this.username().equals(typedObject.username());
         }
 
         return equalObjects;
@@ -73,10 +77,10 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (9429 * 263)
-            + this.emailAddress().hashCode()
-            + this.tenantId().hashCode()
-            + this.username().hashCode();
+                +(9429 * 263)
+                        + this.emailAddress().hashCode()
+                        + this.tenantId().hashCode()
+                        + this.username().hashCode();
 
         return hashCodeValue;
     }
@@ -85,10 +89,6 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
     public String toString() {
         return "UserDescriptor [emailAddress=" + emailAddress
                 + ", tenantId=" + tenantId + ", username=" + username + "]";
-    }
-
-    private UserDescriptor() {
-        super();
     }
 
     private void setEmailAddress(String anEmailAddress) {

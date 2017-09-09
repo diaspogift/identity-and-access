@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
@@ -25,10 +24,8 @@ import java.util.UUID;
 
 public class Group extends ConcurrencySafeEntity {
 
-    private static final long serialVersionUID = 1L;
-
     public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
-
+    private static final long serialVersionUID = 1L;
     private String description;
     private Set<GroupMember> groupMembers;
     private String name;
@@ -42,6 +39,12 @@ public class Group extends ConcurrencySafeEntity {
         this.setTenantId(aTenantId);
     }
 
+    protected Group() {
+        super();
+
+        this.setGroupMembers(new HashSet<GroupMember>(0));
+    }
+
     public void addGroup(Group aGroup, GroupMemberService aGroupMemberService) {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
@@ -49,11 +52,11 @@ public class Group extends ConcurrencySafeEntity {
 
         if (this.groupMembers().add(aGroup.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
-                .instance()
-                .publish(new GroupGroupAdded(
-                        this.tenantId(),
-                        this.name(),
-                        aGroup.name()));
+                    .instance()
+                    .publish(new GroupGroupAdded(
+                            this.tenantId(),
+                            this.name(),
+                            aGroup.name()));
         }
     }
 
@@ -64,11 +67,11 @@ public class Group extends ConcurrencySafeEntity {
 
         if (this.groupMembers().add(aUser.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
-                .instance()
-                .publish(new GroupUserAdded(
-                        this.tenantId(),
-                        this.name(),
-                        aUser.username()));
+                    .instance()
+                    .publish(new GroupUserAdded(
+                            this.tenantId(),
+                            this.name(),
+                            aUser.username()));
         }
     }
 
@@ -86,7 +89,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         boolean isMember =
-            this.groupMembers().contains(aUser.toGroupMember());
+                this.groupMembers().contains(aUser.toGroupMember());
 
         if (isMember) {
             isMember = aGroupMemberService.confirmUser(this, aUser);
@@ -108,11 +111,11 @@ public class Group extends ConcurrencySafeEntity {
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aGroup.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
-                .instance()
-                .publish(new GroupGroupRemoved(
-                        this.tenantId(),
-                        this.name(),
-                        aGroup.name()));
+                    .instance()
+                    .publish(new GroupGroupRemoved(
+                            this.tenantId(),
+                            this.name(),
+                            aGroup.name()));
         }
     }
 
@@ -123,11 +126,11 @@ public class Group extends ConcurrencySafeEntity {
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aUser.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
-                .instance()
-                .publish(new GroupUserRemoved(
-                        this.tenantId(),
-                        this.name(),
-                        aUser.username()));
+                    .instance()
+                    .publish(new GroupUserRemoved(
+                            this.tenantId(),
+                            this.name(),
+                            aUser.username()));
         }
     }
 
@@ -142,8 +145,8 @@ public class Group extends ConcurrencySafeEntity {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             Group typedObject = (Group) anObject;
             equalObjects =
-                this.tenantId().equals(typedObject.tenantId()) &&
-                this.name().equals(typedObject.name());
+                    this.tenantId().equals(typedObject.tenantId()) &&
+                            this.name().equals(typedObject.name());
         }
 
         return equalObjects;
@@ -152,9 +155,9 @@ public class Group extends ConcurrencySafeEntity {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (2061 * 193)
-            + this.tenantId().hashCode()
-            + this.name().hashCode();
+                +(2061 * 193)
+                        + this.tenantId().hashCode()
+                        + this.name().hashCode();
 
         return hashCodeValue;
     }
@@ -162,12 +165,6 @@ public class Group extends ConcurrencySafeEntity {
     @Override
     public String toString() {
         return "Group [description=" + description + ", name=" + name + ", tenantId=" + tenantId + "]";
-    }
-
-    protected Group() {
-        super();
-
-        this.setGroupMembers(new HashSet<GroupMember>(0));
     }
 
     protected void setDescription(String aDescription) {
@@ -214,10 +211,10 @@ public class Group extends ConcurrencySafeEntity {
 
     protected GroupMember toGroupMember() {
         GroupMember groupMember =
-            new GroupMember(
-                    this.tenantId(),
-                    this.name(),
-                    GroupMemberType.Group);
+                new GroupMember(
+                        this.tenantId(),
+                        this.name(),
+                        GroupMemberType.Group);
 
         return groupMember;
     }

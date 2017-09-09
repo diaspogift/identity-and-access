@@ -1,15 +1,14 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
-import com.diaspogift.identityandaccess.repository.MockCountryCodeRepository;
+import com.diaspogift.identityandaccess.infrastructure.persistence.MockCountryCodeRepository;
 
 import java.util.regex.Pattern;
 
-public class LocalPhoneNumberValidatorService extends AssertionConcern implements PhoneNumberValidatorService{
+public class LocalPhoneNumberValidatorService extends AssertionConcern implements PhoneNumberValidatorService {
 
 
     private CountryCodeRepository countryCodeRepository = new MockCountryCodeRepository();
-
 
 
     @Override

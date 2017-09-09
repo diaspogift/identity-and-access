@@ -31,6 +31,13 @@ public class DomainEventPublisher {
     @SuppressWarnings("rawtypes")
     private List subscribers;
 
+    private DomainEventPublisher() {
+        super();
+
+        this.setPublishing(false);
+        this.ensureSubscribersList();
+    }
+
     public static DomainEventPublisher instance() {
         return instance.get();
     }
@@ -79,13 +86,6 @@ public class DomainEventPublisher {
 
             this.subscribers().add(aSubscriber);
         }
-    }
-
-    private DomainEventPublisher() {
-        super();
-
-        this.setPublishing(false);
-        this.ensureSubscribersList();
     }
 
     @SuppressWarnings("rawtypes")

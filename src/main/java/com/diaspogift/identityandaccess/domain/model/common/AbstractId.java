@@ -19,12 +19,22 @@ import java.io.Serializable;
 
 @MappedSuperclass
 public abstract class AbstractId
-    extends AssertionConcern
-    implements Identity, Serializable {
+        extends AssertionConcern
+        implements Identity, Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String id;
+
+    protected AbstractId(String anId) {
+        this();
+
+        this.setId(anId);
+    }
+
+    protected AbstractId() {
+        super();
+    }
 
     @Override
     public String id() {
@@ -46,8 +56,8 @@ public abstract class AbstractId
     @Override
     public int hashCode() {
         int hashCodeValue =
-                + (this.hashOddValue() * this.hashPrimeValue())
-                + this.id().hashCode();
+                +(this.hashOddValue() * this.hashPrimeValue())
+                        + this.id().hashCode();
 
         return hashCodeValue;
     }
@@ -55,16 +65,6 @@ public abstract class AbstractId
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + " [id=" + id + "]";
-    }
-
-    protected AbstractId(String anId) {
-        this();
-
-        this.setId(anId);
-    }
-
-    protected AbstractId() {
-        super();
     }
 
     protected abstract int hashOddValue();

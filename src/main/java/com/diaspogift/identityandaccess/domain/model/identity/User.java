@@ -14,9 +14,9 @@
 
 package com.diaspogift.identityandaccess.domain.model.identity;
 
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
-import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 
 import javax.persistence.*;
 
@@ -26,7 +26,7 @@ public class User extends ConcurrencySafeEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer _id;
 
     /**
@@ -50,7 +50,7 @@ public class User extends ConcurrencySafeEntity {
     /**
      * Tenant to which belong the user
      */
-    @AttributeOverride(name="id", column = @Column(name = "tenant_id"))
+    @AttributeOverride(name = "id", column = @Column(name = "tenant_id"))
     @Embedded
     private TenantId tenantId;
 
@@ -60,11 +60,47 @@ public class User extends ConcurrencySafeEntity {
     @Column(unique = true)
     private String username;
 
+    protected User(
+            TenantId aTenantId,
+            String aUsername,
+            String aPassword,
+            Enablement anEnablement,
+            Person aPerson) {
+
+        this();
+
+        this.setEnablement(anEnablement);
+        this.setPerson(aPerson);
+        this.setTenantId(aTenantId);
+        this.setUsername(aUsername);
+
+        this.protectPassword("", aPassword);
+
+        aPerson.internalOnlySetUser(this);
+
+        System.out.println("\n ABOUT TO PUBLISH UserRegistered");
+
+        DomainEventPublisher
+                .instance()
+                .publish(
+                        new UserRegistered(
+                                this.tenantId(),
+                                aUsername,
+                                aPerson.name(),
+                                aPerson.contactInformation().emailAddress()));
+
+        System.out.println("\n AFTER PUBLISH UserRegistered");
+
+
+    }
+
+    protected User() {
+        super();
+    }
+
     /**
-     *
      * @param aCurrentPassword
-     * @param aNewPassword
-     * To change the user password
+     * @param aNewPassword     To change the user password
      */
 
     public void changePassword(String aCurrentPassword, String aNewPassword) {
@@ -82,10 +118,10 @@ public class User extends ConcurrencySafeEntity {
         this.setPassword(this.asEncryptedValue(aNewPassword));
 
         DomainEventPublisher
-            .instance()
-            .publish(new UserPasswordChanged(
-                    this.tenantId(),
-                    this.username()));
+                .instance()
+                .publish(new UserPasswordChanged(
+                        this.tenantId(),
+                        this.username()));
     }
 
     public void changePersonalContactInformation(ContactInformation aContactInformation) {
@@ -100,15 +136,14 @@ public class User extends ConcurrencySafeEntity {
         this.setEnablement(anEnablement);
 
         DomainEventPublisher
-            .instance()
-            .publish(new UserEnablementChanged(
-                    this.tenantId(),
-                    this.username(),
-                    this.enablement()));
+                .instance()
+                .publish(new UserEnablementChanged(
+                        this.tenantId(),
+                        this.username(),
+                        this.enablement()));
     }
 
     /**
-     *
      * @return
      */
     public boolean isEnabled() {
@@ -141,8 +176,8 @@ public class User extends ConcurrencySafeEntity {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             User typedObject = (User) anObject;
             equalObjects =
-                this.tenantId().equals(typedObject.tenantId()) &&
-                this.username().equals(typedObject.username());
+                    this.tenantId().equals(typedObject.tenantId()) &&
+                            this.username().equals(typedObject.username());
         }
 
         return equalObjects;
@@ -151,9 +186,9 @@ public class User extends ConcurrencySafeEntity {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (45217 * 269)
-            + this.tenantId().hashCode()
-            + this.username().hashCode();
+                +(45217 * 269)
+                        + this.tenantId().hashCode()
+                        + this.username().hashCode();
 
         return hashCodeValue;
     }
@@ -164,42 +199,11 @@ public class User extends ConcurrencySafeEntity {
                 + ", person=" + person + ", enablement=" + enablement + "]";
     }
 
-    protected User(
-            TenantId aTenantId,
-            String aUsername,
-            String aPassword,
-            Enablement anEnablement,
-            Person aPerson) {
-
-        this();
-
-        this.setEnablement(anEnablement);
-        this.setPerson(aPerson);
-        this.setTenantId(aTenantId);
-        this.setUsername(aUsername);
-
-        this.protectPassword("", aPassword);
-
-        aPerson.internalOnlySetUser(this);
-
-        DomainEventPublisher
-            .instance()
-            .publish(new UserRegistered(
-                    this.tenantId(),
-                    aUsername,
-                    aPerson.name(),
-                    aPerson.contactInformation().emailAddress()));
-    }
-
-    protected User() {
-        super();
-    }
-
     protected String asEncryptedValue(String aPlainTextPassword) {
         String encryptedValue =
-            DomainRegistry
-                .encryptionService()
-                .encryptedValue(aPlainTextPassword);
+                DomainRegistry
+                        .encryptionService()
+                        .encryptedValue(aPlainTextPassword);
 
         return encryptedValue;
     }
@@ -270,10 +274,10 @@ public class User extends ConcurrencySafeEntity {
 
     protected GroupMember toGroupMember() {
         GroupMember groupMember =
-            new GroupMember(
-                    this.tenantId(),
-                    this.username(),
-                    GroupMemberType.User);
+                new GroupMember(
+                        this.tenantId(),
+                        this.username(),
+                        GroupMemberType.User);
 
         return groupMember;
     }

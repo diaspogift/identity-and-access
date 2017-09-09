@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Embeddable;
@@ -35,10 +34,6 @@ public final class Enablement extends AssertionConcern implements Serializable {
     private Date endDate;
     private Date startDate;
 
-    public static Enablement indefiniteEnablement() {
-        return new Enablement(true, null, null);
-    }
-
     public Enablement(boolean anEnabled, Date aStartDate, Date anEndDate) {
         super();
 
@@ -57,8 +52,20 @@ public final class Enablement extends AssertionConcern implements Serializable {
         this(anEnablement.isEnabled(), anEnablement.startDate(), anEnablement.endDate());
     }
 
+    protected Enablement() {
+        super();
+    }
+
+    public static Enablement indefiniteEnablement() {
+        return new Enablement(true, null, null);
+    }
+
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    private void setEnabled(boolean anEnabled) {
+        this.enabled = anEnabled;
     }
 
     public boolean isEnablementEnabled() {
@@ -83,7 +90,7 @@ public final class Enablement extends AssertionConcern implements Serializable {
         if (this.startDate() != null && this.endDate() != null) {
             Date now = new Date();
             if (now.before(this.startDate()) ||
-                now.after(this.endDate())) {
+                    now.after(this.endDate())) {
                 timeExpired = true;
             }
         }
@@ -102,11 +109,11 @@ public final class Enablement extends AssertionConcern implements Serializable {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             Enablement typedObject = (Enablement) anObject;
             equalObjects =
-                this.isEnabled() == typedObject.isEnabled() &&
-                ((this.startDate() == null && typedObject.startDate() == null) ||
-                 (this.startDate() != null && this.startDate().equals(typedObject.startDate()))) &&
-                ((this.endDate() == null && typedObject.endDate() == null) ||
-                 (this.endDate() != null && this.endDate().equals(typedObject.endDate())));
+                    this.isEnabled() == typedObject.isEnabled() &&
+                            ((this.startDate() == null && typedObject.startDate() == null) ||
+                                    (this.startDate() != null && this.startDate().equals(typedObject.startDate()))) &&
+                            ((this.endDate() == null && typedObject.endDate() == null) ||
+                                    (this.endDate() != null && this.endDate().equals(typedObject.endDate())));
         }
 
         return equalObjects;
@@ -115,10 +122,10 @@ public final class Enablement extends AssertionConcern implements Serializable {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (19563 * 181)
-            + (this.isEnabled() ? 1:0)
-            + (this.startDate() == null ? 0:this.startDate().hashCode())
-            + (this.endDate() == null ? 0:this.endDate().hashCode());
+                +(19563 * 181)
+                        + (this.isEnabled() ? 1 : 0)
+                        + (this.startDate() == null ? 0 : this.startDate().hashCode())
+                        + (this.endDate() == null ? 0 : this.endDate().hashCode());
 
         return hashCodeValue;
     }
@@ -126,14 +133,6 @@ public final class Enablement extends AssertionConcern implements Serializable {
     @Override
     public String toString() {
         return "Enablement [enabled=" + enabled + ", endDate=" + endDate + ", startDate=" + startDate + "]";
-    }
-
-    protected Enablement() {
-        super();
-    }
-
-    private void setEnabled(boolean anEnabled) {
-        this.enabled = anEnabled;
     }
 
     private void setEndDate(Date anEndDate) {

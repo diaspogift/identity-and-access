@@ -15,8 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.access;
 
 
-
-import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 
 import java.util.Collection;

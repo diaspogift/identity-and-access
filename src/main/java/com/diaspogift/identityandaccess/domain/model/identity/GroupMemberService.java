@@ -36,7 +36,7 @@ public class GroupMemberService {
 
         User confirmedUser =
                 this.userRepository()
-                    .userWithUsername(aGroup.tenantId(), aUser.username());
+                        .userWithUsername(aGroup.tenantId(), aUser.username());
 
         if (confirmedUser == null || !confirmedUser.isEnabled()) {
             userConfirmed = false;
@@ -49,7 +49,7 @@ public class GroupMemberService {
         boolean isMember = false;
 
         Iterator<GroupMember> iter =
-            aGroup.groupMembers().iterator();
+                aGroup.groupMembers().iterator();
 
         //return aGroup.groupMembers().stream().filter(GroupMember::isGroup).filter(aMember -> aMember.equals(aMemberGroup)).collect(toList()).size() == 1;
         while (!isMember && iter.hasNext()) {
@@ -59,8 +59,8 @@ public class GroupMemberService {
                     isMember = true;
                 } else {
                     Group group =
-                        this.groupRepository()
-                            .groupNamed(member.tenantId(), member.name());
+                            this.groupRepository()
+                                    .groupNamed(member.tenantId(), member.name());
                     if (group != null) {
                         isMember = this.isMemberGroup(group, aMemberGroup);
                     }
@@ -76,14 +76,14 @@ public class GroupMemberService {
         boolean isInNestedGroup = false;
 
         Iterator<GroupMember> iter =
-            aGroup.groupMembers().iterator();
+                aGroup.groupMembers().iterator();
 
         while (!isInNestedGroup && iter.hasNext()) {
             GroupMember member = iter.next();
             if (member.isGroup()) {
                 Group group =
                         this.groupRepository()
-                            .groupNamed(member.tenantId(), member.name());
+                                .groupNamed(member.tenantId(), member.name());
                 if (group != null) {
                     isInNestedGroup = group.isMember(aUser, this);
                 }

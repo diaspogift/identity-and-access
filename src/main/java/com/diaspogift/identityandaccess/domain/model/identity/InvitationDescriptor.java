@@ -15,25 +15,24 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 public final class InvitationDescriptor extends AssertionConcern {
 
     private String description;
     private String invitationId;
-    private Date startingOn;
+    private ZonedDateTime startingOn;
     private TenantId tenantId;
-    private Date until;
+    private ZonedDateTime until;
 
     public InvitationDescriptor(
             TenantId aTenantId,
             String anInvitationId,
             String aDescription,
-            Date aStartingOn,
-            Date anUntil) {
+            ZonedDateTime aStartingOn,
+            ZonedDateTime anUntil) {
 
         super();
 
@@ -46,10 +45,14 @@ public final class InvitationDescriptor extends AssertionConcern {
 
     public InvitationDescriptor(InvitationDescriptor anInvitationDescriptor) {
         this(anInvitationDescriptor.tenantId(),
-             anInvitationDescriptor.invitationId(),
-             anInvitationDescriptor.description(),
-             anInvitationDescriptor.startingOn(),
-             anInvitationDescriptor.until());
+                anInvitationDescriptor.invitationId(),
+                anInvitationDescriptor.description(),
+                anInvitationDescriptor.startingOn(),
+                anInvitationDescriptor.until());
+    }
+
+    protected InvitationDescriptor() {
+        super();
     }
 
     public String description() {
@@ -64,7 +67,7 @@ public final class InvitationDescriptor extends AssertionConcern {
         return this.startingOn() == null && this.until() == null;
     }
 
-    public Date startingOn() {
+    public ZonedDateTime startingOn() {
         return this.startingOn;
     }
 
@@ -72,7 +75,7 @@ public final class InvitationDescriptor extends AssertionConcern {
         return this.tenantId;
     }
 
-    public Date until() {
+    public ZonedDateTime until() {
         return this.until;
     }
 
@@ -83,13 +86,13 @@ public final class InvitationDescriptor extends AssertionConcern {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             InvitationDescriptor typedObject = (InvitationDescriptor) anObject;
             equalObjects =
-                this.tenantId().equals(typedObject.tenantId()) &&
-                this.invitationId().equals(typedObject.invitationId()) &&
-                this.description().equals(typedObject.description()) &&
-                ((this.startingOn() == null && typedObject.startingOn() == null) ||
-                 (this.startingOn() != null && this.startingOn().equals(typedObject.startingOn()))) &&
-                ((this.until() == null && typedObject.until() == null) ||
-                 (this.until() != null && this.until().equals(typedObject.until())));
+                    this.tenantId().equals(typedObject.tenantId()) &&
+                            this.invitationId().equals(typedObject.invitationId()) &&
+                            this.description().equals(typedObject.description()) &&
+                            ((this.startingOn() == null && typedObject.startingOn() == null) ||
+                                    (this.startingOn() != null && this.startingOn().equals(typedObject.startingOn()))) &&
+                            ((this.until() == null && typedObject.until() == null) ||
+                                    (this.until() != null && this.until().equals(typedObject.until())));
         }
 
         return equalObjects;
@@ -98,12 +101,12 @@ public final class InvitationDescriptor extends AssertionConcern {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (23279 * 199)
-            + this.tenantId().hashCode()
-            + this.invitationId().hashCode()
-            + this.description().hashCode()
-            + (this.startingOn() == null ? 0:this.startingOn().hashCode())
-            + (this.until() == null ? 0:this.until().hashCode());
+                +(23279 * 199)
+                        + this.tenantId().hashCode()
+                        + this.invitationId().hashCode()
+                        + this.description().hashCode()
+                        + (this.startingOn() == null ? 0 : this.startingOn().hashCode())
+                        + (this.until() == null ? 0 : this.until().hashCode());
 
         return hashCodeValue;
     }
@@ -114,10 +117,6 @@ public final class InvitationDescriptor extends AssertionConcern {
                 + ", invitationId=" + invitationId
                 + ", description=" + description
                 + ", startingOn=" + startingOn + ", until=" + until + "]";
-    }
-
-    protected InvitationDescriptor() {
-        super();
     }
 
     private void setDescription(String aDescription) {
@@ -132,7 +131,7 @@ public final class InvitationDescriptor extends AssertionConcern {
         this.invitationId = anInvitationId;
     }
 
-    private void setStartingOn(Date aStartingOn) {
+    private void setStartingOn(ZonedDateTime aStartingOn) {
         this.startingOn = aStartingOn;
     }
 
@@ -142,7 +141,7 @@ public final class InvitationDescriptor extends AssertionConcern {
         this.tenantId = aTenantId;
     }
 
-    private void setUntil(Date anUntil) {
+    private void setUntil(ZonedDateTime anUntil) {
         this.until = anUntil;
     }
 }

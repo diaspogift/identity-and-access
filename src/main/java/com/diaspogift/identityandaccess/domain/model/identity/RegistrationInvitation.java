@@ -15,20 +15,51 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 
-import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.ZonedDateTime;
 
+
+/**
+ * Truly a value object need to be serialized and saved as it
+ */
+
+@Entity
 public class RegistrationInvitation extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer _id;
+
     private String description;
     private String invitationId;
-    private Date startingOn;
+    private ZonedDateTime startingOn;
     private TenantId tenantId;
-    private Date until;
+    private ZonedDateTime until;
+
+    protected RegistrationInvitation(
+            TenantId aTenantId,
+            String anInvitationId,
+            String aDescription) {
+
+        this();
+
+        this.setDescription(aDescription);
+        this.setInvitationId(anInvitationId);
+        this.setTenantId(aTenantId);
+
+        this.assertValidInvitationDates();
+    }
+
+    protected RegistrationInvitation() {
+        super();
+    }
 
     public String description() {
         return this.description;
@@ -43,8 +74,8 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         if (this.startingOn() == null && this.until() == null) {
             isAvailable = true;
         } else {
-            long time = (new Date()).getTime();
-            if (time >= this.startingOn().getTime() && time <= this.until().getTime()) {
+            ZonedDateTime dateNow = ZonedDateTime.now();
+            if (dateNow.isAfter(this.startingOn()) && dateNow.isBefore(this.until())) {
                 isAvailable = true;
             }
         }
@@ -71,11 +102,11 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         return this;
     }
 
-    public Date startingOn() {
+    public ZonedDateTime startingOn() {
         return this.startingOn;
     }
 
-    public RegistrationInvitation startingOn(Date aDate) {
+    public RegistrationInvitation startingOn(ZonedDateTime aDate) {
         if (this.until() != null) {
             throw new IllegalStateException("Cannot set starting-on date after until date.");
         }
@@ -84,7 +115,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
 
         // temporary if until() properly follows, but
         // prevents illegal state if until() doesn't follow
-        this.setUntil(new Date(aDate.getTime() + 86400000));
+        // TO DO was not commented out this.setUntil(new Date(aDate.getTime() + 86400000));
 
         return this;
     }
@@ -103,11 +134,11 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
                         this.until());
     }
 
-    public Date until() {
+    public ZonedDateTime until() {
         return this.until;
     }
 
-    public RegistrationInvitation until(Date aDate) {
+    public RegistrationInvitation until(ZonedDateTime aDate) {
         if (this.startingOn() == null) {
             throw new IllegalStateException("Cannot set until date before setting starting-on date.");
         }
@@ -124,8 +155,8 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             RegistrationInvitation typedObject = (RegistrationInvitation) anObject;
             equalObjects =
-                this.tenantId().equals(typedObject.tenantId()) &&
-                this.invitationId().equals(typedObject.invitationId());
+                    this.tenantId().equals(typedObject.tenantId()) &&
+                            this.invitationId().equals(typedObject.invitationId());
         }
 
         return equalObjects;
@@ -134,13 +165,12 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (6325 * 233)
-            + this.tenantId().hashCode()
-            + this.invitationId().hashCode();
+                +(6325 * 233)
+                        + this.tenantId().hashCode()
+                        + this.invitationId().hashCode();
 
         return hashCodeValue;
     }
-
 
     @Override
     public String toString() {
@@ -152,32 +182,14 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
                 + ", until=" + until + "]";
     }
 
-    protected RegistrationInvitation(
-            TenantId aTenantId,
-            String anInvitationId,
-            String aDescription) {
-
-        this();
-
-        this.setDescription(aDescription);
-        this.setInvitationId(anInvitationId);
-        this.setTenantId(aTenantId);
-
-        this.assertValidInvitationDates();
-    }
-
-    protected RegistrationInvitation() {
-        super();
-    }
-
     protected void assertValidInvitationDates() {
         // either both dates must be null, or both dates must be set
         if (this.startingOn() == null && this.until() == null) {
             ; // valid
         } else if (this.startingOn() == null || this.until() == null &&
-                   this.startingOn() != this.until()) {
+                this.startingOn() != this.until()) {
             throw new IllegalStateException("This is an invalid open-ended invitation.");
-        } else if (this.startingOn().after(this.until())) {
+        } else if (this.startingOn().isAfter(this.until())) {
             throw new IllegalStateException("The starting date and time must be before the until date and time.");
         }
     }
@@ -196,7 +208,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         this.invitationId = anInvitationId;
     }
 
-    protected void setStartingOn(Date aStartingOn) {
+    protected void setStartingOn(ZonedDateTime aStartingOn) {
         this.startingOn = aStartingOn;
     }
 
@@ -206,7 +218,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         this.tenantId = aTenantId;
     }
 
-    protected void setUntil(Date anUntil) {
+    protected void setUntil(ZonedDateTime anUntil) {
         this.until = anUntil;
     }
 }

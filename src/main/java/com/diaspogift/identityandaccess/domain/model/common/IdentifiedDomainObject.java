@@ -15,8 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.common;
 
 
-import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
-
 import java.io.Serializable;
 
 public class IdentifiedDomainObject extends AssertionConcern implements Serializable {

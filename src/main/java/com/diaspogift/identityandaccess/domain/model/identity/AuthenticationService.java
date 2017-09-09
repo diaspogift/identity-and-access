@@ -53,10 +53,10 @@ public class AuthenticationService extends AssertionConcern {
 
             User user =
                     this.userRepository()
-                        .userFromAuthenticCredentials(
-                            aTenantId,
-                            aUsername,
-                            encryptedPassword);
+                            .userFromAuthenticCredentials(
+                                    aTenantId,
+                                    aUsername,
+                                    encryptedPassword);
 
             if (user != null && user.isEnabled()) {
                 userDescriptor = user.userDescriptor();

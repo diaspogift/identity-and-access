@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AbstractId;
 
 import javax.persistence.Embeddable;

@@ -25,6 +25,18 @@ public class GroupMember extends IdentifiedValueObject {
     private TenantId tenantId;
     private GroupMemberType type;
 
+    protected GroupMember(TenantId aTenantId, String aName, GroupMemberType aType) {
+        this();
+
+        this.setName(aName);
+        this.setTenantId(aTenantId);
+        this.setType(aType);
+    }
+
+    protected GroupMember() {
+        super();
+    }
+
     public boolean isGroup() {
         return this.type().isGroup();
     }
@@ -52,9 +64,9 @@ public class GroupMember extends IdentifiedValueObject {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             GroupMember typedObject = (GroupMember) anObject;
             equalObjects =
-                this.tenantId().equals(typedObject.tenantId()) &&
-                this.name().equals(typedObject.name()) &&
-                this.type().equals(typedObject.type());
+                    this.tenantId().equals(typedObject.tenantId()) &&
+                            this.name().equals(typedObject.name()) &&
+                            this.type().equals(typedObject.type());
         }
 
         return equalObjects;
@@ -63,10 +75,10 @@ public class GroupMember extends IdentifiedValueObject {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (21941 * 197)
-            + this.tenantId().hashCode()
-            + this.name().hashCode()
-            + this.type().hashCode();
+                +(21941 * 197)
+                        + this.tenantId().hashCode()
+                        + this.name().hashCode()
+                        + this.type().hashCode();
 
         return hashCodeValue;
     }
@@ -74,18 +86,6 @@ public class GroupMember extends IdentifiedValueObject {
     @Override
     public String toString() {
         return "GroupMember [name=" + name + ", tenantId=" + tenantId + ", type=" + type + "]";
-    }
-
-    protected GroupMember(TenantId aTenantId, String aName, GroupMemberType aType) {
-        this();
-
-        this.setName(aName);
-        this.setTenantId(aTenantId);
-        this.setType(aType);
-    }
-
-    protected GroupMember() {
-        super();
     }
 
     protected void setName(String aName) {

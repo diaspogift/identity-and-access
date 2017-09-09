@@ -15,10 +15,10 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.access.RoleRepository;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
 public class TenantProvisioningService {
 
@@ -49,10 +49,10 @@ public class TenantProvisioningService {
 
         try {
             Tenant tenant = new Tenant(
-                        this.tenantRepository().nextIdentity(),
-                        aTenantName,
-                        aTenantDescription,
-                        true); // must be active to register admin
+                    this.tenantRepository().nextIdentity(),
+                    aTenantName,
+                    aTenantDescription,
+                    true); // must be active to register admin
 
             this.tenantRepository().add(tenant);
 
@@ -65,16 +65,16 @@ public class TenantProvisioningService {
                     aSecondaryTelephone);
 
             DomainEventPublisher
-                .instance()
-                .publish(new TenantProvisioned(
-                        tenant.tenantId()));
+                    .instance()
+                    .publish(new TenantProvisioned(
+                            tenant.tenantId()));
 
             return tenant;
 
         } catch (Throwable t) {
             throw new IllegalStateException(
                     "Cannot provision tenant because: "
-                    + t.getMessage());
+                            + t.getMessage());
         }
     }
 
@@ -91,32 +91,32 @@ public class TenantProvisioningService {
 
         String strongPassword =
                 DomainRegistry
-                    .passwordService()
-                    .generateStrongPassword();
+                        .passwordService()
+                        .generateStrongPassword();
 
         User admin =
-            aTenant.registerUser(
-                    invitation.invitationId(),
-                    "admin",
-                    strongPassword,
-                    Enablement.indefiniteEnablement(),
-                    new Person(
-                            aTenant.tenantId(),
-                            anAdministorName,
-                            new ContactInformation(
-                                    anEmailAddress,
-                                    aPostalAddress,
-                                    aPrimaryTelephone,
-                                    aSecondaryTelephone)));
+                aTenant.registerUser(
+                        invitation.invitationId(),
+                        "admin",
+                        strongPassword,
+                        Enablement.indefiniteEnablement(),
+                        new Person(
+                                aTenant.tenantId(),
+                                anAdministorName,
+                                new ContactInformation(
+                                        anEmailAddress,
+                                        aPostalAddress,
+                                        aPrimaryTelephone,
+                                        aSecondaryTelephone)));
 
         aTenant.withdrawInvitation(invitation.invitationId());
 
         this.userRepository().add(admin);
 
         Role adminRole =
-            aTenant.provisionRole(
-                    "Administrator",
-                    "Default " + aTenant.name() + " administrator.");
+                aTenant.provisionRole(
+                        "Administrator",
+                        "Default " + aTenant.name() + " administrator.");
 
         adminRole.assignUser(admin);
 

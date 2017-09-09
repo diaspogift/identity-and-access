@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Embeddable;
@@ -50,10 +49,14 @@ public class PostalAddress extends AssertionConcern implements Serializable {
 
     public PostalAddress(PostalAddress aPostalAddress) {
         this(aPostalAddress.streetAddress(),
-             aPostalAddress.city(),
-             aPostalAddress.stateProvince(),
-             aPostalAddress.postalCode(),
-             aPostalAddress.countryCode());
+                aPostalAddress.city(),
+                aPostalAddress.stateProvince(),
+                aPostalAddress.postalCode(),
+                aPostalAddress.countryCode());
+    }
+
+    protected PostalAddress() {
+        super();
     }
 
     public String city() {
@@ -83,11 +86,11 @@ public class PostalAddress extends AssertionConcern implements Serializable {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             PostalAddress typedObject = (PostalAddress) anObject;
             equalObjects =
-                this.streetAddress().equals(typedObject.streetAddress()) &&
-                this.city().equals(typedObject.city()) &&
-                this.stateProvince().equals(typedObject.stateProvince()) &&
-                this.postalCode().equals(typedObject.postalCode()) &&
-                this.countryCode().equals(typedObject.countryCode());
+                    this.streetAddress().equals(typedObject.streetAddress()) &&
+                            this.city().equals(typedObject.city()) &&
+                            this.stateProvince().equals(typedObject.stateProvince()) &&
+                            this.postalCode().equals(typedObject.postalCode()) &&
+                            this.countryCode().equals(typedObject.countryCode());
         }
 
         return equalObjects;
@@ -96,12 +99,12 @@ public class PostalAddress extends AssertionConcern implements Serializable {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (31589 * 227)
-            + this.streetAddress().hashCode()
-            + this.city().hashCode()
-            + this.stateProvince().hashCode()
-            + this.postalCode().hashCode()
-            + this.countryCode().hashCode();
+                +(31589 * 227)
+                        + this.streetAddress().hashCode()
+                        + this.city().hashCode()
+                        + this.stateProvince().hashCode()
+                        + this.postalCode().hashCode()
+                        + this.countryCode().hashCode();
 
         return hashCodeValue;
     }
@@ -112,10 +115,6 @@ public class PostalAddress extends AssertionConcern implements Serializable {
                 + ", city=" + city + ", stateProvince=" + stateProvince
                 + ", postalCode=" + postalCode
                 + ", countryCode=" + countryCode + "]";
-    }
-
-    protected PostalAddress() {
-        super();
     }
 
     private void setCity(String aCity) {

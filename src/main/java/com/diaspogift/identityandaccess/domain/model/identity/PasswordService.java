@@ -16,9 +16,11 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+@Service
 public final class PasswordService extends AssertionConcern {
 
     private static final String DIGITS = "0123456789";
@@ -47,22 +49,22 @@ public final class PasswordService extends AssertionConcern {
             int opt = random.nextInt(4);
 
             switch (opt) {
-            case 0:
-                index = random.nextInt(LETTERS.length());
-                password.append(LETTERS.substring(index, index+1));
-                break;
-            case 1:
-                index = random.nextInt(LETTERS.length());
-                password.append(LETTERS.substring(index, index+1).toLowerCase());
-                break;
-            case 2:
-                index = random.nextInt(DIGITS.length());
-                password.append(DIGITS.substring(index, index+1));
-                break;
-            case 3:
-                index = random.nextInt(SYMBOLS.length());
-                password.append(SYMBOLS.substring(index, index+1));
-                break;
+                case 0:
+                    index = random.nextInt(LETTERS.length());
+                    password.append(LETTERS.substring(index, index + 1));
+                    break;
+                case 1:
+                    index = random.nextInt(LETTERS.length());
+                    password.append(LETTERS.substring(index, index + 1).toLowerCase());
+                    break;
+                case 2:
+                    index = random.nextInt(DIGITS.length());
+                    password.append(DIGITS.substring(index, index + 1));
+                    break;
+                case 3:
+                    index = random.nextInt(SYMBOLS.length());
+                    password.append(SYMBOLS.substring(index, index + 1));
+                    break;
             }
 
             generatedPassword = password.toString();

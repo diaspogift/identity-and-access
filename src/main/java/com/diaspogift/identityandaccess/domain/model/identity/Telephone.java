@@ -16,7 +16,6 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
-import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 
 import javax.persistence.Embeddable;
 import javax.persistence.MappedSuperclass;
@@ -45,7 +44,11 @@ public final class Telephone extends AssertionConcern implements Serializable {
     }
 
     public Telephone(Telephone aTelephone) {
-        this(aTelephone.countryCode(), aTelephone.countryDialingCode(),aTelephone.number());
+        this(aTelephone.countryCode(), aTelephone.countryDialingCode(), aTelephone.number());
+    }
+
+    public Telephone() {
+        super();
     }
 
     public String number() {
@@ -67,8 +70,8 @@ public final class Telephone extends AssertionConcern implements Serializable {
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (35137 * 239)
-            + this.number().hashCode();
+                +(35137 * 239)
+                        + this.number().hashCode();
 
         return hashCodeValue;
     }
@@ -76,10 +79,6 @@ public final class Telephone extends AssertionConcern implements Serializable {
     @Override
     public String toString() {
         return "Telephone [number=" + number + "]";
-    }
-
-    public Telephone() {
-        super();
     }
 
     private void setNumber(String aNumber) {

@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Column;
@@ -41,6 +40,10 @@ public final class EmailAddress extends AssertionConcern implements Serializable
         this(anEmailAddress.address());
     }
 
+    protected EmailAddress() {
+        super();
+    }
+
     public String address() {
         return this.address;
     }
@@ -60,8 +63,8 @@ public final class EmailAddress extends AssertionConcern implements Serializable
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (17861 * 179)
-            + this.address().hashCode();
+                +(17861 * 179)
+                        + this.address().hashCode();
 
         return hashCodeValue;
     }
@@ -69,10 +72,6 @@ public final class EmailAddress extends AssertionConcern implements Serializable
     @Override
     public String toString() {
         return "EmailAddress [address=" + address + "]";
-    }
-
-    protected EmailAddress() {
-        super();
     }
 
     private void setAddress(String anAddress) {
@@ -86,10 +85,8 @@ public final class EmailAddress extends AssertionConcern implements Serializable
 }
 
 
-
 /**
- https://play.google.com/about/privacy-security/personal-sensitive/
- http://www.lesnumeriques.com/mobilite/play-store-pas-regles-confidentialite-application-effacee-n60329.html
- https://www.iubenda.com/blog/warning-google-play-developer-policy-violation-action-required-policy-issue/
-
+ * https://play.google.com/about/privacy-security/personal-sensitive/
+ * http://www.lesnumeriques.com/mobilite/play-store-pas-regles-confidentialite-application-effacee-n60329.html
+ * https://www.iubenda.com/blog/warning-google-play-developer-policy-violation-action-required-policy-issue/
  */

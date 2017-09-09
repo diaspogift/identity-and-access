@@ -15,7 +15,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
-
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.*;
@@ -27,7 +26,7 @@ public final class ContactInformation extends AssertionConcern implements Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     *  The e-mail address
+     * The e-mail address
      */
     @Embedded
 
@@ -43,9 +42,9 @@ public final class ContactInformation extends AssertionConcern implements Serial
      * First User phone number
      */
     @AttributeOverrides({
-            @AttributeOverride(name="number", column = @Column(name = "primary_telephone_number")),
-            @AttributeOverride(name="countryCode", column = @Column(name = "primary_telephone_country_code")),
-            @AttributeOverride(name="countryDialingCode", column = @Column(name = "primary_telephone_country_dialing_code"))}
+            @AttributeOverride(name = "number", column = @Column(name = "primary_telephone_number")),
+            @AttributeOverride(name = "countryCode", column = @Column(name = "primary_telephone_country_code")),
+            @AttributeOverride(name = "countryDialingCode", column = @Column(name = "primary_telephone_country_dialing_code"))}
     )
     @Embedded
     private Telephone primaryTelephone;
@@ -54,12 +53,12 @@ public final class ContactInformation extends AssertionConcern implements Serial
      * Second User phone number
      */
     @AttributeOverrides({
-            @AttributeOverride(name="number", column = @Column(name = "secondary_telephone_number")),
-            @AttributeOverride(name="countryCode", column = @Column(name = "secondary_telephone_country_code")),
-            @AttributeOverride(name="countryDialingCode", column = @Column(name = "secondary_telephone_country_dialing_code"))}
-    )    @Embedded
+            @AttributeOverride(name = "number", column = @Column(name = "secondary_telephone_number")),
+            @AttributeOverride(name = "countryCode", column = @Column(name = "secondary_telephone_country_code")),
+            @AttributeOverride(name = "countryDialingCode", column = @Column(name = "secondary_telephone_country_dialing_code"))}
+    )
+    @Embedded
     private Telephone secondaryTelephone;
-
 
 
     public ContactInformation(
@@ -78,9 +77,13 @@ public final class ContactInformation extends AssertionConcern implements Serial
 
     public ContactInformation(ContactInformation aContactInformation) {
         this(aContactInformation.emailAddress(),
-             aContactInformation.postalAddress(),
-             aContactInformation.primaryTelephone(),
-             aContactInformation.secondaryTelephone());
+                aContactInformation.postalAddress(),
+                aContactInformation.primaryTelephone(),
+                aContactInformation.secondaryTelephone());
+    }
+
+    protected ContactInformation() {
+        super();
     }
 
     public ContactInformation changeEmailAddress(EmailAddress anEmailAddress) {
@@ -93,26 +96,26 @@ public final class ContactInformation extends AssertionConcern implements Serial
 
     public ContactInformation changePostalAddress(PostalAddress aPostalAddress) {
         return new ContactInformation(
-               this.emailAddress(),
-               aPostalAddress,
-               this.primaryTelephone(),
-               this.secondaryTelephone());
+                this.emailAddress(),
+                aPostalAddress,
+                this.primaryTelephone(),
+                this.secondaryTelephone());
     }
 
     public ContactInformation changePrimaryTelephone(Telephone aTelephone) {
         return new ContactInformation(
-               this.emailAddress(),
-               this.postalAddress(),
-               aTelephone,
-               this.secondaryTelephone());
+                this.emailAddress(),
+                this.postalAddress(),
+                aTelephone,
+                this.secondaryTelephone());
     }
 
     public ContactInformation changeSecondaryTelephone(Telephone aTelephone) {
         return new ContactInformation(
-               this.emailAddress(),
-               this.postalAddress(),
-               this.primaryTelephone(),
-               aTelephone);
+                this.emailAddress(),
+                this.postalAddress(),
+                this.primaryTelephone(),
+                aTelephone);
     }
 
     public EmailAddress emailAddress() {
@@ -138,11 +141,11 @@ public final class ContactInformation extends AssertionConcern implements Serial
         if (anObject != null && this.getClass() == anObject.getClass()) {
             ContactInformation typedObject = (ContactInformation) anObject;
             equalObjects =
-                this.emailAddress().equals(typedObject.emailAddress()) &&
-                this.postalAddress().equals(typedObject.postalAddress()) &&
-                this.primaryTelephone().equals(typedObject.primaryTelephone()) &&
-                ((this.secondaryTelephone() == null && typedObject.secondaryTelephone() == null) ||
-                 (this.secondaryTelephone() != null && this.secondaryTelephone().equals(typedObject.secondaryTelephone())));
+                    this.emailAddress().equals(typedObject.emailAddress()) &&
+                            this.postalAddress().equals(typedObject.postalAddress()) &&
+                            this.primaryTelephone().equals(typedObject.primaryTelephone()) &&
+                            ((this.secondaryTelephone() == null && typedObject.secondaryTelephone() == null) ||
+                                    (this.secondaryTelephone() != null && this.secondaryTelephone().equals(typedObject.secondaryTelephone())));
         }
 
         return equalObjects;
@@ -151,11 +154,11 @@ public final class ContactInformation extends AssertionConcern implements Serial
     @Override
     public int hashCode() {
         int hashCodeValue =
-            + (73213 * 173)
-            + this.emailAddress().hashCode()
-            + this.postalAddress().hashCode()
-            + this.primaryTelephone().hashCode()
-            + (this.secondaryTelephone() == null ? 0:this.secondaryTelephone().hashCode());
+                +(73213 * 173)
+                        + this.emailAddress().hashCode()
+                        + this.postalAddress().hashCode()
+                        + this.primaryTelephone().hashCode()
+                        + (this.secondaryTelephone() == null ? 0 : this.secondaryTelephone().hashCode());
 
         return hashCodeValue;
     }
@@ -164,10 +167,6 @@ public final class ContactInformation extends AssertionConcern implements Serial
     public String toString() {
         return "ContactInformation [emailAddress=" + emailAddress + ", postalAddress=" + postalAddress + ", primaryTelephone="
                 + primaryTelephone + ", secondaryTelephone=" + secondaryTelephone + "]";
-    }
-
-    protected ContactInformation() {
-        super();
     }
 
     private void setEmailAddress(EmailAddress anEmailAddress) {
