@@ -193,6 +193,11 @@ public class Tenant extends ConcurrencySafeEntity {
         return this.tenantId;
     }
 
+    /**
+     *
+     * @param anInvitationIdentifier
+     */
+
     public void withdrawInvitation(String anInvitationIdentifier) {
         RegistrationInvitation invitation =
             this.invitation(anInvitationIdentifier);

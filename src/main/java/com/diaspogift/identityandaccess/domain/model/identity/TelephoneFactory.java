@@ -7,7 +7,6 @@ public class TelephoneFactory extends AssertionConcern {
 
     public Telephone createTelephone(String aCountryCode, String aCountryDialingCode, String aNumber){
 
-
                 this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(aCountryCode, aCountryDialingCode, aNumber), "Invalid phone number.");
 
                 return new Telephone(aCountryCode, aCountryDialingCode, aNumber);

@@ -64,7 +64,7 @@ public class User extends ConcurrencySafeEntity {
      *
      * @param aCurrentPassword
      * @param aNewPassword
-     * To change the user password
+     * To change the user password by providing current password and the new one.
      */
 
     public void changePassword(String aCurrentPassword, String aNewPassword) {
@@ -134,6 +134,8 @@ public class User extends ConcurrencySafeEntity {
         return this.username;
     }
 
+
+
     @Override
     public boolean equals(Object anObject) {
         boolean equalObjects = false;
@@ -180,6 +182,8 @@ public class User extends ConcurrencySafeEntity {
 
         this.protectPassword("", aPassword);
 
+        this.setPassword(this.asEncryptedValue(aPassword));
+
         aPerson.internalOnlySetUser(this);
 
         DomainEventPublisher
@@ -196,12 +200,7 @@ public class User extends ConcurrencySafeEntity {
     }
 
     protected String asEncryptedValue(String aPlainTextPassword) {
-        String encryptedValue =
-            DomainRegistry
-                .encryptionService()
-                .encryptedValue(aPlainTextPassword);
-
-        return encryptedValue;
+        return DomainRegistry.encryptionService().encryptedValue(aPlainTextPassword);
     }
 
     protected void assertPasswordsNotSame(String aCurrentPassword, String aChangedPassword) {
@@ -234,9 +233,9 @@ public class User extends ConcurrencySafeEntity {
         this.enablement = anEnablement;
     }
 
-    /*public String internalAccessOnlyEncryptedPassword() {
+    public String internalAccessOnlyEncryptedPassword() {
         return this.password();
-    }*/
+    }
 
     protected String password() {
         return this.password;
@@ -258,7 +257,6 @@ public class User extends ConcurrencySafeEntity {
         this.assertPasswordNotWeak(aChangedPassword);
 
         this.assertUsernamePasswordNotSame(aChangedPassword);
-
 
     }
 

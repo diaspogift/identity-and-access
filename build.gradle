@@ -35,4 +35,10 @@ dependencies {
 	compile 'mysql:mysql-connector-java'
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+	//compile group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '7.0'
+	//compile 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
+    // https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber
+    compile group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.8.1'
+
 }

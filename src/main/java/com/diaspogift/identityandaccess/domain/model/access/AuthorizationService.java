@@ -18,14 +18,22 @@ package com.diaspogift.identityandaccess.domain.model.access;
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AuthorizationService extends AssertionConcern {
 
+    @Autowired
     private GroupRepository groupRepository;
+    @Autowired
     private RoleRepository roleRepository;
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private  GroupMemberService groupMemberService;
 
-    public AuthorizationService(
+    /*public AuthorizationService(
             UserRepository aUserRepository,
             GroupRepository aGroupRepository,
             RoleRepository aRoleRepository) {
@@ -35,7 +43,7 @@ public class AuthorizationService extends AssertionConcern {
         this.groupRepository = aGroupRepository;
         this.roleRepository = aRoleRepository;
         this.userRepository = aUserRepository;
-    }
+    }*/
 
     public boolean isUserInRole(TenantId aTenantId, String aUsername, String aRoleName) {
         this.assertArgumentNotNull(aTenantId, "TenantId must not be null.");
@@ -57,10 +65,10 @@ public class AuthorizationService extends AssertionConcern {
             Role role = this.roleRepository().roleNamed(aUser.tenantId(), aRoleName);
 
             if (role != null) {
-                GroupMemberService groupMemberService =
+                 /*groupMemberService =
                         new GroupMemberService(
                                 this.userRepository(),
-                                this.groupRepository());
+                                this.groupRepository());*/
 
                 authorized = role.isInRole(aUser, groupMemberService);
             }

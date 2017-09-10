@@ -66,6 +66,12 @@ public class Person extends ConcurrencySafeEntity {
         this.setTenantId(aTenantId);
     }
 
+    /**
+     *
+     * @param aContactInformation
+     * A person ca change his contact information by providing a new one. <br />
+     * When a contactInformation is change a domain Event is sended and change is save.
+     */
     public void changeContactInformation(ContactInformation aContactInformation) {
         this.setContactInformation(aContactInformation);
 
@@ -76,6 +82,12 @@ public class Person extends ConcurrencySafeEntity {
                     this.user().username(),
                     this.contactInformation()));
     }
+
+    /**
+     *
+     * @param aName
+     * A person can change his name by  providing a new one.
+     */
 
     public void changeName(FullName aName) {
         this.setName(aName);

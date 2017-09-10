@@ -1,11 +1,13 @@
-package com.diaspogift.identityandaccess.repository;
+package com.diaspogift.identityandaccess.infrastructure.repository;
 
 import com.diaspogift.identityandaccess.domain.model.identity.CountryCodeRepository;
 import com.diaspogift.identityandaccess.domain.model.identity.CountryPhoneCodeInfo;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@Repository
 public class MockCountryCodeRepository implements CountryCodeRepository{
 
 

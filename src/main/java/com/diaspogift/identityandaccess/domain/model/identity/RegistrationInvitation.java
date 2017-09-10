@@ -44,9 +44,24 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
             isAvailable = true;
         } else {
             long time = (new Date()).getTime();
-            if (time >= this.startingOn().getTime() && time <= this.until().getTime()) {
-                isAvailable = true;
+
+            if (this.startingOn() == null){
+                isAvailable = false;
+            }else if (this.until() == null){
+               if (time > this.startingOn().getTime()){
+                   isAvailable = true;
+               }else {
+                   isAvailable = false;
+               }
+            }else {
+                if (time >= this.startingOn().getTime() && time <= this.until().getTime()) {
+                    isAvailable = true;
+                }else {
+                    isAvailable = false;
+                }
             }
+
+
         }
         return isAvailable;
     }
@@ -76,7 +91,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
     }
 
     public RegistrationInvitation startingOn(Date aDate) {
-        if (this.until() != null) {
+        if (this.until() != null && aDate.getTime() > this.until().getTime()) {
             throw new IllegalStateException("Cannot set starting-on date after until date.");
         }
 
@@ -84,7 +99,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
 
         // temporary if until() properly follows, but
         // prevents illegal state if until() doesn't follow
-        this.setUntil(new Date(aDate.getTime() + 86400000));
+        //this.setUntil(new Date(aDate.getTime() + 86400000));
 
         return this;
     }
@@ -108,8 +123,11 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
     }
 
     public RegistrationInvitation until(Date aDate) {
-        if (this.startingOn() == null) {
+        if (this.startingOn() == null && aDate != null) {
             throw new IllegalStateException("Cannot set until date before setting starting-on date.");
+        }
+        if (this.startingOn() != null && aDate != null && aDate.getTime() < this.startingOn().getTime()){
+            throw new IllegalStateException("Until date must not  be before  starting-on date.");
         }
 
         this.setUntil(aDate);
@@ -174,10 +192,9 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         // either both dates must be null, or both dates must be set
         if (this.startingOn() == null && this.until() == null) {
             ; // valid
-        } else if (this.startingOn() == null || this.until() == null &&
-                   this.startingOn() != this.until()) {
+        } else if (this.startingOn() == null && this.until() != null) {
             throw new IllegalStateException("This is an invalid open-ended invitation.");
-        } else if (this.startingOn().after(this.until())) {
+        } else if (this.startingOn() != null && this.until() != null && this.until().after(this.startingOn())){
             throw new IllegalStateException("The starting date and time must be before the until date and time.");
         }
     }
