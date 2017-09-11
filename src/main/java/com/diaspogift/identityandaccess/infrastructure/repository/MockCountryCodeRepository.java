@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
-@Repository
+//@Repository
 public class MockCountryCodeRepository implements CountryCodeRepository{
 
 

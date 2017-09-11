@@ -4,11 +4,13 @@ import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Component
+@Repository
 public class MockUserRepository implements UserRepository{
 
     private Set<User> users;

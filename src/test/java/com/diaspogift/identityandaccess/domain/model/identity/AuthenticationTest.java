@@ -1,14 +1,19 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.persistence.NoResultException;
+import java.beans.Transient;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +22,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
+@Transactional
 public class AuthenticationTest {
 
     private  String                id;
@@ -32,14 +37,6 @@ public class AuthenticationTest {
     private Tenant                 tenant;
     private  Enablement            enablement;
 
-    @Autowired
-    private AuthenticationService authenticationService;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TenantRepository tenantRepository;
 
     @Before
     public void init(){
@@ -73,13 +70,13 @@ public class AuthenticationTest {
 
         tenant.activate();
         RegistrationInvitation invitation = tenant.offerRegistrationInvitation("First invitation");
-        tenantRepository.add(tenant);
+        DomainRegistry.tenantRepository().add(tenant);
          user = tenant.registerUser(invitation.invitationId(), "email@yahoo.fr", "secretSTRENGTH1234",
                  enablement,person);
          if (user == null){
              throw new IllegalArgumentException("User not registrated...");
          }
-        userRepository.add(user);
+        DomainRegistry.userRepository().add(user);
 
 
     }
@@ -91,7 +88,7 @@ public class AuthenticationTest {
 
         //System.out.println("\n\n tenantRepository  " + ((MockUserRepository)userRepository).users().size() + "\n\n");
 
-        UserDescriptor userDescriptor = authenticationService.authenticate(tenantId,
+        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
                 "email@yahoo.fr", "secretSTRENGTH1234");
         assertNotNull(userDescriptor);
         assertEquals(user.userDescriptor(), userDescriptor);
@@ -104,7 +101,7 @@ public class AuthenticationTest {
 
         //System.out.println("\n\n tenantRepository  " + ((MockUserRepository)userRepository).users().size() + "\n\n");
 
-        UserDescriptor userDescriptor = authenticationService.authenticate(tenantId,
+        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
                 "email.bad@yahoo.fr", "secretSTRENGTH1234");
         assertNotNull(userDescriptor);
         assertNull(userDescriptor.username());
@@ -121,7 +118,7 @@ public class AuthenticationTest {
         //System.out.println("\n\n tenantRepository  " + ((MockUserRepository)userRepository).users().size() + "\n\n");
 
 
-        UserDescriptor userDescriptor = authenticationService.authenticate(tenantId,
+        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
                 "email@yahoo.fr", "badsecretSTRENGTH1234");
         assertNotNull(userDescriptor);
         assertNull(userDescriptor.username());
@@ -129,13 +126,13 @@ public class AuthenticationTest {
         assertNull(userDescriptor.tenantId());
     }
 
-    @Test
+    @Test(expected = EmptyResultDataAccessException.class)
     public void wrongAuthenticateWithBadTenant(){
 
         String id1 = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         TenantId tenantId1 = new TenantId(id1);
 
-        UserDescriptor userDescriptor = authenticationService.authenticate(tenantId1,
+        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId1,
                 "email@yahoo.fr", "secretSTRENGTH1234");
         assertNotNull(userDescriptor);
         assertNull(userDescriptor.username());

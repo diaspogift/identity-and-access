@@ -20,10 +20,10 @@ public class TelephoneTests {
 
         TelephoneFactory telephoneFactory = new TelephoneFactory();
 
-        Telephone telephone = telephoneFactory.createTelephone("USA", "001", "303-807-3573");
+        Telephone telephone = telephoneFactory.createTelephone("US", "001", "303-807-3573");
 
         assertNotNull(telephone);
-        assertEquals("USA", telephone.countryCode());
+        assertEquals("US", telephone.countryCode());
         assertEquals("001", telephone.countryDialingCode());
         assertEquals("303-807-3573", telephone.number());
     }

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Component
+//@Component
 public class MockTenantRepository implements TenantRepository{
 
     private Set<Tenant> tenants;

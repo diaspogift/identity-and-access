@@ -17,12 +17,26 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.common.IdentifiedValueObject;
 
+import javax.persistence.*;
+
+/**
+ * Truly a value object
+ */
+
+
+@Entity
 public class GroupMember extends IdentifiedValueObject {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer _id;
 
     private static final long serialVersionUID = 1L;
 
     private String name;
+    @Embedded
     private TenantId tenantId;
+    @Enumerated(EnumType.STRING)
     private GroupMemberType type;
 
     protected GroupMember(TenantId aTenantId, String aName, GroupMemberType aType) {
