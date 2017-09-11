@@ -66,19 +66,16 @@ public class Person extends ConcurrencySafeEntity {
         this.setTenantId(aTenantId);
     }
 
-<<<<<<< HEAD
     protected Person() {
         super();
     }
 
-=======
     /**
      *
      * @param aContactInformation
      * A person ca change his contact information by providing a new one. <br />
      * When a contactInformation is change a domain Event is sended and change is save.
      */
->>>>>>> didier-user-aggregate-setup
     public void changeContactInformation(ContactInformation aContactInformation) {
         this.setContactInformation(aContactInformation);
 
