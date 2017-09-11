@@ -1,19 +1,29 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+<<<<<<< HEAD
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
+=======
+import org.junit.After;
+import org.junit.Before;
+>>>>>>> didier-user-aggregate-setup
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import java.util.Collection;
+=======
+import java.util.Calendar;
+import java.util.Date;
+>>>>>>> didier-user-aggregate-setup
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -28,7 +38,104 @@ public class TenantTest extends IdentityAndAccessTest {
     }
 
 
+    private String id;
+    private  TenantId tenantId;
+    private Tenant tenant;
+
+    private  FullName              fullName;
+    private  ContactInformation    contactInformation;
+    private Calendar calendier;
+    private Date now;
+    private  Date                  afterTomorow;
+    private  Person                person;
+    private  User                  user;
+    private  Enablement            enablement;
+    @Before
+    public  void init(){
+         id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
+        tenantId = new TenantId(id);
+        tenant = new Tenant(tenantId, "CLINIQUE LES POITIERS",
+                "Grande institution hospitaliere. Situe a Valee trois boutique de Deido", false);
+
+        fullName = new FullName("Nkalla Ehawe", "Didier Junior");
+        contactInformation = new ContactInformation(
+                new EmailAddress("email@yahoo.fr"),
+                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
+                new Telephone("CMR","00237","691178154"),
+                new Telephone("CMR","00237","669262656")
+        );
+
+        calendier = Calendar.getInstance();
+        calendier.add(Calendar.DAY_OF_YEAR, 2);
+        afterTomorow = calendier.getTime();
+        now = new Date();
+        person = new Person(tenantId, fullName, contactInformation);
+        enablement = new Enablement(true, now, afterTomorow);
+        user = new User(tenantId,
+                "username@gmail.com",
+                "secretSTRENGTH1234",
+                enablement,
+                person
+        );
+    }
+
+    @After
+    public void reset(){
+        id = null;
+        tenantId = null;
+        tenant = null;
+        fullName = null;
+        contactInformation = null;
+        calendier = null;
+        now = null;
+        afterTomorow = null;
+        person = null;
+        user = null;
+        enablement = null;
+    }
     @Test
+    public void createTenant(){
+        assertNotNull(tenant);
+        assertEquals("CLINIQUE LES POITIERS", tenant.name());
+        assertEquals("Grande institution hospitaliere. Situe a Valee trois boutique de Deido", tenant.description());
+        assertEquals(tenantId, tenant.tenantId());
+        assertEquals(false, tenant.isActive());
+    }
+
+    @Test
+    public void activate(){
+        tenant.activate();
+        assertEquals(true, tenant.isActive());
+    }
+
+    @Test
+    public void deactivate(){
+        tenant.deactivate();
+        assertEquals(false, tenant.isActive());
+    }
+
+
+    @Test(expected = IllegalStateException.class)
+    public void offerRegistrationInvitation(){
+        tenant.activate();
+        tenant.offerRegistrationInvitation("First invitation");
+        assertEquals(1, tenant.registrationInvitations().size());
+        tenant.offerRegistrationInvitation("First invitation");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void registerUser(){
+        User aUser =
+                tenant.registerUser(tenantId.id(), "email@yahoo.fr", "secretSTRENGTH1234",
+                       enablement,person);
+
+        System.out.println("\n\n" + aUser.internalAccessOnlyEncryptedPassword() + "\n\n");
+        assertEquals(user, aUser);
+
+    }
+
+    @Test
+<<<<<<< HEAD
     public void createTenantId() {
 
         String id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
@@ -151,6 +258,16 @@ public class TenantTest extends IdentityAndAccessTest {
 
     @Test
     public void isRegistrationAvailableThrough() {
+=======
+    public void withdrawInvitation(){
+        tenant.activate();
+        tenant.offerRegistrationInvitation("InvitationId");
+        RegistrationInvitation invitation = tenant.invitation("InvitationId");
+
+        assertEquals(1, tenant.registrationInvitations().size());
+        tenant.withdrawInvitation("InvitationId");
+        assertEquals(0, tenant.registrationInvitations().size());
+>>>>>>> didier-user-aggregate-setup
 
         Tenant tenant = this.tenantAggregateWithOfferedRegistrationInvitations();
         assertTrue(tenant.isRegistrationAvailableThrough(this.registrationInvitation1().invitationId()));
@@ -159,6 +276,7 @@ public class TenantTest extends IdentityAndAccessTest {
         assertTrue(tenant.isRegistrationAvailableThrough(this.registrationInvitation2().description()));
     }
 
+<<<<<<< HEAD
     @Test(expected = IllegalStateException.class)
     public void isRegistrationAvailableThrough_ForDeactivatedTenant() {
 
@@ -308,6 +426,9 @@ public class TenantTest extends IdentityAndAccessTest {
         assertEquals(2, tenant.registrationInvitations().size());
         assertFalse(tenant.registrationInvitations().contains(this.registrationInvitation1()));
     }
+=======
+
+>>>>>>> didier-user-aggregate-setup
 
 
 }

@@ -16,11 +16,19 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
+<<<<<<< HEAD
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
+=======
+import org.springframework.stereotype.Component;
+
+import java.util.Random;
+
+@Component
+>>>>>>> didier-user-aggregate-setup
 public final class PasswordService extends AssertionConcern {
 
     private static final String DIGITS = "0123456789";

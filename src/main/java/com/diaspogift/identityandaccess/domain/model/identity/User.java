@@ -60,39 +60,7 @@ public class User extends ConcurrencySafeEntity {
     @Column(unique = true)
     private String username;
 
-    protected User(
-            TenantId aTenantId,
-            String aUsername,
-            String aPassword,
-            Enablement anEnablement,
-            Person aPerson) {
 
-        this();
-
-        this.setEnablement(anEnablement);
-        this.setPerson(aPerson);
-        this.setTenantId(aTenantId);
-        this.setUsername(aUsername);
-
-        this.protectPassword("", aPassword);
-
-        aPerson.internalOnlySetUser(this);
-
-        System.out.println("\n ABOUT TO PUBLISH UserRegistered");
-
-        DomainEventPublisher
-                .instance()
-                .publish(
-                        new UserRegistered(
-                                this.tenantId(),
-                                aUsername,
-                                aPerson.name(),
-                                aPerson.contactInformation().emailAddress()));
-
-        System.out.println("\n AFTER PUBLISH UserRegistered");
-
-
-    }
 
     protected User() {
         super();
@@ -101,6 +69,8 @@ public class User extends ConcurrencySafeEntity {
     /**
      * @param aCurrentPassword
      * @param aNewPassword     To change the user password
+     * @param aNewPassword
+     * To change the user password by providing current password and the new one.
      */
 
     public void changePassword(String aCurrentPassword, String aNewPassword) {
@@ -169,6 +139,8 @@ public class User extends ConcurrencySafeEntity {
         return this.username;
     }
 
+
+
     @Override
     public boolean equals(Object anObject) {
         boolean equalObjects = false;
@@ -208,6 +180,38 @@ public class User extends ConcurrencySafeEntity {
         return encryptedValue;
     }
 
+    protected User(
+            TenantId aTenantId,
+            String aUsername,
+            String aPassword,
+            Enablement anEnablement,
+            Person aPerson) {
+
+        this();
+
+        this.setEnablement(anEnablement);
+        this.setPerson(aPerson);
+        this.setTenantId(aTenantId);
+        this.setUsername(aUsername);
+
+        this.protectPassword("", aPassword);
+
+        this.setPassword(this.asEncryptedValue(aPassword));
+
+        aPerson.internalOnlySetUser(this);
+
+        DomainEventPublisher
+            .instance()
+            .publish(new UserRegistered(
+                    this.tenantId(),
+                    aUsername,
+                    aPerson.name(),
+                    aPerson.contactInformation().emailAddress()));
+    }
+
+
+
+
     protected void assertPasswordsNotSame(String aCurrentPassword, String aChangedPassword) {
         this.assertArgumentNotEquals(
                 aCurrentPassword,
@@ -238,9 +242,9 @@ public class User extends ConcurrencySafeEntity {
         this.enablement = anEnablement;
     }
 
-    /*public String internalAccessOnlyEncryptedPassword() {
+    public String internalAccessOnlyEncryptedPassword() {
         return this.password();
-    }*/
+    }
 
     protected String password() {
         return this.password;
@@ -262,7 +266,6 @@ public class User extends ConcurrencySafeEntity {
         this.assertPasswordNotWeak(aChangedPassword);
 
         this.assertUsernamePasswordNotSame(aChangedPassword);
-
 
     }
 

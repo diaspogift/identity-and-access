@@ -13,8 +13,6 @@
 //   limitations under the License.
 
 package com.diaspogift.identityandaccess.domain.model.identity;
-
-
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
@@ -50,7 +48,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentFalse(aGroupMemberService.isMemberGroup(aGroup, this.toGroupMember()), "Group recurrsion.");
 
-        if (this.groupMembers().add(aGroup.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().add(aGroup.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupAdded(
