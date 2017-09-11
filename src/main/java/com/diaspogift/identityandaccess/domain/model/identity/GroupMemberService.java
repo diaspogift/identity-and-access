@@ -14,11 +14,18 @@
 
 package com.diaspogift.identityandaccess.domain.model.identity;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.persistence.AttributeOverrides;
 import java.util.Iterator;
 
+@Service
 public class GroupMemberService {
 
+    @Autowired
     private GroupRepository groupRepository;
+    @Autowired
     private UserRepository userRepository;
 
     public GroupMemberService(

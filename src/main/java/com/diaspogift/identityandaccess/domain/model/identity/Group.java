@@ -18,17 +18,26 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Entity
+@Table(name = "GROUPEMENT") //mysql will not accept group as a table name
 public class Group extends ConcurrencySafeEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer _id;
 
     public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
     private static final long serialVersionUID = 1L;
     private String description;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GroupMember> groupMembers;
     private String name;
+    @Embedded
     private TenantId tenantId;
 
     public Group(TenantId aTenantId, String aName, String aDescription) {

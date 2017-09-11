@@ -55,6 +55,8 @@ public class IdentityAndAccessTest {
     protected boolean groupProvisionedHandled = false;
     protected boolean roleProvisionedHandled = false;
     protected boolean userRegisteredHandled = false;
+    protected boolean groupAssignedToRoleHandled = false;
+
     private Tenant tenant;
     private RegistrationInvitation registrationInvitation1;
     private RegistrationInvitation registrationInvitation2;
@@ -387,6 +389,10 @@ public class IdentityAndAccessTest {
 
     public boolean isuserRegisteredHandled() {
         return this.userRegisteredHandled;
+    }
+
+    public boolean isgroupAssignedToRoleHandled() {
+        return this.groupAssignedToRoleHandled;
     }
 }
 

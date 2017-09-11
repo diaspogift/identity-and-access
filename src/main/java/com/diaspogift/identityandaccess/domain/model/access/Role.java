@@ -22,17 +22,46 @@ import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberService
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 
+import javax.persistence.*;
 import java.util.UUID;
 
+@Entity
 public class Role extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer _id;
+
+    /**
+     * Adescription for the Role
+     */
     private String description;
+
+    /**
+     * A group consisting of group members (of type User or Group)
+     * playing this role
+     */
+    @ManyToOne(cascade = CascadeType.ALL)
     private Group group;
+
+    /**
+     * This role's name
+     */
     private String name;
+
+    /**
+     * Specify wheter or not this role support nesting groups/roles
+     */
     private boolean supportsNesting = true;
+
+    /**
+     * A tenant for this role
+     */
+    @Embedded
     private TenantId tenantId;
+
 
     public Role(TenantId aTenantId, String aName, String aDescription) {
         this(aTenantId, aName, aDescription, false);
@@ -50,8 +79,8 @@ public class Role extends ConcurrencySafeEntity {
         this.setName(aName);
         this.setSupportsNesting(aSupportsNesting);
         this.setTenantId(aTenantId);
-
         this.createInternalGroup();
+
     }
 
     protected Role() {

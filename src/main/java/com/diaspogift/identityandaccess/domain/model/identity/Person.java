@@ -25,9 +25,12 @@ public class Person extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer _id;
+    private long _id;
 
     /**
      * Contact of the person
