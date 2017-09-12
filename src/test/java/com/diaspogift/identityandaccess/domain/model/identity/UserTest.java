@@ -1,6 +1,8 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,6 +37,7 @@ public class UserTest {
     private  User                  user;
     @Before
     public void init(){
+        isDone = false;
         id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         tenantId = new TenantId(id);
         fullName = new FullName("Nkalla Ehawe", "Didier Junior");
@@ -50,6 +53,19 @@ public class UserTest {
         afterTomorow = calendier.getTime();
         now = new Date();
         person = new Person(tenantId, fullName, contactInformation);
+
+        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<UserRegistered>() {
+            @Override
+            public void handleEvent(UserRegistered aDomainEvent) {
+                isDone = true;
+                //System.out.println("\n\n\naDomainEvent + " + aDomainEvent + "\n\n\n");
+            }
+
+            @Override
+            public Class<UserRegistered> subscribedToEventType() {
+                return UserRegistered.class;
+            }
+        });
 
         user = new User(tenantId,
                 "username@gmail.com",
@@ -130,6 +146,64 @@ public class UserTest {
 
         user.defineEnablement(enablement);
         assertEquals(enablement, user.enablement());
+
+    }
+
+    private boolean isDone;
+
+    @Test
+    public void changePasswordEvent(){
+        isDone = false;
+        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<UserPasswordChanged>() {
+            @Override
+            public void handleEvent(UserPasswordChanged aDomainEvent) {
+                isDone = true;
+                //System.out.println("\n\n\naDomainEvent + " + aDomainEvent + "\n\n\n");
+            }
+
+            @Override
+            public Class<UserPasswordChanged> subscribedToEventType() {
+                return UserPasswordChanged.class;
+            }
+        });
+        user.changePassword("secretSTRENGTH1234", "Ange__1308");
+        assertEquals(encryptionService.encryptedValue("Ange__1308"), user.password());
+        assertTrue(isDone);
+    }
+
+    @Test
+    public void defineEnablementEvent(){
+        isDone = false;
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 200);
+        Date after200 = calendar.getTime();
+        Date now1 = new Date();
+        Enablement enablement = new Enablement(true, now1, after200);
+
+
+
+        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<UserEnablementChanged>() {
+            @Override
+            public void handleEvent(UserEnablementChanged aDomainEvent) {
+                isDone = true;
+                //System.out.println("\n\n\naDomainEvent + " + aDomainEvent + "\n\n\n");
+            }
+
+            @Override
+            public Class<UserEnablementChanged> subscribedToEventType() {
+                return UserEnablementChanged.class;
+            }
+        });
+        user.defineEnablement(enablement);
+        assertEquals(enablement, user.enablement());
+        assertTrue(isDone);
+    }
+
+
+    @Test
+    public void createUserEvent(){
+
+        assertTrue(isDone);
 
     }
 
