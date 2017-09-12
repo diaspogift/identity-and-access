@@ -55,7 +55,6 @@ public class UserAssignedToRole implements DomainEvent {
         return this.emailAddress;
     }
 
-    @Override
     public int eventVersion() {
         return this.eventVersion;
     }
@@ -68,7 +67,6 @@ public class UserAssignedToRole implements DomainEvent {
         return this.lastName;
     }
 
-    @Override
     public Date occurredOn() {
         return this.occurredOn;
     }

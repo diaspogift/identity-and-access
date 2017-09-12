@@ -17,9 +17,9 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class AuthenticationService extends AssertionConcern {
 
     @Autowired
@@ -37,7 +37,7 @@ public class AuthenticationService extends AssertionConcern {
 
         UserDescriptor userDescriptor = UserDescriptor.nullDescriptorInstance();
 
-        Tenant tenant = this.tenantRepository.tenantOfId(aTenantId);
+        Tenant tenant = this.tenantRepository().tenantOfId(aTenantId);
 
         if (tenant != null && tenant.isActive()) {
             String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
@@ -48,11 +48,7 @@ public class AuthenticationService extends AssertionConcern {
                                     aTenantId,
                                     aUsername,
                                     encryptedPassword);
-                    this.userRepository
-                        .userFromAuthenticCredentials(
-                            aTenantId,
-                            aUsername,
-                            encryptedPassword);
+
             if (user != null && user.isEnabled()) {
                 userDescriptor = user.userDescriptor();
             }
@@ -62,4 +58,15 @@ public class AuthenticationService extends AssertionConcern {
     }
 
 
+    public EncryptionService encryptionService() {
+        return this.encryptionService;
+    }
+
+    public TenantRepository tenantRepository() {
+        return this.tenantRepository;
+    }
+
+    public UserRepository userRepository() {
+        return this.userRepository;
+    }
 }

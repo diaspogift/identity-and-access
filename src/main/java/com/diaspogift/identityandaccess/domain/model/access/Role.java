@@ -92,6 +92,7 @@ public class Role extends ConcurrencySafeEntity {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
 
+
         this.group().addGroup(aGroup, aGroupMemberService);
 
         DomainEventPublisher
@@ -204,8 +205,7 @@ public class Role extends ConcurrencySafeEntity {
 
     protected void createInternalGroup() {
         String groupName =
-                Group.ROLE_GROUP_PREFIX
-                        + UUID.randomUUID().toString().toUpperCase();
+                Group.ROLE_GROUP_PREFIX + UUID.randomUUID().toString().toUpperCase();
 
         this.setGroup(new Group(
                 this.tenantId(),

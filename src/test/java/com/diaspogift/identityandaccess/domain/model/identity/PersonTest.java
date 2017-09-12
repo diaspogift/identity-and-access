@@ -38,16 +38,16 @@ public class PersonTest {
     }
 
     @Test
-    public void changeContactInformation(){
+    public void changeContactInformation() {
         String id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         TenantId tenantId = new TenantId(id);
         FullName fullName = new FullName("Nkalla Ehawe", "Didier Junior");
 
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("CMR","00237","669262656")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("CMR", "00237", "669262656")
         );
 
         Calendar c = Calendar.getInstance();
@@ -67,9 +67,9 @@ public class PersonTest {
 
         ContactInformation newContactInformation = new ContactInformation(
                 new EmailAddress("email.new@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("USA","001","123-456-7899")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("USA", "001", "123-456-7899")
         );
 
         person.changeContactInformation(newContactInformation);
@@ -80,16 +80,16 @@ public class PersonTest {
 
 
     @Test
-    public void changeName(){
+    public void changeName() {
         String id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         TenantId tenantId = new TenantId(id);
         FullName fullName = new FullName("Nkalla Ehawe", "Didier Junior");
 
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("CMR","00237","669262656")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("CMR", "00237", "669262656")
         );
 
         Calendar c = Calendar.getInstance();

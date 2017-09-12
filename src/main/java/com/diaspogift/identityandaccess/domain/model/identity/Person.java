@@ -23,11 +23,8 @@ import javax.persistence.*;
 @Entity
 public class Person extends ConcurrencySafeEntity {
 
-    private static final long serialVersionUID = 1L;
-
     public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
-
-
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long _id;
@@ -74,10 +71,8 @@ public class Person extends ConcurrencySafeEntity {
     }
 
     /**
-     *
-     * @param aContactInformation
-     * A person ca change his contact information by providing a new one. <br />
-     * When a contactInformation is change a domain Event is sended and change is save.
+     * @param aContactInformation A person ca change his contact information by providing a new one. <br />
+     *                            When a contactInformation is change a domain Event is sended and change is save.
      */
     public void changeContactInformation(ContactInformation aContactInformation) {
         this.setContactInformation(aContactInformation);
@@ -91,9 +86,7 @@ public class Person extends ConcurrencySafeEntity {
     }
 
     /**
-     *
-     * @param aName
-     * A person can change his name by  providing a new one.
+     * @param aName A person can change his name by  providing a new one.
      */
 
     public void changeName(FullName aName) {

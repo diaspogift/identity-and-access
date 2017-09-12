@@ -22,7 +22,7 @@ public class JPARoleRepository implements RoleRepository {
     public Collection<Role> allRoles(TenantId aTenantId) {
         return this.entityManager().
                 createQuery("select role from com.diaspogift.identityandaccess.domain.model.access.Role as role " +
-                "where role.tenantId = :tenantId", Role.class)
+                        "where role.tenantId = :tenantId", Role.class)
                 .setParameter("tenantId", aTenantId)
                 .getResultList();
     }
@@ -33,8 +33,8 @@ public class JPARoleRepository implements RoleRepository {
 
     public Role roleNamed(TenantId aTenantId, String aRoleName) {
 
-        System.out.println("\n atenantId = "+aTenantId);
-        System.out.println("\n aRoleName = "+aRoleName);
+        System.out.println("\n atenantId = " + aTenantId);
+        System.out.println("\n aRoleName = " + aRoleName);
 
         return this.entityManager().
                 createQuery("select role from com.diaspogift.identityandaccess.domain.model.access.Role as role " +

@@ -16,7 +16,6 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -29,7 +28,6 @@ public final class ContactInformation extends AssertionConcern implements Serial
      * The e-mail address
      */
     @Embedded
-
     private EmailAddress emailAddress;
 
     /**

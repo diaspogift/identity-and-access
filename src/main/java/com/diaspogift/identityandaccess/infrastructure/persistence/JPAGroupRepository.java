@@ -10,9 +10,8 @@ import javax.persistence.PersistenceContext;
 import java.util.Collection;
 
 
-
 @Repository
-public class JPAGroupRepository implements GroupRepository{
+public class JPAGroupRepository implements GroupRepository {
 
     @PersistenceContext
     private EntityManager entityManager;

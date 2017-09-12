@@ -7,13 +7,11 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,10 +22,11 @@ public class GroupTest {
     private String name;
     private TenantId tenantId;
     private Group group;
+
     @Before
-    public void init(){
+    public void init() {
         description = "First group";
-        name        = "Group of DDD Developers";
+        name = "Group of DDD Developers";
         tenantId = new TenantId(UUID.randomUUID().toString().toUpperCase());
         groupMembers = new HashSet<>();
 
@@ -35,20 +34,20 @@ public class GroupTest {
 
 
         String description1 = "First group nested";
-        String name1        = "Group of DDD Developers In PHP";
+        String name1 = "Group of DDD Developers In PHP";
         TenantId tenantId1 = new TenantId(UUID.randomUUID().toString().toUpperCase());
 
 
     }
 
     @Test
-    public void createGroup(){
+    public void createGroup() {
         assertNotNull(group);
     }
 
 
     @After
-    public void reset(){
+    public void reset() {
 
     }
 }

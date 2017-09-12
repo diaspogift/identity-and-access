@@ -78,7 +78,6 @@ public class Tenant extends ConcurrencySafeEntity {
     /**
      * Allows to activate a tenant (Make sure the given tenant is not active)
      * We then publish a TenantActivated domain event
-     *
      */
     public void activate() {
         if (!this.isActive()) {
@@ -254,6 +253,11 @@ public class Tenant extends ConcurrencySafeEntity {
         this.assertStateTrue(this.isActive(), "Tenant is not active.");
 
         User user = null;
+
+        System.out.println("\n\n this.isRegistrationAvailableThrough(anInvitationIdentifier) = " +
+                this.isRegistrationAvailableThrough(anInvitationIdentifier));
+        System.out.println("\n\n this.isRegistrationAvailableThrough(anInvitationIdentifier) = " +
+                this.isRegistrationAvailableThrough(anInvitationIdentifier));
 
         if (this.isRegistrationAvailableThrough(anInvitationIdentifier)) {
 

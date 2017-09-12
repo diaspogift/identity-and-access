@@ -5,15 +5,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import javax.persistence.NoResultException;
-import java.beans.Transient;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -25,21 +21,22 @@ import static org.junit.Assert.*;
 @Transactional
 public class AuthenticationTest {
 
-    private  String                id;
-    private TenantId               tenantId;
-    private FullName               fullName;
-    private ContactInformation     contactInformation;
-    private Calendar               calendier;
-    private Date                   now;
-    private  Date                  afterTomorow;
-    private Person                 person;
-    private User                   user;
-    private Tenant                 tenant;
-    private  Enablement            enablement;
+    private String id;
+    private TenantId tenantId;
+    private FullName fullName;
+    private ContactInformation contactInformation;
+    private Calendar calendier;
+    private Date now;
+    private Date afterTomorow;
+    private Person person;
+    private User user;
+    private Tenant tenant;
+    private Enablement enablement;
 
 
     @Before
-    public void init(){
+    public void init() {
+
         id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         tenantId = new TenantId(id);
 
@@ -50,9 +47,9 @@ public class AuthenticationTest {
         fullName = new FullName("Nkalla Ehawe", "Didier Junior");
         contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("CMR","00237","669262656")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("CMR", "00237", "669262656")
         );
 
         calendier = Calendar.getInstance();
@@ -71,22 +68,18 @@ public class AuthenticationTest {
         tenant.activate();
         RegistrationInvitation invitation = tenant.offerRegistrationInvitation("First invitation");
         DomainRegistry.tenantRepository().add(tenant);
-         user = tenant.registerUser(invitation.invitationId(), "email@yahoo.fr", "secretSTRENGTH1234",
-                 enablement,person);
-         if (user == null){
-             throw new IllegalArgumentException("User not registrated...");
-         }
+        user = tenant.registerUser(invitation.invitationId(), "email@yahoo.fr", "secretSTRENGTH1234",
+                enablement, person);
+        if (user == null) {
+            throw new IllegalArgumentException("User not registrated...");
+        }
         DomainRegistry.userRepository().add(user);
 
 
     }
 
     @Test
-    public void authenticate(){
-
-        //System.out.println("\n\n tenantRepository  " + ((MockTenantRepository) tenantRepository).tenants().size() + "\n\n");
-
-        //System.out.println("\n\n tenantRepository  " + ((MockUserRepository)userRepository).users().size() + "\n\n");
+    public void authenticate() {
 
         UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
                 "email@yahoo.fr", "secretSTRENGTH1234");
@@ -94,12 +87,9 @@ public class AuthenticationTest {
         assertEquals(user.userDescriptor(), userDescriptor);
     }
 
-    @Test
-    public void wrongAuthenticateWithBadUsername(){
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void wrongAuthenticateWithBadUsername() {
 
-        //System.out.println("\n\n tenantRepository  " + ((MockTenantRepository) tenantRepository).tenants().size() + "\n\n");
-
-        //System.out.println("\n\n tenantRepository  " + ((MockUserRepository)userRepository).users().size() + "\n\n");
 
         UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
                 "email.bad@yahoo.fr", "secretSTRENGTH1234");
@@ -107,16 +97,12 @@ public class AuthenticationTest {
         assertNull(userDescriptor.username());
         assertNull(userDescriptor.emailAddress());
         assertNull(userDescriptor.tenantId());
+
     }
 
 
-    @Test
-    public void wrongAuthenticateWithBadPassword(){
-
-        //System.out.println("\n\n tenantRepository  " + ((MockTenantRepository) tenantRepository).tenants().size() + "\n\n");
-
-        //System.out.println("\n\n tenantRepository  " + ((MockUserRepository)userRepository).users().size() + "\n\n");
-
+    @Test(expected = EmptyResultDataAccessException.class)
+    public void wrongAuthenticateWithBadPassword() {
 
         UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
                 "email@yahoo.fr", "badsecretSTRENGTH1234");
@@ -127,7 +113,7 @@ public class AuthenticationTest {
     }
 
     @Test(expected = EmptyResultDataAccessException.class)
-    public void wrongAuthenticateWithBadTenant(){
+    public void wrongAuthenticateWithBadTenant() {
 
         String id1 = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         TenantId tenantId1 = new TenantId(id1);
@@ -141,7 +127,7 @@ public class AuthenticationTest {
     }
 
     @After
-    public void reset(){
+    public void reset() {
         id = null;
         tenantId = null;
         tenant = null;

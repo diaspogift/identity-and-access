@@ -39,15 +39,15 @@ public class TelephoneTests {
 
     //
     @Test
-    public void validateNumber(){
-        boolean isValidePhone = internationalPhoneNumberValidatorService.validate("CM",  "233474566");
-       assertEquals(true,isValidePhone);
+    public void validateNumber() {
+        boolean isValidePhone = internationalPhoneNumberValidatorService.validate("CM", "233474566");
+        assertEquals(true, isValidePhone);
 
     }
 
     @Test
-    public void validateWrongNumber(){
-        boolean isValidePhone = internationalPhoneNumberValidatorService.validate("CMR",  "3038073573");
+    public void validateWrongNumber() {
+        boolean isValidePhone = internationalPhoneNumberValidatorService.validate("CMR", "3038073573");
         assertFalse(isValidePhone);
 
     }

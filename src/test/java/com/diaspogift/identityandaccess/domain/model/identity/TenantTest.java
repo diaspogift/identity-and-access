@@ -7,8 +7,6 @@ import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
@@ -30,8 +26,6 @@ public class TenantTest extends IdentityAndAccessTest {
     public TenantTest() {
         super();
     }
-
-
 
 
     @Test
@@ -68,48 +62,23 @@ public class TenantTest extends IdentityAndAccessTest {
     @Test
     public void activate() {
 
-        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<TenantActivated>() {
-
-            @Override
-            public void handleEvent(TenantActivated aDomainEvent) {
-
-                tenantActivatedHandled = true;
-
-            }
-
-            @Override
-            public Class<TenantActivated> subscribedToEventType() {
-                return TenantActivated.class;
-            }
-        });
         Tenant tenant = this.nonActifTenantAggregate();
         assertFalse(tenant.isActive());
         tenant.activate();
         assertTrue(tenant.isActive());
-        assertTrue(this.istenantActivatedHandled());
+        this.expectedEvent(TenantActivated.class, 1);
+        this.expectedEvents(1);
     }
 
     @Test
     public void deactivate() {
 
-        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<TenantDeactivated>() {
-
-            @Override
-            public void handleEvent(TenantDeactivated aDomainEvent) {
-                tenantDeactivatedHandled = true;
-
-            }
-
-            @Override
-            public Class<TenantDeactivated> subscribedToEventType() {
-                return TenantDeactivated.class;
-            }
-        });
         Tenant tenant = this.actifTenantAggregate();
         assertTrue(tenant.isActive());
         tenant.deactivate();
         assertFalse(tenant.isActive());
-        assertTrue(this.istenantDeactivatedHandled());
+        this.expectedEvent(TenantDeactivated.class, 1);
+        this.expectedEvents(1);
     }
 
     @Test
@@ -195,71 +164,34 @@ public class TenantTest extends IdentityAndAccessTest {
     @Test
     public void provisionGroup() {
 
-        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<GroupProvisioned>() {
-
-
-            @Override
-            public void handleEvent(GroupProvisioned aDomainEvent) {
-                groupProvisionedHandled = true;
-            }
-
-            @Override
-            public Class<GroupProvisioned> subscribedToEventType() {
-                return GroupProvisioned.class;
-            }
-        });
         Tenant tenant = this.actifTenantAggregate();
-        Group group =
-                tenant.provisionGroup(FIXTURE_GROUP_NAME, FIXTURE_GROUP_DESCRIPTION);
+        Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         assertNotNull(group);
-        assertEquals(FIXTURE_GROUP_NAME, group.name());
+        assertEquals(FIXTURE_GROUP_NAME_1, group.name());
         assertEquals(tenant.tenantId(), group.tenantId());
-        assertEquals(FIXTURE_GROUP_DESCRIPTION, group.description());
-        assertTrue(this.isgroupProvisionedHandled());
+        assertEquals(FIXTURE_GROUP_DESCRIPTION_1, group.description());
+        this.expectedEvent(GroupProvisioned.class, 1);
+        this.expectedEvents(1);
     }
 
 
     @Test
     public void provisionRole() {
 
-        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<RoleProvisioned>() {
-
-
-            @Override
-            public void handleEvent(RoleProvisioned aDomainEvent) {
-                roleProvisionedHandled = true;
-            }
-
-            @Override
-            public Class<RoleProvisioned> subscribedToEventType() {
-                return RoleProvisioned.class;
-            }
-        });
         Tenant tenant = this.actifTenantAggregate();
         Role role = tenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         assertNotNull(role);
         assertEquals(FIXTURE_ROLE_NAME, role.name());
         assertEquals(tenant.tenantId(), role.tenantId());
         assertEquals(FIXTURE_ROLE_DESCRIPTION, role.description());
-        assertTrue(this.isroleProvisionedHandled());
+        this.expectedEvent(RoleProvisioned.class, 1);
+        this.expectedEvents(1);
+
     }
 
     @Test
     public void registerUser() {
 
-        DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<UserRegistered>() {
-
-
-            @Override
-            public void handleEvent(UserRegistered aDomainEvent) {
-                userRegisteredHandled = true;
-            }
-
-            @Override
-            public Class<UserRegistered> subscribedToEventType() {
-                return UserRegistered.class;
-            }
-        });
         Tenant tenant = this.actifTenantAggregate();
         RegistrationInvitation registrationInvitation =
                 tenant.offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1);
@@ -281,8 +213,8 @@ public class TenantTest extends IdentityAndAccessTest {
         assertNotNull(user);
         assertEquals(tenant.tenantId(), user.tenantId());
         assertEquals(tenant.tenantId(), user.person().tenantId());
-        assertTrue(this.isuserRegisteredHandled());
-    }
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvents(1);    }
 
     @Test
     public void redefineRegistrationInvitationAsOpenEnded() {

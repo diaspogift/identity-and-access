@@ -1,6 +1,5 @@
 package com.diaspogift.identityandaccess;
 
-import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.identity.Group;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupRepository;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
@@ -9,8 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.regex.Pattern;
-
 @SpringBootApplication
 @Transactional
 public class IdentityAndAccessApplication {
@@ -18,8 +15,8 @@ public class IdentityAndAccessApplication {
     public static void main(String[] args) {
 
 
-       ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
-       GroupRepository groupRepository = ctx.getBean(GroupRepository.class);
+        ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
+        GroupRepository groupRepository = ctx.getBean(GroupRepository.class);
 
 
         Group group = new Group(
@@ -28,9 +25,6 @@ public class IdentityAndAccessApplication {
                 "Role backing group for: ROLE NAME");
 
         groupRepository.add(group);
-
-
-
 
 
     }

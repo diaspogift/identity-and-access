@@ -43,8 +43,7 @@ public class User extends ConcurrencySafeEntity {
     /**
      * The person behind the user
      */
-    //@Embedded
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Person person;
 
     /**
@@ -61,16 +60,43 @@ public class User extends ConcurrencySafeEntity {
     private String username;
 
 
-
     protected User() {
         super();
+    }
+
+    protected User(
+            TenantId aTenantId,
+            String aUsername,
+            String aPassword,
+            Enablement anEnablement,
+            Person aPerson) {
+
+        this();
+
+        this.setEnablement(anEnablement);
+        this.setPerson(aPerson);
+        this.setTenantId(aTenantId);
+        this.setUsername(aUsername);
+
+        this.protectPassword("", aPassword);
+
+        this.setPassword(this.asEncryptedValue(aPassword));
+
+        aPerson.internalOnlySetUser(this);
+
+        DomainEventPublisher
+                .instance()
+                .publish(new UserRegistered(
+                        this.tenantId(),
+                        aUsername,
+                        aPerson.name(),
+                        aPerson.contactInformation().emailAddress()));
     }
 
     /**
      * @param aCurrentPassword
      * @param aNewPassword     To change the user password
-     * @param aNewPassword
-     * To change the user password by providing current password and the new one.
+     * @param aNewPassword     To change the user password by providing current password and the new one.
      */
 
     public void changePassword(String aCurrentPassword, String aNewPassword) {
@@ -139,8 +165,6 @@ public class User extends ConcurrencySafeEntity {
         return this.username;
     }
 
-
-
     @Override
     public boolean equals(Object anObject) {
         boolean equalObjects = false;
@@ -179,38 +203,6 @@ public class User extends ConcurrencySafeEntity {
 
         return encryptedValue;
     }
-
-    protected User(
-            TenantId aTenantId,
-            String aUsername,
-            String aPassword,
-            Enablement anEnablement,
-            Person aPerson) {
-
-        this();
-
-        this.setEnablement(anEnablement);
-        this.setPerson(aPerson);
-        this.setTenantId(aTenantId);
-        this.setUsername(aUsername);
-
-        this.protectPassword("", aPassword);
-
-        this.setPassword(this.asEncryptedValue(aPassword));
-
-        aPerson.internalOnlySetUser(this);
-
-        DomainEventPublisher
-            .instance()
-            .publish(new UserRegistered(
-                    this.tenantId(),
-                    aUsername,
-                    aPerson.name(),
-                    aPerson.contactInformation().emailAddress()));
-    }
-
-
-
 
     protected void assertPasswordsNotSame(String aCurrentPassword, String aChangedPassword) {
         this.assertArgumentNotEquals(

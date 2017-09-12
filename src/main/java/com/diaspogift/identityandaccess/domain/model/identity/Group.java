@@ -13,6 +13,7 @@
 //   limitations under the License.
 
 package com.diaspogift.identityandaccess.domain.model.identity;
+
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
@@ -22,15 +23,14 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "GROUPEMENT") //mysql will not accept group as a table name
+@Table(name = "GROUPS") //mysql will not accept group as a table name
 public class Group extends ConcurrencySafeEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer _id;
 
     public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
     private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer _id;
     private String description;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<GroupMember> groupMembers;
@@ -57,7 +57,8 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentFalse(aGroupMemberService.isMemberGroup(aGroup, this.toGroupMember()), "Group recurrsion.");
 
-        if (this.groupMembers().add(aGroup.toGroupMember()) /*&& !this.isInternalGroup()*/) {
+
+        if (this.groupMembers().add(aGroup.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupAdded(
@@ -65,7 +66,9 @@ public class Group extends ConcurrencySafeEntity {
                             this.name(),
                             aGroup.name()));
         }
+
     }
+
 
     public void addUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
@@ -222,6 +225,7 @@ public class Group extends ConcurrencySafeEntity {
                         this.tenantId(),
                         this.name(),
                         GroupMemberType.Group);
+
 
         return groupMember;
     }

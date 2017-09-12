@@ -80,18 +80,18 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
 
             ZonedDateTime dateNow = ZonedDateTime.now();
 
-            if (this.startingOn() == null){
+            if (this.startingOn() == null) {
                 isAvailable = false;
-            }else if (this.until() == null){
-               if (dateNow.isAfter(this.startingOn())){
-                   isAvailable = true;
-               }else {
-                   isAvailable = false;
-               }
-            }else {
+            } else if (this.until() == null) {
+                if (dateNow.isAfter(this.startingOn())) {
+                    isAvailable = true;
+                } else {
+                    isAvailable = false;
+                }
+            } else {
                 if (dateNow.isAfter(this.startingOn()) && dateNow.isBefore(this.until())) {
                     isAvailable = true;
-                }else {
+                } else {
                     isAvailable = false;
                 }
             }
@@ -159,7 +159,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         if (this.startingOn() == null && aDate != null) {
             throw new IllegalStateException("Cannot set until date before setting starting-on date.");
         }
-        if (this.startingOn() != null && aDate != null && aDate.isBefore(this.startingOn())){
+        if (this.startingOn() != null && aDate != null && aDate.isBefore(this.startingOn())) {
             throw new IllegalStateException("Until date must not  be before  starting-on date.");
         }
 
@@ -208,14 +208,14 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
             ; // valid
         } else if (this.startingOn() == null && this.until() != null) {
             throw new IllegalStateException("This is an invalid open-ended invitation.");
-        } else if (this.startingOn() != null && this.until() != null && this.until().isBefore(this.startingOn())){
+        } else if (this.startingOn() != null && this.until() != null && this.until().isBefore(this.startingOn())) {
             throw new IllegalStateException("The starting date and time must be before the until date and time.");
         }
     }
 
     protected void setDescription(String aDescription) {
         this.assertArgumentNotEmpty(aDescription, "The invitation description is required.");
-        this.assertArgumentLength(aDescription, 1, 100, "The invitation description must be 100 characters or less.");
+        this.assertArgumentLength(aDescription, 1, 200, "The invitation description must be 100 characters or less.");
 
         this.description = aDescription;
     }

@@ -19,17 +19,17 @@ public class ImplInternationalPhoneNumberValidatorService extends AssertionConce
         Phonenumber.PhoneNumber phoneNumber = null;
 
         try {
-             phoneNumber = phoneUtil.parse(number, countryCode);
+            phoneNumber = phoneUtil.parse(number, countryCode);
         } catch (NumberParseException e) {
             System.out.println("\n\n\nNumberParseException was thrown: " + e.toString() + "\n\n\n");
-           // e.printStackTrace();
+            // e.printStackTrace();
             return false;
         }
 
-        System.out.println("\n\nInfo: " +  phoneNumber.toString() + "\n\n\ngetCountryCode: " + phoneNumber.getCountryCode() +
-                "  getPreferredDomesticCarrierCode: " + phoneNumber.getPreferredDomesticCarrierCode() + "   getCountryCodeSource: "  +
+        System.out.println("\n\nInfo: " + phoneNumber.toString() + "\n\n\ngetCountryCode: " + phoneNumber.getCountryCode() +
+                "  getPreferredDomesticCarrierCode: " + phoneNumber.getPreferredDomesticCarrierCode() + "   getCountryCodeSource: " +
                 phoneNumber.getCountryCodeSource() + "   getExtension: " +
-        phoneNumber.getExtension());
+                phoneNumber.getExtension());
 
         return phoneUtil.isValidNumber(phoneNumber);
     }

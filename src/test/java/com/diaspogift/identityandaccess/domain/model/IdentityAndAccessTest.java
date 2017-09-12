@@ -1,13 +1,14 @@
 package com.diaspogift.identityandaccess.domain.model;
 
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.EventTrackingTests;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.junit.After;
 import org.junit.Before;
 
 import java.time.ZonedDateTime;
 
-public class IdentityAndAccessTest {
+public class IdentityAndAccessTest extends EventTrackingTests{
 
 
     protected static final String FIXTURE_PASSWORD = "SecretPassword@@2017!";
@@ -45,17 +46,19 @@ public class IdentityAndAccessTest {
     protected static final String FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_2 = "Invitation description 2";
     protected static final String FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_3 = "Invitation description 3";
 
-    protected static final String FIXTURE_GROUP_NAME = "GROUP NAME";
-    protected static final String FIXTURE_GROUP_DESCRIPTION = "GROUP DESCRIPTION";
+    protected static final String FIXTURE_GROUP_NAME_1 = "GROUP NAME 1";
+    protected static final String FIXTURE_GROUP_DESCRIPTION_1 = "GROUP DESCRIPTION 1";
+    protected static final String FIXTURE_GROUP_NAME_2 = "GROUP NAME 2";
+    protected static final String FIXTURE_GROUP_DESCRIPTION_2 = "GROUP DESCRIPTION 2";
 
     protected static final String FIXTURE_ROLE_NAME = "ROLE NAME";
     protected static final String FIXTURE_ROLE_DESCRIPTION = "ROLE DESCRIPTION";
-    protected boolean tenantActivatedHandled = false;
-    protected boolean tenantDeactivatedHandled = false;
-    protected boolean groupProvisionedHandled = false;
-    protected boolean roleProvisionedHandled = false;
-    protected boolean userRegisteredHandled = false;
-    protected boolean groupAssignedToRoleHandled = false;
+    protected static final String FIXTURE_ROLE_NAME_1 = "ROLE NAME 1";
+    protected static final String FIXTURE_ROLE_DESCRIPTION_1 = "ROLE DESCRIPTION 1";
+    protected static final String FIXTURE_ROLE_NAME_2 = "ROLE NAME 2";
+    protected static final String FIXTURE_ROLE_DESCRIPTION_2 = "ROLE DESCRIPTION 2";
+
+
 
     private Tenant tenant;
     private RegistrationInvitation registrationInvitation1;
@@ -121,11 +124,31 @@ public class IdentityAndAccessTest {
         return person;
     }
 
-    protected RegistrationInvitation registrationInvitationEntity(Tenant aTenant) throws Exception {
+    protected User userAggregate() {
 
-        ZonedDateTime today = ZonedDateTime.now();
 
-        ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1);
+        Tenant tenant = this.actifTenantAggregate();
+
+        RegistrationInvitation registrationInvitation =
+                this.registrationInvitationEntity(tenant);
+
+        User user =
+                tenant.registerUser(
+                        registrationInvitation.invitationId(),
+                        FIXTURE_USERNAME_1,
+                        FIXTURE_PASSWORD,
+                        new Enablement(true, null, null),
+                        this.personEntity(tenant));
+
+        return user;
+    }
+
+
+    protected RegistrationInvitation registrationInvitationEntity(Tenant aTenant) {
+
+        ZonedDateTime today = ZonedDateTime.now().minusDays(1l);
+
+        ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1l);
 
         RegistrationInvitation registrationInvitation =
                 aTenant.offerRegistrationInvitation("Today-and-Tomorrow: " + today.toString() + " ---- " + tomorrow.toString())
@@ -235,23 +258,6 @@ public class IdentityAndAccessTest {
         return ZonedDateTime.now().plusDays(1l);
     }
 
-    protected User userAggregate() throws Exception {
-
-        Tenant tenant = this.actifTenantAggregate();
-
-        RegistrationInvitation registrationInvitation =
-                this.registrationInvitationEntity(tenant);
-
-        User user =
-                tenant.registerUser(
-                        registrationInvitation.invitationId(),
-                        FIXTURE_USERNAME_1,
-                        FIXTURE_PASSWORD,
-                        new Enablement(true, null, null),
-                        this.personEntity(tenant));
-
-        return user;
-    }
 
     protected User userAggregate2() throws Exception {
         Tenant tenant = this.actifTenantAggregate();
@@ -294,21 +300,9 @@ public class IdentityAndAccessTest {
     @Before
     public void setUp() throws Exception {
 
-        this.setTenant(null);
-        this.setRegistrationInvitation1(null);
-        this.setRegistrationInvitation2(null);
-        this.setRegistrationInvitation3(null);
-        this.setTenantActivatedHandled(false);
-        this.setTenantDeactivatedHandled(false);
-        this.setGroupProvisionedHandled(false);
-        this.setRoleProvisionedHandled(false);
-        this.setUserRegisteredHandled(false);
-        this.setRoleProvisionedHandled(false);
-        this.setRoleProvisionedHandled(false);
+        super.setUp();
 
-        DomainEventPublisher.instance().reset();
-
-        System.out.println(">>>>>>>>>>>>>>>>> (started)");
+        System.out.println(">>>>>>>>>>>>>>>>>>>>> (started) "+this.getClass().getSimpleName());
 
     }
 
@@ -316,22 +310,18 @@ public class IdentityAndAccessTest {
     @After
     public void tearDown() throws Exception {
 
+        super.tearDown();
 
         this.setTenant(null);
         this.setRegistrationInvitation1(null);
         this.setRegistrationInvitation2(null);
         this.setRegistrationInvitation3(null);
-        this.setTenantActivatedHandled(false);
-        this.setTenantDeactivatedHandled(false);
-        this.setGroupProvisionedHandled(false);
-        this.setRoleProvisionedHandled(false);
-        this.setUserRegisteredHandled(false);
-        this.setRoleProvisionedHandled(false);
-        this.setRoleProvisionedHandled(false);
+        this.setRegistrationInvitation1(null);
+        this.setRegistrationInvitation2(null);
+        this.setRegistrationInvitation3(null);
 
-        DomainEventPublisher.instance().reset();
 
-        System.out.println("<<<<<<<<<<<<<<<<<<<< (done)");
+        System.out.println("<<<<<<<<<<<<<<<<<<<< (done) "+this.getClass().getSimpleName());
 
     }
 
@@ -351,48 +341,7 @@ public class IdentityAndAccessTest {
         this.registrationInvitation3 = registrationInvitation3;
     }
 
-    private void setTenantActivatedHandled(boolean tenantActivatedHandled) {
-        this.tenantActivatedHandled = tenantActivatedHandled;
-    }
 
-    private void setTenantDeactivatedHandled(boolean tenantDeactivatedHandled) {
-        this.tenantDeactivatedHandled = tenantDeactivatedHandled;
-    }
 
-    private void setGroupProvisionedHandled(boolean groupProvisionedHandled) {
-        this.groupProvisionedHandled = groupProvisionedHandled;
-    }
-
-    private void setRoleProvisionedHandled(boolean roleProvisionedHandled) {
-        this.roleProvisionedHandled = roleProvisionedHandled;
-    }
-
-    private void setUserRegisteredHandled(boolean userRegisteredHandled) {
-        this.userRegisteredHandled = userRegisteredHandled;
-    }
-
-    public boolean istenantActivatedHandled() {
-        return this.tenantActivatedHandled;
-    }
-
-    public boolean istenantDeactivatedHandled() {
-        return this.tenantDeactivatedHandled;
-    }
-
-    public boolean isgroupProvisionedHandled() {
-        return this.groupProvisionedHandled;
-    }
-
-    public boolean isroleProvisionedHandled() {
-        return this.roleProvisionedHandled;
-    }
-
-    public boolean isuserRegisteredHandled() {
-        return this.userRegisteredHandled;
-    }
-
-    public boolean isgroupAssignedToRoleHandled() {
-        return this.groupAssignedToRoleHandled;
-    }
 }
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+
 @Component
 public class SHA3EncryptionService extends AssertionConcern implements EncryptionService {
 
@@ -17,7 +18,7 @@ public class SHA3EncryptionService extends AssertionConcern implements Encryptio
     @Override
     public String encryptedValue(String aPlainTextValue) {
 
-       // ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
+        // ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder();
         this.assertArgumentNotEmpty(
                 aPlainTextValue,
                 "Plain text value to encrypt must be provided.");

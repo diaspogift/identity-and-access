@@ -27,12 +27,10 @@ import javax.persistence.*;
 @Entity
 public class GroupMember extends IdentifiedValueObject {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer _id;
-
-    private static final long serialVersionUID = 1L;
-
     private String name;
     @Embedded
     private TenantId tenantId;

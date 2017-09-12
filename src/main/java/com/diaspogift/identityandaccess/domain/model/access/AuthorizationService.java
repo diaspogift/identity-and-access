@@ -30,19 +30,8 @@ public class AuthorizationService extends AssertionConcern {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private  GroupMemberService groupMemberService;
+    private GroupMemberService groupMemberService;
 
-    /*public AuthorizationService(
-            UserRepository aUserRepository,
-            GroupRepository aGroupRepository,
-            RoleRepository aRoleRepository) {
-
-        super();
-
-        this.groupRepository = aGroupRepository;
-        this.roleRepository = aRoleRepository;
-        this.userRepository = aUserRepository;
-    }*/
 
     public boolean isUserInRole(TenantId aTenantId, String aUsername, String aRoleName) {
         this.assertArgumentNotNull(aTenantId, "TenantId must not be null.");
@@ -64,12 +53,8 @@ public class AuthorizationService extends AssertionConcern {
             Role role = this.roleRepository().roleNamed(aUser.tenantId(), aRoleName);
 
             if (role != null) {
-                 /*groupMemberService =
-                        new GroupMemberService(
-                                this.userRepository(),
-                                this.groupRepository());*/
 
-                authorized = role.isInRole(aUser, groupMemberService);
+                authorized = role.isInRole(aUser, this.groupMemberService());
             }
         }
 
@@ -86,5 +71,9 @@ public class AuthorizationService extends AssertionConcern {
 
     private UserRepository userRepository() {
         return this.userRepository;
+    }
+
+    public GroupMemberService groupMemberService() {
+        return this.groupMemberService;
     }
 }
