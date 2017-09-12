@@ -15,7 +15,13 @@ public abstract class EventTrackingTests {
     private Map<String, String> handledNotifications;
 
 
+    protected EventTrackingTests() {
 
+
+        super();
+
+
+    }
 
     protected void expectedEvent(Class<? extends DomainEvent> aDomainEventType) {
         this.expectedEvent(aDomainEventType, 1);
@@ -36,7 +42,6 @@ public abstract class EventTrackingTests {
         }
     }
 
-
     protected void expectedEvents(int anEventCount) {
         if (this.handledEvents.size() != anEventCount) {
             throw new IllegalStateException("Expected " + anEventCount + " events, but handled " + this.handledEvents.size()
@@ -45,11 +50,10 @@ public abstract class EventTrackingTests {
         }
     }
 
-
     @Before
     public void setUp() throws Exception {
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>> (started) "+this.getClass().getSimpleName());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>> (started) " + this.getClass().getSimpleName());
 
 
         DomainEventPublisher.instance().reset();
@@ -58,7 +62,7 @@ public abstract class EventTrackingTests {
             @Override
             public void handleEvent(DomainEvent aDomainEvent) {
 
-                System.out.println("\n\n "+aDomainEvent.getClass().getSimpleName());
+                System.out.println("\n\n " + aDomainEvent.getClass().getSimpleName());
 
                 handledEvents.add(aDomainEvent.getClass());
             }
@@ -73,13 +77,11 @@ public abstract class EventTrackingTests {
         this.handledNotifications = new HashMap<String, String>();
     }
 
-
     @After
     public void tearDown() throws Exception {
 
-        System.out.println("<<<<<<<<<<<<<<<<<<<< (done) "+this.getClass().getSimpleName());
+        System.out.println("<<<<<<<<<<<<<<<<<<<< (done) " + this.getClass().getSimpleName());
     }
-
 
     public List<Class<? extends DomainEvent>> handledEvents() {
         return this.handledEvents;
@@ -88,15 +90,6 @@ public abstract class EventTrackingTests {
     public Map<String, String> handledNotifications() {
         return this.handledNotifications;
     }
-
-    protected EventTrackingTests() {
-
-
-        super();
-
-
-    }
-
 
 
 }

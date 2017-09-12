@@ -5,8 +5,6 @@ import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -214,7 +212,8 @@ public class TenantTest extends IdentityAndAccessTest {
         assertEquals(tenant.tenantId(), user.tenantId());
         assertEquals(tenant.tenantId(), user.person().tenantId());
         this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvents(1);    }
+        this.expectedEvents(1);
+    }
 
     @Test
     public void redefineRegistrationInvitationAsOpenEnded() {

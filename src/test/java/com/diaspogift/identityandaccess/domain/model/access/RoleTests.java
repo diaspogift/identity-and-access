@@ -3,8 +3,6 @@ package com.diaspogift.identityandaccess.domain.model.access;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;

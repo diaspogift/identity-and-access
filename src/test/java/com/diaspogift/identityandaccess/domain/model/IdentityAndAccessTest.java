@@ -1,6 +1,5 @@
 package com.diaspogift.identityandaccess.domain.model;
 
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.common.EventTrackingTests;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.junit.After;
@@ -8,7 +7,7 @@ import org.junit.Before;
 
 import java.time.ZonedDateTime;
 
-public class IdentityAndAccessTest extends EventTrackingTests{
+public class IdentityAndAccessTest extends EventTrackingTests {
 
 
     protected static final String FIXTURE_PASSWORD = "SecretPassword@@2017!";
@@ -57,7 +56,6 @@ public class IdentityAndAccessTest extends EventTrackingTests{
     protected static final String FIXTURE_ROLE_DESCRIPTION_1 = "ROLE DESCRIPTION 1";
     protected static final String FIXTURE_ROLE_NAME_2 = "ROLE NAME 2";
     protected static final String FIXTURE_ROLE_DESCRIPTION_2 = "ROLE DESCRIPTION 2";
-
 
 
     private Tenant tenant;
@@ -302,7 +300,7 @@ public class IdentityAndAccessTest extends EventTrackingTests{
 
         super.setUp();
 
-        System.out.println(">>>>>>>>>>>>>>>>>>>>> (started) "+this.getClass().getSimpleName());
+        System.out.println(">>>>>>>>>>>>>>>>>>>>> (started) " + this.getClass().getSimpleName());
 
     }
 
@@ -321,7 +319,7 @@ public class IdentityAndAccessTest extends EventTrackingTests{
         this.setRegistrationInvitation3(null);
 
 
-        System.out.println("<<<<<<<<<<<<<<<<<<<< (done) "+this.getClass().getSimpleName());
+        System.out.println("<<<<<<<<<<<<<<<<<<<< (done) " + this.getClass().getSimpleName());
 
     }
 
@@ -340,7 +338,6 @@ public class IdentityAndAccessTest extends EventTrackingTests{
     private void setRegistrationInvitation3(RegistrationInvitation registrationInvitation3) {
         this.registrationInvitation3 = registrationInvitation3;
     }
-
 
 
 }

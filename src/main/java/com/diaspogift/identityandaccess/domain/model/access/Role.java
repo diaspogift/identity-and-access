@@ -35,7 +35,7 @@ public class Role extends ConcurrencySafeEntity {
     private Integer _id;
 
     /**
-     * Adescription for the Role
+     * A    bn description for the Role
      */
     private String description;
 
@@ -43,7 +43,8 @@ public class Role extends ConcurrencySafeEntity {
      * A group consisting of group members (of type User or Group)
      * playing this role
      */
-    @ManyToOne(cascade = CascadeType.ALL)
+    //@ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Group group;
 
     /**

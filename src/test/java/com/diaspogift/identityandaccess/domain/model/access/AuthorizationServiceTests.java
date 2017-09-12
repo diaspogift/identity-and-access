@@ -23,7 +23,6 @@ public class AuthorizationServiceTests extends IdentityAndAccessTest {
     }
 
 
-
     @Test
     public void isUserInRole() throws Exception {
 
@@ -59,8 +58,6 @@ public class AuthorizationServiceTests extends IdentityAndAccessTest {
         authorized = DomainRegistry.authorizationService().isUserInRole(tenant.tenantId(), user.username(), FIXTURE_ROLE_NAME_1);
         assertFalse(authorized);
     }
-
-
 
 
 }
