@@ -17,10 +17,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 
@@ -40,6 +37,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
     private String description;
     private String invitationId;
     private ZonedDateTime startingOn;
+    @Embedded
     private TenantId tenantId;
     private ZonedDateTime until;
 

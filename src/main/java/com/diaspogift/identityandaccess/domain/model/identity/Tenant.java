@@ -50,7 +50,7 @@ public class Tenant extends ConcurrencySafeEntity {
     /**
      * A set of registrations invitations sent out by a tenant to its users
      */
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RegistrationInvitation> registrationInvitations;
 
     /**
@@ -253,11 +253,6 @@ public class Tenant extends ConcurrencySafeEntity {
         this.assertStateTrue(this.isActive(), "Tenant is not active.");
 
         User user = null;
-
-        System.out.println("\n\n this.isRegistrationAvailableThrough(anInvitationIdentifier) = " +
-                this.isRegistrationAvailableThrough(anInvitationIdentifier));
-        System.out.println("\n\n this.isRegistrationAvailableThrough(anInvitationIdentifier) = " +
-                this.isRegistrationAvailableThrough(anInvitationIdentifier));
 
         if (this.isRegistrationAvailableThrough(anInvitationIdentifier)) {
 

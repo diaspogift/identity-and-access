@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class AuthenticationTest {
+public class AuthenticationServiceTests {
 
     private String id;
     private TenantId tenantId;

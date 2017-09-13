@@ -34,7 +34,7 @@ public class GroupMember extends IdentifiedValueObject {
     private String name;
     @Embedded
     private TenantId tenantId;
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private GroupMemberType type;
 
     protected GroupMember(TenantId aTenantId, String aName, GroupMemberType aType) {
