@@ -87,9 +87,6 @@ public class GroupMemberService {
 
             if (member.isGroup()) {
 
-                System.out.println("\n FOUND A MEMBER OF TYPE GROUP == " + member.toString());
-
-
                 if (aMemberGroup.equals(member)) {
                     isMember = true;
                 } else {
