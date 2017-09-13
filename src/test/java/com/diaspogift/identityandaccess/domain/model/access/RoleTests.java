@@ -53,7 +53,7 @@ public class RoleTests extends IdentityAndAccessTest {
 
 
     @Test
-    public void assignGroup(){
+    public void assignGroup() {
 
         Tenant activeTenant = this.actifTenantAggregate();
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
@@ -62,8 +62,8 @@ public class RoleTests extends IdentityAndAccessTest {
         role.assignGroup(group, DomainRegistry.groupMemberService());
         assertEquals(1, role.group().groupMembers().size());
         GroupMember addedGroupMember = null;
-        for(GroupMember next:  role.group().groupMembers()){
-            if(next.isGroup() && next.tenantId().equals(activeTenant.tenantId()) && next.name().equals(FIXTURE_GROUP_NAME_1)){
+        for (GroupMember next : role.group().groupMembers()) {
+            if (next.isGroup() && next.tenantId().equals(activeTenant.tenantId()) && next.name().equals(FIXTURE_GROUP_NAME_1)) {
                 addedGroupMember = next;
                 break;
             }
@@ -88,8 +88,8 @@ public class RoleTests extends IdentityAndAccessTest {
         role.assignGroup(group, DomainRegistry.groupMemberService());
         assertEquals(1, role.group().groupMembers().size());
         GroupMember addedGroupMember = null;
-        for(GroupMember next:  role.group().groupMembers()){
-            if(next.isGroup() && next.tenantId().equals(activeTenant.tenantId()) && next.name().equals(FIXTURE_GROUP_NAME_1)){
+        for (GroupMember next : role.group().groupMembers()) {
+            if (next.isGroup() && next.tenantId().equals(activeTenant.tenantId()) && next.name().equals(FIXTURE_GROUP_NAME_1)) {
                 addedGroupMember = next;
                 break;
             }
@@ -180,7 +180,6 @@ public class RoleTests extends IdentityAndAccessTest {
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvent(UserRegistered.class, 1);
         this.expectedEvent(GroupUserAdded.class, 1);
-
 
 
     }

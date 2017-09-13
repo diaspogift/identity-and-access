@@ -19,6 +19,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class PersonTest {
 
+    private boolean isDone;
+
     @Test
     public void createPerson() {
         String id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
@@ -80,7 +82,6 @@ public class PersonTest {
 
     }
 
-
     @Test
     public void changeName() {
         String id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
@@ -117,11 +118,8 @@ public class PersonTest {
 
     }
 
-
-    private  boolean isDone;
-
     @Test
-    public void changeContactInformationEvent(){
+    public void changeContactInformationEvent() {
         isDone = false;
         String id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         TenantId tenantId = new TenantId(id);
@@ -129,11 +127,10 @@ public class PersonTest {
 
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("CMR","00237","669262656")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("CMR", "00237", "669262656")
         );
-
 
 
         Calendar c = Calendar.getInstance();
@@ -153,9 +150,9 @@ public class PersonTest {
 
         ContactInformation newContactInformation = new ContactInformation(
                 new EmailAddress("email.new@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("USA","001","123-456-7899")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("USA", "001", "123-456-7899")
         );
 
         DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<PersonContactInformationChanged>() {
@@ -181,7 +178,7 @@ public class PersonTest {
 
 
     @Test
-    public void changeNameEvent(){
+    public void changeNameEvent() {
 
         isDone = false;
 
@@ -191,9 +188,9 @@ public class PersonTest {
 
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province","Postal code","US"),
-                new Telephone("CMR","00237","691178154"),
-                new Telephone("CMR","00237","669262656")
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("CMR", "00237", "669262656")
         );
 
         Calendar c = Calendar.getInstance();
@@ -232,7 +229,6 @@ public class PersonTest {
         assertTrue(isDone);
 
     }
-
 
 
 }

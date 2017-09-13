@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class UserTest extends IdentityAndAccessTest{
+public class UserTest extends IdentityAndAccessTest {
 
 
     public UserTest() {
@@ -77,7 +77,7 @@ public class UserTest extends IdentityAndAccessTest{
     public void defineEnablement() {
 
         User user = this.userAggregate();
-        Enablement enablement = new Enablement(true, ZonedDateTime.now().minusDays(5l),  ZonedDateTime.now().plusDays(5l));
+        Enablement enablement = new Enablement(true, ZonedDateTime.now().minusDays(5l), ZonedDateTime.now().plusDays(5l));
         assertNotEquals(enablement, user.enablement());
         user.defineEnablement(enablement);
         assertEquals(enablement, user.enablement());
@@ -85,7 +85,7 @@ public class UserTest extends IdentityAndAccessTest{
 
 
     @Test
-    public void changePasswordEvent(){
+    public void changePasswordEvent() {
 
         User user = this.userAggregate();
         assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
@@ -97,9 +97,9 @@ public class UserTest extends IdentityAndAccessTest{
     }
 
     @Test
-    public void defineEnablementEvent(){
+    public void defineEnablementEvent() {
         User user = this.userAggregate();
-        Enablement enablement = new Enablement(true, ZonedDateTime.now().minusDays(5l),  ZonedDateTime.now().plusDays(5l));
+        Enablement enablement = new Enablement(true, ZonedDateTime.now().minusDays(5l), ZonedDateTime.now().plusDays(5l));
         assertNotEquals(enablement, user.enablement());
         user.defineEnablement(enablement);
         assertEquals(enablement, user.enablement());
@@ -125,6 +125,7 @@ public class UserTest extends IdentityAndAccessTest{
         this.expectedEvent(UserRegistered.class, 1);
         this.expectedEvent(PersonContactInformationChanged.class, 1);
     }
+
     @Test
     public void changePersonalNameEvent() {
 

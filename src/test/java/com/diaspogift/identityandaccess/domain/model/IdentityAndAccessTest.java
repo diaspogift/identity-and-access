@@ -183,7 +183,6 @@ public class IdentityAndAccessTest extends EventTrackingTests {
     }
 
 
-
     protected Tenant tenantAggregateWithOfferedRegistrationInvitations() {
 
         if (this.tenant == null) {
