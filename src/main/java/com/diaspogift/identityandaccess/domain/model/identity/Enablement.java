@@ -20,7 +20,6 @@ import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 /**
  * This class is for verify if a specific tenant is enabled or desabled.

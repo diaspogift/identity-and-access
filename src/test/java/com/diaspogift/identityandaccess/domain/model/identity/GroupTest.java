@@ -2,25 +2,14 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
-import com.diaspogift.identityandaccess.domain.model.common.EventTrackingTests;
-import com.sun.java.browser.plugin2.DOM;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
