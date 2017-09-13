@@ -1,5 +1,6 @@
 package com.diaspogift.identityandaccess.domain.model;
 
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.common.EventTrackingTests;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.junit.After;
@@ -45,10 +46,16 @@ public class IdentityAndAccessTest extends EventTrackingTests {
     protected static final String FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_2 = "Invitation description 2";
     protected static final String FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_3 = "Invitation description 3";
 
+    protected static final String FIXTURE_GROUP_NAME_0 = "GROUP NAME 0";
+    protected static final String FIXTURE_GROUP_DESCRIPTION_0 = "GROUP DESCRIPTION 0";
     protected static final String FIXTURE_GROUP_NAME_1 = "GROUP NAME 1";
     protected static final String FIXTURE_GROUP_DESCRIPTION_1 = "GROUP DESCRIPTION 1";
     protected static final String FIXTURE_GROUP_NAME_2 = "GROUP NAME 2";
     protected static final String FIXTURE_GROUP_DESCRIPTION_2 = "GROUP DESCRIPTION 2";
+    protected static final String FIXTURE_GROUP_NAME_3 = "GROUP NAME 3";
+    protected static final String FIXTURE_GROUP_DESCRIPTION_3 = "GROUP DESCRIPTION 3";
+    protected static final String FIXTURE_GROUP_NAME_4 = "GROUP NAME 4";
+    protected static final String FIXTURE_GROUP_DESCRIPTION_4 = "GROUP DESCRIPTION 4";
 
     protected static final String FIXTURE_ROLE_NAME = "ROLE NAME";
     protected static final String FIXTURE_ROLE_DESCRIPTION = "ROLE DESCRIPTION";
@@ -174,6 +181,8 @@ public class IdentityAndAccessTest extends EventTrackingTests {
 
         return this.tenant;
     }
+
+
 
     protected Tenant tenantAggregateWithOfferedRegistrationInvitations() {
 
@@ -317,6 +326,8 @@ public class IdentityAndAccessTest extends EventTrackingTests {
         this.setRegistrationInvitation1(null);
         this.setRegistrationInvitation2(null);
         this.setRegistrationInvitation3(null);
+
+        DomainEventPublisher.instance().reset();
 
 
         System.out.println("<<<<<<<<<<<<<<<<<<<< (done) " + this.getClass().getSimpleName());

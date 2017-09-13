@@ -62,7 +62,6 @@ public abstract class EventTrackingTests {
             @Override
             public void handleEvent(DomainEvent aDomainEvent) {
 
-                System.out.println("\n\n " + aDomainEvent.getClass().getSimpleName());
 
                 handledEvents.add(aDomainEvent.getClass());
             }

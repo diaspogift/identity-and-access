@@ -58,7 +58,8 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentFalse(aGroupMemberService.isMemberGroup(aGroup, this.toGroupMember()), "Group recurrsion.");
 
 
-        if (this.groupMembers().add(aGroup.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().add(aGroup.toGroupMember()) /*&& !this.isInternalGroup()*/) {
+
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupAdded(
@@ -75,7 +76,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
-        if (this.groupMembers().add(aUser.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().add(aUser.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserAdded(
@@ -117,7 +118,6 @@ public class Group extends ConcurrencySafeEntity {
     public void removeGroup(Group aGroup) {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
-
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aGroup.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher

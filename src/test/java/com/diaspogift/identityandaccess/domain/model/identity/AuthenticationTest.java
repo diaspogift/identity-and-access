@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -57,7 +58,8 @@ public class AuthenticationTest {
         afterTomorow = calendier.getTime();
         now = new Date();
         person = new Person(tenantId, fullName, contactInformation);
-        enablement = new Enablement(true, now, afterTomorow);
+        enablement = new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l));
+
         /*user = new User(tenantId,
                 "username@gmail.com",
                 "secretSTRENGTH1234",

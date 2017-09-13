@@ -1,6 +1,10 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
+import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
+import com.diaspogift.identityandaccess.domain.model.common.DomainEventSubscriber;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,130 +12,122 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.OneToOne;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
+public class UserTest extends IdentityAndAccessTest{
 
-public class UserTest {
 
-    @Autowired
-    private EncryptionService encryptionService;
-
-    private String id;
-    private TenantId tenantId;
-    private FullName fullName;
-    private ContactInformation contactInformation;
-    private Calendar calendier;
-    private Date now;
-    private Date afterTomorow;
-    private Person person;
-    private User user;
-
-    @Before
-    public void init() {
-        id = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
-        tenantId = new TenantId(id);
-        fullName = new FullName("Nkalla Ehawe", "Didier Junior");
-        contactInformation = new ContactInformation(
-                new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("CMR", "00237", "669262656")
-        );
-
-        calendier = Calendar.getInstance();
-        calendier.add(Calendar.DAY_OF_YEAR, 2);
-        afterTomorow = calendier.getTime();
-        now = new Date();
-        person = new Person(tenantId, fullName, contactInformation);
-
-        user = new User(tenantId,
-                "username@gmail.com",
-                "secretSTRENGTH1234",
-                new Enablement(true, now, afterTomorow),
-                person
-        );
-    }
-
-    @After
-    public void reset() {
-        id = null;
-        tenantId = null;
-        fullName = null;
-        contactInformation = null;
-        calendier = null;
-        now = null;
-        afterTomorow = null;
-        person = null;
-        user = null;
-
+    public UserTest() {
+        super();
     }
 
     @Test
     public void createUser() {
 
+        Tenant tenant = this.actifTenantAggregate();
+        User user = this.userAggregate();
+        DomainRegistry.userRepository().add(user);
         assertNotNull(user);
-        assertEquals("username@gmail.com", user.username());
-        assertEquals(person, user.person());
-        assertEquals(new Enablement(true, now, afterTomorow), user.enablement());
-        assertEquals(encryptionService.encryptedValue("secretSTRENGTH1234"), user.password());
-
+        assertEquals(FIXTURE_USERNAME_1, user.username());
+        assertTrue(user.isEnabled());
+        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.username());
+        assertEquals(user, foundUser);
     }
 
     @Test
     public void changePassword() {
 
-        user.changePassword("secretSTRENGTH1234", "Ange__1308");
-        assertEquals(encryptionService.encryptedValue("Ange__1308"), user.password());
-
+        Tenant tenant = this.actifTenantAggregate();
+        User user = this.userAggregate();
+        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        user.changePassword(FIXTURE_PASSWORD, "Ange__1308");
+        assertEquals(DomainRegistry.encryptionService().encryptedValue("Ange__1308"), user.password());
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(UserPasswordChanged.class, 1);
     }
 
     @Test
     public void changePersonalContactInformation() {
+
+        User user = this.userAggregate();
         ContactInformation newContactInformation = new ContactInformation(
                 new EmailAddress("email.new@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
                 new Telephone("CMR", "00237", "691178154"),
                 new Telephone("USA", "001", "123-456-7899")
         );
-
-
+        assertNotEquals(newContactInformation, user.person().contactInformation());
         user.changePersonalContactInformation(newContactInformation);
         assertEquals(newContactInformation, user.person().contactInformation());
-
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(PersonContactInformationChanged.class, 1);
     }
 
 
     @Test
     public void changePersonalName() {
 
+        User user = this.userAggregate();
         FullName newFullname = new FullName("Mboh Tom", "Hilaire");
-
-
+        assertNotEquals(newFullname, user.person().name());
         user.changePersonalName(newFullname);
         assertEquals(newFullname, user.person().name());
-
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(PersonNameChanged.class, 1);
     }
 
     @Test
     public void defineEnablement() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, 200);
-        Date after200 = calendar.getTime();
-        Date now1 = new Date();
-        Enablement enablement = new Enablement(true, now1, after200);
 
-
+        User user = this.userAggregate();
+        Enablement enablement = new Enablement(true, ZonedDateTime.now().minusDays(5l),  ZonedDateTime.now().plusDays(5l));
+        assertNotEquals(enablement, user.enablement());
         user.defineEnablement(enablement);
         assertEquals(enablement, user.enablement());
-
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(UserEnablementChanged.class, 1);
     }
+
+
+    @Test
+    public void changePasswordEvent(){
+
+        User user = this.userAggregate();
+        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        user.changePassword(FIXTURE_PASSWORD, "Ange__1308");
+        assertEquals(DomainRegistry.encryptionService().encryptedValue("Ange__1308"), user.password());
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(UserPasswordChanged.class, 1);
+    }
+
+    @Test
+    public void defineEnablementEvent(){
+        User user = this.userAggregate();
+        Enablement enablement = new Enablement(true, ZonedDateTime.now().minusDays(5l),  ZonedDateTime.now().plusDays(5l));
+        assertNotEquals(enablement, user.enablement());
+        user.defineEnablement(enablement);
+        assertEquals(enablement, user.enablement());
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(UserEnablementChanged.class, 1);
+    }
+
 
 }

@@ -60,10 +60,12 @@ public class RoleTests extends IdentityAndAccessTest {
         DomainRegistry.roleRepository().add(role);
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         role.assignGroup(group, DomainRegistry.groupMemberService());
-        this.expectedEvents(3);
+        this.expectedEvents(4);
         this.expectedEvent(GroupAssignedToRole.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvent(GroupProvisioned.class, 1);
+        this.expectedEvent(GroupGroupAdded.class, 1);
+
 
     }
 
@@ -78,11 +80,13 @@ public class RoleTests extends IdentityAndAccessTest {
         assertEquals(1, role.group().groupMembers().size());
         role.unassignGroup(group);
         assertEquals(0, role.group().groupMembers().size());
-        this.expectedEvents(4);
+        this.expectedEvents(5);
         this.expectedEvent(GroupAssignedToRole.class, 1);
         this.expectedEvent(GroupUnassignedFromRole.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvent(GroupProvisioned.class, 1);
+        this.expectedEvent(GroupGroupAdded.class, 1);
+
 
 
     }
@@ -109,10 +113,12 @@ public class RoleTests extends IdentityAndAccessTest {
         role.assignGroup(group, DomainRegistry.groupMemberService());
         role.assignGroup(group, DomainRegistry.groupMemberService());
         assertEquals(1, role.group().groupMembers().size());
-        this.expectedEvents(4);
+        this.expectedEvents(5);
         this.expectedEvent(GroupAssignedToRole.class, 2);
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvent(GroupProvisioned.class, 1);
+        this.expectedEvent(GroupGroupAdded.class, 1);
+
     }
 
 
@@ -154,10 +160,12 @@ public class RoleTests extends IdentityAndAccessTest {
             assertEquals(user.tenantId(), next.tenantId());
         }
 
-        this.expectedEvents(3);
+        this.expectedEvents(4);
         this.expectedEvent(UserAssignedToRole.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(GroupUserAdded.class, 1);
+
 
 
     }
@@ -178,11 +186,12 @@ public class RoleTests extends IdentityAndAccessTest {
         }
         role.unassignUser(user);
         assertEquals(0, role.group().groupMembers().size());
-        this.expectedEvents(4);
+        this.expectedEvents(5);
         this.expectedEvent(UserAssignedToRole.class, 1);
         this.expectedEvent(UserUnassignedFromRole.class, 1);
         this.expectedEvent(UserRegistered.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
+        this.expectedEvent(GroupUserAdded.class, 1);
 
     }
 

@@ -19,6 +19,7 @@ import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
@@ -31,16 +32,16 @@ public final class Enablement extends AssertionConcern implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private boolean enabled;
-    private Date endDate;
-    private Date startDate;
+    private ZonedDateTime endDate;
+    private ZonedDateTime startDate;
 
-    public Enablement(boolean anEnabled, Date aStartDate, Date anEndDate) {
+    public Enablement(boolean anEnabled, ZonedDateTime aStartDate, ZonedDateTime anEndDate) {
         super();
 
         if (aStartDate != null || anEndDate != null) {
             this.assertArgumentNotNull(aStartDate, "The start date must be provided.");
             this.assertArgumentNotNull(anEndDate, "The end date must be provided.");
-            this.assertArgumentFalse(aStartDate.after(anEndDate), "Enablement start and/or end date is invalid.");
+            this.assertArgumentFalse(aStartDate.isAfter(anEndDate), "Enablement start and/or end date is invalid.");
         }
 
         this.setEnabled(anEnabled);
@@ -80,7 +81,7 @@ public final class Enablement extends AssertionConcern implements Serializable {
         return enabled;
     }
 
-    public Date endDate() {
+    public ZonedDateTime endDate() {
         return this.endDate;
     }
 
@@ -88,9 +89,9 @@ public final class Enablement extends AssertionConcern implements Serializable {
         boolean timeExpired = false;
 
         if (this.startDate() != null && this.endDate() != null) {
-            Date now = new Date();
-            if (now.before(this.startDate()) ||
-                    now.after(this.endDate())) {
+            ZonedDateTime now = ZonedDateTime.now();
+            if (now.isBefore(this.startDate()) ||
+                    now.isAfter(this.endDate())) {
                 timeExpired = true;
             }
         }
@@ -98,7 +99,7 @@ public final class Enablement extends AssertionConcern implements Serializable {
         return timeExpired;
     }
 
-    public Date startDate() {
+    public ZonedDateTime startDate() {
         return this.startDate;
     }
 
@@ -135,11 +136,11 @@ public final class Enablement extends AssertionConcern implements Serializable {
         return "Enablement [enabled=" + enabled + ", endDate=" + endDate + ", startDate=" + startDate + "]";
     }
 
-    private void setEndDate(Date anEndDate) {
+    private void setEndDate(ZonedDateTime anEndDate) {
         this.endDate = anEndDate;
     }
 
-    private void setStartDate(Date aStartDate) {
+    private void setStartDate(ZonedDateTime aStartDate) {
         this.startDate = aStartDate;
     }
 }
