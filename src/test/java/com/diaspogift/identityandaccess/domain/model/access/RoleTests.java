@@ -53,13 +53,22 @@ public class RoleTests extends IdentityAndAccessTest {
 
 
     @Test
-    public void assignGroupToRoleThatDoesSupportNestting() {
+    public void assignGroup(){
 
         Tenant activeTenant = this.actifTenantAggregate();
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         DomainRegistry.roleRepository().add(role);
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         role.assignGroup(group, DomainRegistry.groupMemberService());
+        assertEquals(1, role.group().groupMembers().size());
+        GroupMember addedGroupMember = null;
+        for(GroupMember next:  role.group().groupMembers()){
+            if(next.isGroup() && next.tenantId().equals(activeTenant.tenantId()) && next.name().equals(FIXTURE_GROUP_NAME_1)){
+                addedGroupMember = next;
+                break;
+            }
+        }
+        assertTrue(DomainRegistry.groupMemberService().isMemberGroup(role.group(), addedGroupMember));
         this.expectedEvents(4);
         this.expectedEvent(GroupAssignedToRole.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
@@ -78,17 +87,23 @@ public class RoleTests extends IdentityAndAccessTest {
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         role.assignGroup(group, DomainRegistry.groupMemberService());
         assertEquals(1, role.group().groupMembers().size());
+        GroupMember addedGroupMember = null;
+        for(GroupMember next:  role.group().groupMembers()){
+            if(next.isGroup() && next.tenantId().equals(activeTenant.tenantId()) && next.name().equals(FIXTURE_GROUP_NAME_1)){
+                addedGroupMember = next;
+                break;
+            }
+        }
         role.unassignGroup(group);
         assertEquals(0, role.group().groupMembers().size());
-        this.expectedEvents(5);
+        assertFalse(DomainRegistry.groupMemberService().isMemberGroup(role.group(), addedGroupMember));
+        this.expectedEvents(6);
         this.expectedEvent(GroupAssignedToRole.class, 1);
         this.expectedEvent(GroupUnassignedFromRole.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvent(GroupProvisioned.class, 1);
         this.expectedEvent(GroupGroupAdded.class, 1);
-
-
-
+        this.expectedEvent(GroupGroupRemoved.class, 1);
     }
 
 

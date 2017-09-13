@@ -41,6 +41,7 @@ public class UserTest extends IdentityAndAccessTest{
         assertNotNull(user);
         assertEquals(FIXTURE_USERNAME_1, user.username());
         assertTrue(user.isEnabled());
+        assertEquals(new Enablement(true, null, null), user.enablement());
         assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
         User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.username());
         assertEquals(user, foundUser);
@@ -49,14 +50,10 @@ public class UserTest extends IdentityAndAccessTest{
     @Test
     public void changePassword() {
 
-        Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
         assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
         user.changePassword(FIXTURE_PASSWORD, "Ange__1308");
         assertEquals(DomainRegistry.encryptionService().encryptedValue("Ange__1308"), user.password());
-        this.expectedEvents(2);
-        this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvent(UserPasswordChanged.class, 1);
     }
 
     @Test
@@ -72,9 +69,6 @@ public class UserTest extends IdentityAndAccessTest{
         assertNotEquals(newContactInformation, user.person().contactInformation());
         user.changePersonalContactInformation(newContactInformation);
         assertEquals(newContactInformation, user.person().contactInformation());
-        this.expectedEvents(2);
-        this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvent(PersonContactInformationChanged.class, 1);
     }
 
 
@@ -86,9 +80,6 @@ public class UserTest extends IdentityAndAccessTest{
         assertNotEquals(newFullname, user.person().name());
         user.changePersonalName(newFullname);
         assertEquals(newFullname, user.person().name());
-        this.expectedEvents(2);
-        this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvent(PersonNameChanged.class, 1);
     }
 
     @Test
@@ -99,9 +90,6 @@ public class UserTest extends IdentityAndAccessTest{
         assertNotEquals(enablement, user.enablement());
         user.defineEnablement(enablement);
         assertEquals(enablement, user.enablement());
-        this.expectedEvents(2);
-        this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvent(UserEnablementChanged.class, 1);
     }
 
 
@@ -129,5 +117,34 @@ public class UserTest extends IdentityAndAccessTest{
         this.expectedEvent(UserEnablementChanged.class, 1);
     }
 
+    @Test
+    public void changePersonalContactInformationEvent() {
+
+        User user = this.userAggregate();
+        ContactInformation newContactInformation = new ContactInformation(
+                new EmailAddress("email.new@yahoo.fr"),
+                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
+                new Telephone("CMR", "00237", "691178154"),
+                new Telephone("USA", "001", "123-456-7899")
+        );
+        assertNotEquals(newContactInformation, user.person().contactInformation());
+        user.changePersonalContactInformation(newContactInformation);
+        assertEquals(newContactInformation, user.person().contactInformation());
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(PersonContactInformationChanged.class, 1);
+    }
+    @Test
+    public void changePersonalNameEvent() {
+
+        User user = this.userAggregate();
+        FullName newFullname = new FullName("Mboh Tom", "Hilaire");
+        assertNotEquals(newFullname, user.person().name());
+        user.changePersonalName(newFullname);
+        assertEquals(newFullname, user.person().name());
+        this.expectedEvents(2);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(PersonNameChanged.class, 1);
+    }
 
 }

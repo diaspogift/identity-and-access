@@ -119,7 +119,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
         // not a nested remove, only direct member
-        if (this.groupMembers().remove(aGroup.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().remove(aGroup.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupRemoved(
