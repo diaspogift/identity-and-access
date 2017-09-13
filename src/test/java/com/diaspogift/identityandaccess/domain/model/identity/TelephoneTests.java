@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class TelephoneTests {
 
     @Autowired
-    private InternationalPhoneNumberValidatorService internationalPhoneNumberValidatorService;
+    private GooglePhoneNumberValidatorService googlePhoneNumberValidatorService;
 
     @Test
     public void testCreateTelephone() {
@@ -40,14 +40,14 @@ public class TelephoneTests {
     //
     @Test
     public void validateNumber() {
-        boolean isValidePhone = internationalPhoneNumberValidatorService.validate("CM", "233474566");
+        boolean isValidePhone = googlePhoneNumberValidatorService.validate("CM", "233474566");
         assertEquals(true, isValidePhone);
 
     }
 
     @Test
     public void validateWrongNumber() {
-        boolean isValidePhone = internationalPhoneNumberValidatorService.validate("CMR", "3038073573");
+        boolean isValidePhone = googlePhoneNumberValidatorService.validate("CMR", "3038073573");
         assertFalse(isValidePhone);
 
     }

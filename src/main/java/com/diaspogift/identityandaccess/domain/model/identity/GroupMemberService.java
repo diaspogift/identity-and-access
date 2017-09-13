@@ -24,19 +24,8 @@ public class GroupMemberService {
 
     @Autowired
     private GroupRepository groupRepository;
-
     @Autowired
     private UserRepository userRepository;
-
-    /*public GroupMemberService(
-            UserRepository aUserRepository,
-            GroupRepository aGroupRepository) {
-
-        super();
-
-        this.groupRepository = aGroupRepository;
-        this.userRepository = aUserRepository;
-    }*/
 
     /**
      * In this method we assume that aUser belong to group aGroup.

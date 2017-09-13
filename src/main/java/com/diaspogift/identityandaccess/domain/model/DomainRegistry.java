@@ -73,8 +73,8 @@ public class DomainRegistry implements ApplicationContextAware {
         return (UserRepository) applicationContext.getBean(UserRepository.class);
     }
 
-    public static InternationalPhoneNumberValidatorService phoneNumberValidatorService() {
-        return (InternationalPhoneNumberValidatorService) applicationContext.getBean(InternationalPhoneNumberValidatorService.class);
+    public static GooglePhoneNumberValidatorService phoneNumberValidatorService() {
+        return (GooglePhoneNumberValidatorService) applicationContext.getBean(GooglePhoneNumberValidatorService.class);
     }
 
     public static EntityManagerFactory entityManagerFactory() {
