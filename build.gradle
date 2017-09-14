@@ -39,9 +39,13 @@ dependencies {
     // Use MySQL Connector-J
     compile 'mysql:mysql-connector-java'
 
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.1'
+
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
     compile group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.8.1'
 
+    compile('org.springframework.boot:spring-boot-starter-activemq')
 
 }

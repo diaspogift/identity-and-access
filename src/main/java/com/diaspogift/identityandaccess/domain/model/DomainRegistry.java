@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 
@@ -79,6 +80,11 @@ public class DomainRegistry implements ApplicationContextAware {
 
     public static EntityManagerFactory entityManagerFactory() {
         return (EntityManagerFactory) applicationContext.getBean(EntityManagerFactory.class);
+
+    }
+
+    public static EntityManager entityManager() {
+        return (EntityManager) applicationContext.getBean(EntityManager.class);
 
     }
 

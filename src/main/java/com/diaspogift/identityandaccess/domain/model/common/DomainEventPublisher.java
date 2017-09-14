@@ -16,6 +16,7 @@ package com.diaspogift.identityandaccess.domain.model.common;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class DomainEventPublisher {
@@ -111,6 +112,12 @@ public class DomainEventPublisher {
     private List subscribers() {
         return this.subscribers;
     }
+
+    public List unmodifiableSubscribers() {
+
+        return Collections.unmodifiableList(this.subscribers);
+    }
+
 
     @SuppressWarnings("rawtypes")
     private void setSubscribers(List aSubscriberList) {

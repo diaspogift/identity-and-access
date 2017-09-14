@@ -513,5 +513,19 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         assertEquals(user.userDescriptor(), foundUserDescriptor);
     }
 
+    //
+    @Test
+    //TO DO
+    public void provisionTenant() throws Exception {
+
+        ProvisionTenantCommand provisionTenantCommand =
+                new ProvisionTenantCommand("BINGO", "HOPITAL BINGO", "Bingo Admin", "Bingo", "didier@gmail.com",
+                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques", "Douala", "Littoral", "80209",
+                        "US");
+
+        ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand);
+
+    }
+
 
 }
