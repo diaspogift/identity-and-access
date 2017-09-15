@@ -1,10 +1,10 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
-import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
+import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
-public class User extends ConcurrencySafeEntity {
+public class User extends AssertionConcern /*extends ConcurrencySafeEntity*/ {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,14 +24,9 @@ public class User extends ConcurrencySafeEntity {
     private Person person;
 
     /**
-     * Tenant to which belong the user
+     * A User unique identifier
      */
-    private TenantId tenantId;
-
-    /**
-     * The username (That uniquelly identify the user)
-     */
-    private String username;
+    private UserId userId;
 
 
     protected User() {
@@ -39,30 +34,27 @@ public class User extends ConcurrencySafeEntity {
     }
 
     protected User(
-            TenantId aTenantId,
-            String aUsername,
+            UserId aUserId,
             String aPassword,
             Enablement anEnablement,
             Person aPerson) {
 
         this();
-
         this.setEnablement(anEnablement);
         this.setPerson(aPerson);
-        this.setTenantId(aTenantId);
-        this.setUsername(aUsername);
+        this.setUserId(aUserId);
 
         this.protectPassword("", aPassword);
 
         this.setPassword(this.asEncryptedValue(aPassword));
 
-        aPerson.internalOnlySetUser(this);
+        //aPerson.internalOnlySetUser(this);
 
         DomainEventPublisher
                 .instance()
                 .publish(new UserRegistered(
-                        this.tenantId(),
-                        aUsername,
+                        this.userId().tenantId(),
+                        this.userId().username(),
                         aPerson.name(),
                         aPerson.contactInformation().emailAddress()));
     }
@@ -90,16 +82,31 @@ public class User extends ConcurrencySafeEntity {
         DomainEventPublisher
                 .instance()
                 .publish(new UserPasswordChanged(
-                        this.tenantId(),
-                        this.username()));
+                        this.userId().tenantId(),
+                        this.userId().username()));
     }
 
     public void changePersonalContactInformation(ContactInformation aContactInformation) {
         this.person().changeContactInformation(aContactInformation);
+
+        DomainEventPublisher
+                .instance()
+                .publish(new PersonContactInformationChanged(
+                        this.userId().tenantId(),
+                        this.userId().username(),
+                        aContactInformation));
     }
 
     public void changePersonalName(FullName aPersonalName) {
+
         this.person().changeName(aPersonalName);
+
+        DomainEventPublisher
+                .instance()
+                .publish(new PersonNameChanged(
+                        this.userId().tenantId(),
+                        this.userId().username(),
+                        aPersonalName));
     }
 
     public void defineEnablement(Enablement anEnablement) {
@@ -108,8 +115,8 @@ public class User extends ConcurrencySafeEntity {
         DomainEventPublisher
                 .instance()
                 .publish(new UserEnablementChanged(
-                        this.tenantId(),
-                        this.username(),
+                        this.userId().tenantId(),
+                        this.userId().username(),
                         this.enablement()));
     }
 
@@ -124,48 +131,43 @@ public class User extends ConcurrencySafeEntity {
         return this.person;
     }
 
+/*
     public TenantId tenantId() {
         return this.tenantId;
     }
+*/
 
     public UserDescriptor userDescriptor() {
         return new UserDescriptor(
-                this.tenantId(),
-                this.username(),
+                this.userId().tenantId(),
+                this.userId().username(),
                 this.person().emailAddress().address());
     }
 
+/*
     public String username() {
         return this.username;
     }
+*/
 
     @Override
-    public boolean equals(Object anObject) {
-        boolean equalObjects = false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        if (anObject != null && this.getClass() == anObject.getClass()) {
-            User typedObject = (User) anObject;
-            equalObjects =
-                    this.tenantId().equals(typedObject.tenantId()) &&
-                            this.username().equals(typedObject.username());
-        }
+        User user = (User) o;
 
-        return equalObjects;
+        return userId != null ? userId.equals(user.userId) : user.userId == null;
     }
 
     @Override
     public int hashCode() {
-        int hashCodeValue =
-                +(45217 * 269)
-                        + this.tenantId().hashCode()
-                        + this.username().hashCode();
-
-        return hashCodeValue;
+        return userId != null ? userId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "User [tenantId=" + tenantId + ", username=" + username
+        return "User [tenantId=" + this.userId().tenantId() + ", username=" + this.userId().username()
                 + ", person=" + person + ", enablement=" + enablement + "]";
     }
 
@@ -192,8 +194,10 @@ public class User extends ConcurrencySafeEntity {
     }
 
     protected void assertUsernamePasswordNotSame(String aPlainTextPassword) {
+
+        System.out.println("\n\n\n ????????????????????  in assertUsernamePasswordNotSame this.userId() ????????????? " + this.userId());
         this.assertArgumentNotEquals(
-                this.username(),
+                this.userId().username(),
                 aPlainTextPassword,
                 "The username and password must not be the same.");
     }
@@ -235,26 +239,38 @@ public class User extends ConcurrencySafeEntity {
 
     }
 
-    protected void setTenantId(TenantId aTenantId) {
-        this.assertArgumentNotNull(aTenantId, "The tenantId is required.");
+/*    protected void setTenantId(TenantId aTenantId) {
+
 
         this.tenantId = aTenantId;
-    }
+    }*/
 
     protected GroupMember toGroupMember() {
         GroupMember groupMember =
                 new GroupMember(
-                        this.tenantId(),
-                        this.username(),
+                        this.userId().tenantId(),
+                        this.userId().username(),
                         GroupMemberType.User);
 
         return groupMember;
     }
 
-    protected void setUsername(String aUsername) {
-        this.assertArgumentNotEmpty(aUsername, "The username is required.");
-        this.assertArgumentLength(aUsername, 3, 250, "The username must be 3 to 250 characters.");
+ /*   protected void setUsername(String aUsername) {
 
         this.username = aUsername;
+    }*/
+
+    protected void setUserId(UserId aUserId) {
+
+        this.assertArgumentNotNull(aUserId, "User Identifier is required.");
+        this.assertArgumentNotNull(aUserId.tenantId(), "The tenantId is required.");
+        this.assertArgumentNotEmpty(aUserId.username(), "The username is required.");
+        this.assertArgumentLength(aUserId.username(), 3, 250, "The username must be 3 to 250 characters.");
+
+        this.userId = aUserId;
+    }
+
+    public UserId userId() {
+        return this.userId;
     }
 }

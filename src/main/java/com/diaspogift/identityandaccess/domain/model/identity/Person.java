@@ -2,12 +2,17 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
-import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
+
+import java.util.UUID;
 
 public class Person extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Identify a unique person
+     */
+    private String personId;
     /**
      * Contact of the person
      */
@@ -21,15 +26,13 @@ public class Person extends ConcurrencySafeEntity {
     /**
      * The id of the tenant
      */
-    private TenantId tenantId;
+    //private TenantId tenantId;
 
     /**
      * User associated to this person
      */
-    private User user;
-
+    //private User user;
     public Person(
-            TenantId aTenantId,
             FullName aName,
             ContactInformation aContactInformation) {
 
@@ -37,11 +40,16 @@ public class Person extends ConcurrencySafeEntity {
 
         this.setContactInformation(aContactInformation);
         this.setName(aName);
-        this.setTenantId(aTenantId);
+        //this.setTenantId(aTenantId);
+        this.setPersonId(UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase());
     }
 
     protected Person() {
         super();
+    }
+
+    private void setPersonId(String aPersonId) {
+        this.personId = aPersonId;
     }
 
     /**
@@ -50,13 +58,6 @@ public class Person extends ConcurrencySafeEntity {
      */
     public void changeContactInformation(ContactInformation aContactInformation) {
         this.setContactInformation(aContactInformation);
-
-        DomainEventPublisher
-                .instance()
-                .publish(new PersonContactInformationChanged(
-                        this.tenantId(),
-                        this.user().username(),
-                        this.contactInformation()));
     }
 
     /**
@@ -65,13 +66,6 @@ public class Person extends ConcurrencySafeEntity {
 
     public void changeName(FullName aName) {
         this.setName(aName);
-
-        DomainEventPublisher
-                .instance()
-                .publish(new PersonNameChanged(
-                        this.tenantId(),
-                        this.user().username(),
-                        this.name()));
     }
 
     public ContactInformation contactInformation() {
@@ -86,33 +80,25 @@ public class Person extends ConcurrencySafeEntity {
         return this.name;
     }
 
+
     @Override
-    public boolean equals(Object anObject) {
-        boolean equalObjects = false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        if (anObject != null && this.getClass() == anObject.getClass()) {
-            Person typedObject = (Person) anObject;
-            equalObjects =
-                    this.tenantId().equals(typedObject.tenantId()) &&
-                            this.user().username().equals(typedObject.user().username());
-        }
+        Person person = (Person) o;
 
-        return equalObjects;
+        return personId != null ? personId.equals(person.personId) : person.personId == null;
     }
 
     @Override
     public int hashCode() {
-        int hashCodeValue =
-                +(90113 * 223)
-                        + this.tenantId().hashCode()
-                        + this.user().username().hashCode();
-
-        return hashCodeValue;
+        return personId != null ? personId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Person [tenantId=" + tenantId + ", name=" + name + ", contactInformation=" + contactInformation + "]";
+        return "Person [ personId=" + personId + ", name=" + name + ", contactInformation=" + contactInformation + "]";
     }
 
     protected void setContactInformation(ContactInformation aContactInformation) {
@@ -127,6 +113,7 @@ public class Person extends ConcurrencySafeEntity {
         this.name = aName;
     }
 
+/*
     protected TenantId tenantId() {
         return this.tenantId;
     }
@@ -136,12 +123,13 @@ public class Person extends ConcurrencySafeEntity {
 
         this.tenantId = aTenantId;
     }
+*/
 
-    protected User user() {
+/*    protected User user() {
         return this.user;
     }
 
     public void internalOnlySetUser(User aUser) {
         this.user = aUser;
-    }
+    }*/
 }

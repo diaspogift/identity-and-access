@@ -51,7 +51,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public void addUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         if (this.groupMembers().add(aUser.toGroupMember()) /*&& !this.isInternalGroup()*/) {
@@ -60,7 +60,7 @@ public class Group extends ConcurrencySafeEntity {
                     .publish(new GroupUserAdded(
                             this.tenantId(),
                             this.name(),
-                            aUser.username()));
+                            aUser.userId().username()));
         }
     }
 
@@ -74,7 +74,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public boolean isMember(User aUser, GroupMemberService aGroupMemberService) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         boolean isMember =
@@ -109,7 +109,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public void removeUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
 
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aUser.toGroupMember()) && !this.isInternalGroup()) {
@@ -118,7 +118,7 @@ public class Group extends ConcurrencySafeEntity {
                     .publish(new GroupUserRemoved(
                             this.tenantId(),
                             this.name(),
-                            aUser.username()));
+                            aUser.userId().username()));
         }
     }
 

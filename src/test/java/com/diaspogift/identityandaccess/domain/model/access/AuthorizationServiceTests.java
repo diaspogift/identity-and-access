@@ -52,10 +52,10 @@ public class AuthorizationServiceTests extends IdentityAndAccessTest {
 
         DomainRegistry.roleRepository().add(medecinChefRole);
         DomainRegistry.roleRepository().add(infirmierChefRole);
-        boolean authorized = DomainRegistry.authorizationService().isUserInRole(tenant.tenantId(), user.username(), FIXTURE_ROLE_NAME);
+        boolean authorized = DomainRegistry.authorizationService().isUserInRole(tenant.tenantId(), user.userId().username(), FIXTURE_ROLE_NAME);
 
         assertTrue(authorized);
-        authorized = DomainRegistry.authorizationService().isUserInRole(tenant.tenantId(), user.username(), FIXTURE_ROLE_NAME_1);
+        authorized = DomainRegistry.authorizationService().isUserInRole(tenant.tenantId(), user.userId().username(), FIXTURE_ROLE_NAME_1);
         assertFalse(authorized);
     }
 

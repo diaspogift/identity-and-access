@@ -200,7 +200,6 @@ public class TenantTest extends IdentityAndAccessTest {
                         FIXTURE_PASSWORD,
                         new Enablement(),
                         new Person(
-                                tenant.tenantId(),
                                 new FullName(FIXTURE_FIRST_NAME_1, FIXTURE_LAST_NAME_1),
                                 new ContactInformation(
                                         new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS_1),
@@ -209,8 +208,7 @@ public class TenantTest extends IdentityAndAccessTest {
                                         new Telephone(FIXTURE_COUNTRY_CODE_1, FIXTURE_COUNTRY_DAILING_CODE_1, FIXTURE_PHONE_NUMBER_1_1)
                                 )));
         assertNotNull(user);
-        assertEquals(tenant.tenantId(), user.tenantId());
-        assertEquals(tenant.tenantId(), user.person().tenantId());
+        assertEquals(tenant.tenantId(), user.userId().tenantId());
         this.expectedEvent(UserRegistered.class, 1);
         this.expectedEvents(1);
     }

@@ -26,7 +26,7 @@ public class JPAUserRepository implements UserRepository {
         }
         return this.entityManager()
                 .createQuery("select user from com.diaspogift.identityandaccess.domain.model.identity.User as user " +
-                        "where user.tenantId =:tenantId " +
+                        "where user.userId.tenantId =:tenantId " +
                         "and user.person.name.firstName like :firstNamePrefix " +
                         "and user.person.lastName like :lastNamePrefix", User.class)
                 .setParameter("tenantId", aTenantId)
@@ -43,8 +43,8 @@ public class JPAUserRepository implements UserRepository {
 
         return this.entityManager()
                 .createQuery("select user from com.diaspogift.identityandaccess.domain.model.identity.User as user " +
-                        "where user.tenantId =:tenantId " +
-                        "and user.username =:username " +
+                        "where user.userId.tenantId =:tenantId " +
+                        "and user.userId.username =:username " +
                         "and user.password =:password ", User.class)
                 .setParameter("tenantId", aTenantId)
                 .setParameter("username", aUsername)
@@ -56,8 +56,8 @@ public class JPAUserRepository implements UserRepository {
 
         return this.entityManager()
                 .createQuery("select user from com.diaspogift.identityandaccess.domain.model.identity.User as user " +
-                        "where user.tenantId =:tenantId " +
-                        "and user.username =:username ", User.class)
+                        "where user.userId.tenantId =:tenantId " +
+                        "and user.userId.username =:username ", User.class)
                 .setParameter("tenantId", aTenantId)
                 .setParameter("username", aUsername)
                 .getSingleResult();

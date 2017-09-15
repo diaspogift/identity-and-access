@@ -171,8 +171,8 @@ public class RoleTests extends IdentityAndAccessTest {
 
         for (GroupMember next : role.group().groupMembers()) {
             assertEquals(GroupMemberType.User, next.type());
-            assertEquals(user.username(), next.name());
-            assertEquals(user.tenantId(), next.tenantId());
+            assertEquals(user.userId().username(), next.name());
+            assertEquals(user.userId().tenantId(), next.tenantId());
         }
 
         this.expectedEvents(4);
@@ -195,8 +195,8 @@ public class RoleTests extends IdentityAndAccessTest {
         assertEquals(1, role.group().groupMembers().size());
         for (GroupMember next : role.group().groupMembers()) {
             assertEquals(GroupMemberType.User, next.type());
-            assertEquals(user.username(), next.name());
-            assertEquals(user.tenantId(), next.tenantId());
+            assertEquals(user.userId().username(), next.name());
+            assertEquals(user.userId().tenantId(), next.tenantId());
         }
         role.unassignUser(user);
         assertEquals(0, role.group().groupMembers().size());
@@ -215,9 +215,14 @@ public class RoleTests extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
+
+        System.out.println("\n\n\n HERE MY USER ID == " + user.userId());
+        System.out.println("\n\n\n HERE MY USER ID == " + user.userId());
+        System.out.println("\n\n\n HERE MY USER ID == " + user.userId());
+
         DomainRegistry.userRepository().add(user);
         Role managerRole = tenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
-        Group group = new Group(user.tenantId(), FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+        Group group = new Group(user.userId().tenantId(), FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         group.addUser(user);
         DomainRegistry.groupRepository().add(group);
         managerRole.assignGroup(group, DomainRegistry.groupMemberService());
@@ -237,7 +242,7 @@ public class RoleTests extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group);
         managerRole.assignGroup(group, DomainRegistry.groupMemberService());
         DomainRegistry.roleRepository().add(managerRole);
-        Role accountantRole = new Role(user.tenantId(), FIXTURE_ROLE_NAME_2, FIXTURE_ROLE_DESCRIPTION_2);
+        Role accountantRole = new Role(user.userId().tenantId(), FIXTURE_ROLE_NAME_2, FIXTURE_ROLE_DESCRIPTION_2);
         DomainRegistry.roleRepository().add(accountantRole);
 
         assertFalse(managerRole.isInRole(user, DomainRegistry.groupMemberService()));

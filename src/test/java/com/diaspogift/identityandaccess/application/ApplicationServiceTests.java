@@ -85,7 +85,6 @@ public abstract class ApplicationServiceTests {
                         FIXTURE_PASSWORD,
                         Enablement.indefiniteEnablement(),
                         new Person(
-                                tenant.tenantId(),
                                 new FullName("Felicien Papa", "Fotio Manfo"),
                                 new ContactInformation(
                                         new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS),
@@ -115,7 +114,6 @@ public abstract class ApplicationServiceTests {
                         FIXTURE_PASSWORD,
                         new Enablement(false, ZonedDateTime.now().plusDays(5l), ZonedDateTime.now().plusDays(10l)),
                         new Person(
-                                tenant.tenantId(),
                                 new FullName("Felicien Papa", "Fotio Manfo"),
                                 new ContactInformation(
                                         new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS),

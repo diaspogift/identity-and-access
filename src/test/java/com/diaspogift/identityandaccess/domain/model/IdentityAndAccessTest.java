@@ -102,7 +102,6 @@ public class IdentityAndAccessTest extends EventTrackingTests {
 
         Person person =
                 new Person(
-                        aTenant.tenantId(),
                         new FullName(FIXTURE_FIRST_NAME_1, FIXTURE_LAST_NAME_1),
                         this.contactInformation());
 
@@ -113,7 +112,6 @@ public class IdentityAndAccessTest extends EventTrackingTests {
 
         Person person =
                 new Person(
-                        aTenant.tenantId(),
                         new FullName(FIXTURE_FIRST_NAME_2, FIXTURE_LAST_NAME_2),
                         new ContactInformation(
                                 new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS_2),
@@ -144,6 +142,10 @@ public class IdentityAndAccessTest extends EventTrackingTests {
                         FIXTURE_PASSWORD,
                         new Enablement(true, null, null),
                         this.personEntity(tenant));
+
+        System.out.println("\n\n USER in userAggregate ==== >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + user);
+        System.out.println("\n\n USER in userAggregate ==== >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + user);
+        System.out.println("\n\n USER in userAggregate ==== >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + user);
 
         return user;
     }

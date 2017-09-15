@@ -83,7 +83,7 @@ public class Role extends ConcurrencySafeEntity {
 
     public void assignUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this user.");
+        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this user.");
 
         this.group().addUser(aUser);
 
@@ -95,7 +95,7 @@ public class Role extends ConcurrencySafeEntity {
                 .publish(new UserAssignedToRole(
                         this.tenantId(),
                         this.name(),
-                        aUser.username(),
+                        aUser.userId().username(),
                         aUser.person().name().firstName(),
                         aUser.person().name().lastName(),
                         aUser.person().emailAddress().address()));
@@ -138,7 +138,7 @@ public class Role extends ConcurrencySafeEntity {
 
     public void unassignUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this user.");
+        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this user.");
 
         this.group().removeUser(aUser);
 
@@ -147,7 +147,7 @@ public class Role extends ConcurrencySafeEntity {
                 .publish(new UserUnassignedFromRole(
                         this.tenantId(),
                         this.name(),
-                        aUser.username()));
+                        aUser.userId().username()));
     }
 
     @Override

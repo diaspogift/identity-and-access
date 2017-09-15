@@ -216,8 +216,8 @@ public class GroupTest extends IdentityAndAccessTest {
         }
         assertNotNull(foundGroupMember);
         assertEquals(tenant.tenantId(), foundGroupMember.tenantId());
-        assertEquals(user.tenantId(), foundGroupMember.tenantId());
-        assertEquals(user.username(), foundGroupMember.name());
+        assertEquals(user.userId().tenantId(), foundGroupMember.tenantId());
+        assertEquals(user.userId().username(), foundGroupMember.name());
         assertEquals(GroupMemberType.User, foundGroupMember.type());
         assertEquals(true, foundGroupMember.isUser());
     }
@@ -229,12 +229,10 @@ public class GroupTest extends IdentityAndAccessTest {
         Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         TenantId tenantId2 = new TenantId(UUID.randomUUID().toString().toUpperCase());
         User user = new User(
-                tenantId2,
-                FIXTURE_USERNAME_1,
+                new UserId(tenantId2, FIXTURE_USERNAME_1),
                 FIXTURE_PASSWORD,
                 new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l)),
                 new Person(
-                        tenantId2,
                         new FullName(FIXTURE_FIRST_NAME_2, FIXTURE_LAST_NAME_2),
                         new ContactInformation(
                                 new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS_2),
@@ -253,12 +251,10 @@ public class GroupTest extends IdentityAndAccessTest {
 
 
         User user = new User(
-                tenant.tenantId(),
-                FIXTURE_USERNAME_1,
+                new UserId(tenant.tenantId(), FIXTURE_USERNAME_1),
                 FIXTURE_PASSWORD,
                 new Enablement(false, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l)),
                 new Person(
-                        tenant.tenantId(),
                         new FullName(FIXTURE_FIRST_NAME_2, FIXTURE_LAST_NAME_2),
                         new ContactInformation(
                                 new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS_2),
@@ -342,8 +338,8 @@ public class GroupTest extends IdentityAndAccessTest {
         }
         assertNotNull(foundGroupMember);
         assertEquals(tenant.tenantId(), foundGroupMember.tenantId());
-        assertEquals(user.tenantId(), foundGroupMember.tenantId());
-        assertEquals(user.username(), foundGroupMember.name());
+        assertEquals(user.userId().tenantId(), foundGroupMember.tenantId());
+        assertEquals(user.userId().username(), foundGroupMember.name());
         assertEquals(GroupMemberType.User, foundGroupMember.type());
         assertEquals(true, foundGroupMember.isUser());
 

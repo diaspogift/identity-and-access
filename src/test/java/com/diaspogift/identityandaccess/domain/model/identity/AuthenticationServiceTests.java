@@ -30,7 +30,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                 DomainRegistry.authenticationService()
                         .authenticate(
                                 tenant.tenantId(),
-                                user.username(),
+                                user.userId().username(),
                                 FIXTURE_PASSWORD);
 
         assertNotNull(userDescriptor);
@@ -48,7 +48,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                 DomainRegistry.authenticationService()
                         .authenticate(
                                 tenant.tenantId(),
-                                user.username() + "BAD USERNAME",
+                                user.userId().username() + "BAD USERNAME",
                                 FIXTURE_PASSWORD);
     }
 
@@ -65,7 +65,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                 DomainRegistry.authenticationService()
                         .authenticate(
                                 tenant.tenantId(),
-                                user.username(),
+                                user.userId().username(),
                                 FIXTURE_PASSWORD + "BAD PASSWORD");
     }
 
@@ -81,7 +81,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                 DomainRegistry.authenticationService()
                         .authenticate(
                                 tenantId1,
-                                user.username(),
+                                user.userId().username(),
                                 FIXTURE_PASSWORD + "BAD PASSWORD");
     }
 

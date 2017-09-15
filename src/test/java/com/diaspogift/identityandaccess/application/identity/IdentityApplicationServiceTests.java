@@ -9,6 +9,7 @@ import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,7 +108,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .addUserToGroup(new AddUserToGroupCommand(
                         childGroup.tenantId().id(),
                         childGroup.name(),
-                        user.username()));
+                        user.userId().username()));
 
         assertEquals(1, parentGroup.groupMembers().size());
         assertEquals(1, childGroup.groupMembers().size());
@@ -124,13 +125,13 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 ApplicationServiceRegistry
                         .identityApplicationService()
                         .authenticateUser(new AuthenticateUserCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 FIXTURE_PASSWORD));
 
         assertNotNull(userDescriptor);
-        assertEquals(user.tenantId(), userDescriptor.tenantId());
-        assertEquals(user.username(), userDescriptor.username());
+        assertEquals(user.userId().tenantId(), userDescriptor.tenantId());
+        assertEquals(user.userId().username(), userDescriptor.username());
         assertEquals(user.person().contactInformation().emailAddress(), new EmailAddress(userDescriptor.emailAddress()));
     }
 
@@ -149,8 +150,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserContactInformation(
                         new ChangeContactInfoCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "mynewemailaddress@saasovation.com",
                                 "US",
                                 "001",
@@ -168,8 +169,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertEquals("mynewemailaddress@saasovation.com", changedUser.person().emailAddress().address());
@@ -191,16 +192,16 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserEmailAddress(
                         new ChangeEmailAddressCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "mynewemailaddress@saasovation.com"));
 
         User changedUser =
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertEquals("mynewemailaddress@saasovation.com", changedUser.person().emailAddress().address());
@@ -218,8 +219,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserPostalAddress(
                         new ChangePostalAddressCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "123 Pine Street",
                                 "Loveland",
                                 "CO",
@@ -230,8 +231,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertEquals("123 Pine Street", changedUser.person().contactInformation().postalAddress().streetAddress());
@@ -249,8 +250,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserPrimaryTelephone(
                         new ChangePrimaryTelephoneCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "US",
                                 "001",
                                 "805-555-1211"));
@@ -259,8 +260,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertEquals("805-555-1211", changedUser.person().contactInformation().primaryTelephone().number());
@@ -277,8 +278,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserSecondaryTelephone(
                         new ChangeSecondaryTelephoneCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "US",
                                 "001",
                                 "805-555-1212"));
@@ -287,8 +288,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertEquals("805-555-1212", changedUser.person().contactInformation().secondaryTelephone().number());
@@ -304,8 +305,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserPassword(
                         new ChangeUserPasswordCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 FIXTURE_PASSWORD,
                                 "THIS.IS.FELICIEN'S.NEW.PASSWORD"));
 
@@ -313,12 +314,12 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 ApplicationServiceRegistry
                         .identityApplicationService()
                         .authenticateUser(new AuthenticateUserCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "THIS.IS.FELICIEN'S.NEW.PASSWORD"));
 
         assertNotNull(userDescriptor);
-        assertEquals(user.username(), userDescriptor.username());
+        assertEquals(user.userId().username(), userDescriptor.username());
         assertEquals(user.internalAccessOnlyEncryptedPassword(), DomainRegistry.encryptionService().encryptedValue("THIS.IS.FELICIEN'S.NEW.PASSWORD"));
 
     }
@@ -333,8 +334,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .changeUserPersonalName(
                         new ChangeUserPersonalNameCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 "World",
                                 "Peace"));
 
@@ -342,8 +343,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertEquals("World Peace", changedUser.person().name().asFormattedName());
@@ -366,8 +367,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .identityApplicationService()
                 .defineUserEnablement(
                         new DefineUserEnablementCommand(
-                                user.tenantId().id(),
-                                user.username(),
+                                user.userId().tenantId().id(),
+                                user.userId().username(),
                                 true,
                                 now,
                                 tomorrow));
@@ -376,8 +377,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 DomainRegistry
                         .userRepository()
                         .userWithUsername(
-                                user.tenantId(),
-                                user.username());
+                                user.userId().tenantId(),
+                                user.userId().username());
 
         assertNotNull(changedUser);
         assertTrue(changedUser.isEnabled());
@@ -406,7 +407,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                         .isGroupMember(
                                 parentGroup.tenantId().id(),
                                 parentGroup.name(),
-                                user.username()));
+                                user.userId().username()));
 
         assertTrue(
                 ApplicationServiceRegistry
@@ -414,7 +415,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                         .isGroupMember(
                                 childGroup.tenantId().id(),
                                 childGroup.name(),
-                                user.username()));
+                                user.userId().username()));
     }
 
     @Test
@@ -464,7 +465,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 .removeUserFromGroup(new RemoveUserFromGroupCommand(
                         childGroup.tenantId().id(),
                         childGroup.name(),
-                        user.username()));
+                        user.userId().username()));
 
         assertEquals(1, parentGroup.groupMembers().size());
         assertEquals(0, childGroup.groupMembers().size());
@@ -493,7 +494,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         User foundUser =
                 ApplicationServiceRegistry
                         .identityApplicationService()
-                        .user(user.tenantId().id(), user.username());
+                        .user(user.userId().tenantId().id(), user.userId().username());
 
         assertNotNull(user);
         assertEquals(user, foundUser);
@@ -507,7 +508,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         UserDescriptor foundUserDescriptor =
                 ApplicationServiceRegistry
                         .identityApplicationService()
-                        .userDescriptor(user.tenantId().id(), user.username());
+                        .userDescriptor(user.userId().tenantId().id(), user.userId().username());
 
         assertNotNull(user);
         assertEquals(user.userDescriptor(), foundUserDescriptor);
@@ -516,6 +517,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
     //
     @Test
     //TO DO
+    @Rollback(false)
     public void provisionTenant() throws Exception {
 
         ProvisionTenantCommand provisionTenantCommand =

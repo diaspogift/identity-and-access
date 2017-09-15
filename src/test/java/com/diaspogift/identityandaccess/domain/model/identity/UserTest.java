@@ -30,11 +30,11 @@ public class UserTest extends IdentityAndAccessTest {
         User user = this.userAggregate();
         DomainRegistry.userRepository().add(user);
         assertNotNull(user);
-        assertEquals(FIXTURE_USERNAME_1, user.username());
+        assertEquals(FIXTURE_USERNAME_1, user.userId().username());
         assertTrue(user.isEnabled());
         assertEquals(new Enablement(true, null, null), user.enablement());
         assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
-        User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.username());
+        User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.userId().username());
         assertEquals(user, foundUser);
     }
 

@@ -26,7 +26,7 @@ public class GroupMemberService {
 
         User confirmedUser =
                 this.userRepository()
-                        .userWithUsername(aGroup.tenantId(), aUser.username());
+                        .userWithUsername(aGroup.tenantId(), aUser.userId().username());
 
         if (confirmedUser == null || !confirmedUser.isEnabled()) {
             userConfirmed = false;

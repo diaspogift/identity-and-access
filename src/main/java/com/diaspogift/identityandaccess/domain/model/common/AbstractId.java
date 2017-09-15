@@ -2,9 +2,7 @@ package com.diaspogift.identityandaccess.domain.model.common;
 
 import java.io.Serializable;
 
-public abstract class AbstractId
-        extends AssertionConcern
-        implements Identity, Serializable {
+public abstract class AbstractId extends AssertionConcern implements Identity, Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -28,9 +28,8 @@ public class PersonTest extends EventTrackingTests {
                 new Telephone("CM", "00237", "691178154"),
                 new Telephone("CM", "00237", "669262656")
         );
-        Person person = new Person(tenantId, fullName, contactInformation);
+        Person person = new Person(fullName, contactInformation);
         assertNotNull(person);
-        assertEquals(tenantId, person.tenantId());
         assertEquals(fullName, person.name());
         assertEquals(contactInformation, person.contactInformation());
     }
@@ -45,9 +44,9 @@ public class PersonTest extends EventTrackingTests {
                 new Telephone("CM", "00237", "691178154"),
                 new Telephone("CM", "00237", "669262656")
         );
-        Person person = new Person(tenantId, fullName, contactInformation);
-        User user = new User(tenantId,
-                "username@gmail.com",
+        Person person = new Person(fullName, contactInformation);
+        User user = new User(
+                new UserId(tenantId, "username@gmail.com"),
                 "secretSTRENGTH1234",
                 new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l)),
                 person
@@ -74,9 +73,9 @@ public class PersonTest extends EventTrackingTests {
                 new Telephone("CM", "00237", "691178154"),
                 new Telephone("CM", "00237", "669262656")
         );
-        Person person = new Person(tenantId, fullName, contactInformation);
-        User user = new User(tenantId,
-                "username@gmail.com",
+        Person person = new Person(fullName, contactInformation);
+        User user = new User(
+                new UserId(tenantId, "username@gmail.com"),
                 "secretSTRENGTH1234",
                 new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l)),
                 person
@@ -97,9 +96,9 @@ public class PersonTest extends EventTrackingTests {
                 new Telephone("CM", "00237", "691178154"),
                 new Telephone("CM", "00237", "669262656")
         );
-        Person person = new Person(tenantId, fullName, contactInformation);
-        User user = new User(tenantId,
-                "username@gmail.com",
+        Person person = new Person(fullName, contactInformation);
+        User user = new User(
+                new UserId(tenantId, "username@gmail.com"),
                 "secretSTRENGTH1234",
                 new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l)),
                 person
@@ -113,9 +112,8 @@ public class PersonTest extends EventTrackingTests {
         person.changeContactInformation(newContactInformation);
         assertEquals(newContactInformation, person.contactInformation());
 
-        this.expectedEvents(2);
+        this.expectedEvents(1);
         this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvent(PersonContactInformationChanged.class, 1);
 
     }
 
@@ -132,10 +130,10 @@ public class PersonTest extends EventTrackingTests {
                 new Telephone("CM", "00237", "669262656")
         );
 
-        Person person = new Person(tenantId, fullName, contactInformation);
+        Person person = new Person(fullName, contactInformation);
 
-        User user = new User(tenantId,
-                "username@gmail.com",
+        User user = new User(
+                new UserId(tenantId, "username@gmail.com"),
                 "secretSTRENGTH1234",
                 new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l)),
                 person
@@ -144,8 +142,7 @@ public class PersonTest extends EventTrackingTests {
         person.changeName(newFullname);
         assertEquals(newFullname, person.name());
 
-        this.expectedEvents(2);
-        this.expectedEvent(PersonNameChanged.class, 1);
+        this.expectedEvents(1);
         this.expectedEvent(UserRegistered.class, 1);
     }
 

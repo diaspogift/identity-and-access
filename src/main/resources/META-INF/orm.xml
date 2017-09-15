@@ -12,6 +12,7 @@
         </persistence-unit-defaults>
     </persistence-unit-metadata>
 
+
     <mapped-superclass access="FIELD"
                        class="com.diaspogift.identityandaccess.domain.model.common.IdentifiedDomainObject"
                        metadata-complete="true">
@@ -160,7 +161,7 @@
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.User" access="FIELD" name="tbl_user"
             metadata-complete="true">
         <attributes>
-
+            <embedded-id name="userId"/>
             <basic name="password">
                 <column name="password"/>
             </basic>
@@ -169,16 +170,10 @@
             </basic>
             <many-to-one name="person">
                 <cascade>
-                    <cascade-all/>
+                    <cascade-persist/>
                 </cascade>
             </many-to-one>
-            <embedded name="enablement">
-            </embedded>
-            <embedded name="tenantId">
-                <attribute-override name="id">
-                    <column name="tenant_id"/>
-                </attribute-override>
-            </embedded>
+            <embedded name="enablement"/>
         </attributes>
     </entity>
 
@@ -186,6 +181,9 @@
             metadata-complete="true">
         <attributes>
             <basic name="name"/>
+            <basic name="personId">
+                <column name="person_id" unique="true" nullable="false" updatable="false"/>
+            </basic>
             <one-to-one name="user" fetch="LAZY"/>
             <embedded name="contactInformation"/>
             <embedded name="tenantId">
@@ -247,6 +245,18 @@
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.FullName"/>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.Telephone"/>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.TenantId"/>
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.UserId">
+        <attributes>
+            <basic name="username">
+                <column name="username"/>
+            </basic>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="user_tenant_id"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </embeddable>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.Enablement"/>
 
 </entity-mappings>

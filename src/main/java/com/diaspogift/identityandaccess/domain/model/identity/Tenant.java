@@ -232,17 +232,10 @@ public class Tenant extends ConcurrencySafeEntity {
 
         User user = null;
 
+
         if (this.isRegistrationAvailableThrough(anInvitationIdentifier)) {
-
-            // ensure same tenant
-            aPerson.setTenantId(this.tenantId());
-
-            user = new User(
-                    this.tenantId(),
-                    aUsername,
-                    aPassword,
-                    anEnablement,
-                    aPerson);
+            UserId userId = new UserId(this.tenantId(), aUsername);
+            user = new User(userId, aPassword, anEnablement, aPerson);
         }
 
         return user;
