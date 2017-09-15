@@ -1,57 +1,31 @@
-//   Copyright 2012,2013 Vaughn Vernon
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
-import javax.persistence.*;
-
-@Entity
 public class Person extends ConcurrencySafeEntity {
 
-    public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long _id;
 
     /**
      * Contact of the person
      */
-    @Embedded
     private ContactInformation contactInformation;
 
     /**
      * <h3>Is constitated of first name and last name</h3>
      */
-    @Embedded
     private FullName name;
 
     /**
      * The id of the tenant
      */
-    @AttributeOverride(name = "id", column = @Column(name = "person_tenant_id"))
-    @Embedded
     private TenantId tenantId;
 
     /**
      * User associated to this person
      */
-    @OneToOne
     private User user;
 
     public Person(

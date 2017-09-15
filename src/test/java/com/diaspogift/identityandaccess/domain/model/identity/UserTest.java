@@ -54,8 +54,8 @@ public class UserTest extends IdentityAndAccessTest {
         ContactInformation newContactInformation = new ContactInformation(
                 new EmailAddress("email.new@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("USA", "001", "123-456-7899")
+                new Telephone("CM", "00237", "691178154"),
+                new Telephone("US", "001", "303-456-7899")
         );
         assertNotEquals(newContactInformation, user.person().contactInformation());
         user.changePersonalContactInformation(newContactInformation);
@@ -115,8 +115,8 @@ public class UserTest extends IdentityAndAccessTest {
         ContactInformation newContactInformation = new ContactInformation(
                 new EmailAddress("email.new@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("USA", "001", "123-456-7899")
+                new Telephone("CM", "00237", "691178154"),
+                new Telephone("US", "001", "303-456-7899")
         );
         assertNotEquals(newContactInformation, user.person().contactInformation());
         user.changePersonalContactInformation(newContactInformation);

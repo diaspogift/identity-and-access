@@ -1,28 +1,11 @@
-//   Copyright 2012,2013 Vaughn Vernon
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
-import javax.persistence.Embeddable;
-import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 
-@MappedSuperclass
-@Embeddable
 public final class Telephone extends AssertionConcern implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,10 +16,13 @@ public final class Telephone extends AssertionConcern implements Serializable {
 
     public Telephone(String aCountryCode, String aCountryDialingCode, String aNumber) {
 
+
         this();
-        //TO DO is this the right place for this process/verification?
-        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(aCountryCode, aCountryDialingCode, aNumber), "Invalid phone number."); moved out into the
-        //TelephoneFactory class
+
+        System.out.println(" \n\n Telephone countryCode = " + aCountryCode);
+        System.out.println(" \n\n Telephone  number = " + aNumber);
+
+        this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(aCountryCode, aNumber), "Invalid phone number.");
         this.setCountryCode(aCountryCode);
         this.setCountryDialingCode(aCountryDialingCode);
         this.setNumber(aNumber);
@@ -87,19 +73,19 @@ public final class Telephone extends AssertionConcern implements Serializable {
        this.assertArgumentTrue(
                 Pattern.matches("((\\(\\d{3}\\))|(\\d{3}-))\\d{3}-\\d{4}", aNumber),
                 "Telephone number or its format is invalid.");*/
-        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(this.countryCode(), this.countryDialingCode(), this.number()), "Invalid phone number.");
+        //this.assertArgumentTrue(DomainRegistry.PhoneNumberValidatorService().validate(this.countryCode(), this.countryDialingCode(), this.number()), "Invalid phone number.");
 
         this.number = aNumber;
     }
 
 
     private void setCountryCode(String aCountryCode) {
-        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validateCountryCode(aCountryCode), "Invalid country code.");
+        //this.assertArgumentTrue(DomainRegistry.PhoneNumberValidatorService().validateCountryCode(aCountryCode), "Invalid country code.");
         this.countryCode = aCountryCode;
     }
 
     private void setCountryDialingCode(String aCountryDialingCode) {
-        //this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validateDialingCountryCode(this.countryCode(),aCountryDialingCode ), "Invalid dialing country code.");
+        //this.assertArgumentTrue(DomainRegistry.PhoneNumberValidatorService().validateDialingCountryCode(this.countryCode(),aCountryDialingCode ), "Invalid dialing country code.");
         this.countryDialingCode = aCountryDialingCode;
     }
 

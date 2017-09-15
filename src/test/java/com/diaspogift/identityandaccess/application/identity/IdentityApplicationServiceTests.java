@@ -140,7 +140,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         DomainRegistry.userRepository().add(user);
 
         assertNotEquals("mynewemailaddress@saasovation.com", user.person().emailAddress().address());
-        assertNotEquals("777-555-1211", user.person().contactInformation().primaryTelephone().number());
+        assertNotEquals("805-555-1211", user.person().contactInformation().primaryTelephone().number());
         assertNotEquals("777-555-1212", user.person().contactInformation().secondaryTelephone().number());
         assertNotEquals("123 Pine Street", user.person().contactInformation().postalAddress().streetAddress());
         assertNotEquals("Loveland", user.person().contactInformation().postalAddress().city());
@@ -154,10 +154,10 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                                 "mynewemailaddress@saasovation.com",
                                 "US",
                                 "001",
-                                "777-555-1211",
+                                "805-555-1211",
                                 "US",
                                 "001",
-                                "777-555-1212",
+                                "805-555-1212",
                                 "123 Pine Street",
                                 "Loveland",
                                 "CO",
@@ -173,8 +173,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
 
         assertNotNull(changedUser);
         assertEquals("mynewemailaddress@saasovation.com", changedUser.person().emailAddress().address());
-        assertEquals("777-555-1211", changedUser.person().contactInformation().primaryTelephone().number());
-        assertEquals("777-555-1212", changedUser.person().contactInformation().secondaryTelephone().number());
+        assertEquals("805-555-1211", changedUser.person().contactInformation().primaryTelephone().number());
+        assertEquals("805-555-1212", changedUser.person().contactInformation().secondaryTelephone().number());
         assertEquals("123 Pine Street", changedUser.person().contactInformation().postalAddress().streetAddress());
         assertEquals("Loveland", changedUser.person().contactInformation().postalAddress().city());
     }
@@ -243,7 +243,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         User user = this.userAggregate();
         DomainRegistry.userRepository().add(user);
 
-        assertNotEquals("777-555-1211", user.person().contactInformation().primaryTelephone().number());
+        assertNotEquals("805-555-1211", user.person().contactInformation().primaryTelephone().number());
 
         ApplicationServiceRegistry
                 .identityApplicationService()
@@ -253,7 +253,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                                 user.username(),
                                 "US",
                                 "001",
-                                "777-555-1211"));
+                                "805-555-1211"));
 
         User changedUser =
                 DomainRegistry
@@ -263,7 +263,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                                 user.username());
 
         assertNotNull(changedUser);
-        assertEquals("777-555-1211", changedUser.person().contactInformation().primaryTelephone().number());
+        assertEquals("805-555-1211", changedUser.person().contactInformation().primaryTelephone().number());
     }
 
     @Test
@@ -271,7 +271,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         User user = this.userAggregate();
         DomainRegistry.userRepository().add(user);
 
-        assertNotEquals("777-555-1212", user.person().contactInformation().secondaryTelephone().number());
+        assertNotEquals("805-555-1212", user.person().contactInformation().secondaryTelephone().number());
 
         ApplicationServiceRegistry
                 .identityApplicationService()
@@ -281,7 +281,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                                 user.username(),
                                 "US",
                                 "001",
-                                "777-555-1212"));
+                                "805-555-1212"));
 
         User changedUser =
                 DomainRegistry
@@ -291,7 +291,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                                 user.username());
 
         assertNotNull(changedUser);
-        assertEquals("777-555-1212", changedUser.person().contactInformation().secondaryTelephone().number());
+        assertEquals("805-555-1212", changedUser.person().contactInformation().secondaryTelephone().number());
     }
 
     @Test

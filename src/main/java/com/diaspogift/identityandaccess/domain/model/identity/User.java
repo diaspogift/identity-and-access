@@ -1,38 +1,16 @@
-//   Copyright 2012,2013 Vaughn Vernon
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
-import javax.persistence.*;
-
-@Entity
 public class User extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer _id;
-
     /**
      * To enable the user
      */
-    @Embedded
     private Enablement enablement;
 
     /**
@@ -43,20 +21,16 @@ public class User extends ConcurrencySafeEntity {
     /**
      * The person behind the user
      */
-    @OneToOne(cascade = CascadeType.PERSIST)
     private Person person;
 
     /**
      * Tenant to which belong the user
      */
-    @AttributeOverride(name = "id", column = @Column(name = "tenant_id"))
-    @Embedded
     private TenantId tenantId;
 
     /**
      * The username (That uniquelly identify the user)
      */
-    @Column(unique = true)
     private String username;
 
 

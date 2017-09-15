@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+                 version="2.0">
+
+    <persistence-unit-metadata>
+        <persistence-unit-defaults>
+            <entity-listeners>
+                <entity-listener class="org.springframework.data.jpa.domain.support.AuditingEntityListener"/>
+            </entity-listeners>
+        </persistence-unit-defaults>
+    </persistence-unit-metadata>
+
+    <mapped-superclass access="FIELD"
+                       class="com.diaspogift.identityandaccess.domain.model.common.IdentifiedDomainObject"
+                       metadata-complete="true">
+        <attributes>
+            <id name="id">
+                <column name="native_id"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+        </attributes>
+    </mapped-superclass>
+
+    <mapped-superclass access="FIELD" class="com.diaspogift.identityandaccess.domain.model.common.AbstractId"
+                       metadata-complete="true">
+        <attributes>
+            <basic name="id">
+                <column name="id" nullable="false"/>
+            </basic>
+        </attributes>
+    </mapped-superclass>
+
+    <mapped-superclass access="FIELD" class="com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity"
+                       metadata-complete="true">
+        <attributes>
+            <version name="concurrencyVersion">
+                <column name="concurrency_version"/>
+            </version>
+        </attributes>
+    </mapped-superclass>
+
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.identity.Tenant" access="FIELD" name="tbl_tenant"
+            metadata-complete="true">
+        <attributes>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="active">
+                <column name="active"/>
+            </basic>
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+            <one-to-many name="registrationInvitations" fetch="LAZY" orphan-removal="true">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="tenant_id" unique="true" nullable="false" updatable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.identity.RegistrationInvitation" access="FIELD"
+            name="tbl_registration_invitation" metadata-complete="true">
+        <attributes>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="invitationId">
+                <column name="invitation_id" unique="true" nullable="false" updatable="false"/>
+            </basic>
+            <basic name="startingOn">
+                <column name="starting_on"/>
+            </basic>
+            <basic name="until">
+                <column name="until"/>
+            </basic>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="tenant_id" nullable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.identity.Group" access="FIELD" name="tbl_group"
+            metadata-complete="true">
+        <attributes>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+            <one-to-many name="groupMembers" fetch="LAZY" orphan-removal="true">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="tenant_id"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.identity.GroupMember" access="FIELD"
+            name="tbl_group_member" metadata-complete="true">
+        <attributes>
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+            <basic name="type">
+                <column name="type"/>
+            </basic>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="tenant_id"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.access.Role" access="FIELD" name="tbl_role"
+            metadata-complete="true">
+        <attributes>
+            <basic name="description">
+                <column name="description"/>
+            </basic>
+            <basic name="name">
+                <column name="name"/>
+            </basic>
+            <basic name="supportsNesting">
+                <column name="supports_nesting"/>
+            </basic>
+            <one-to-one name="group" fetch="LAZY">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-one>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="tenant_id"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.identity.User" access="FIELD" name="tbl_user"
+            metadata-complete="true">
+        <attributes>
+
+            <basic name="password">
+                <column name="password"/>
+            </basic>
+            <basic name="username">
+                <column name="username"/>
+            </basic>
+            <many-to-one name="person">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-one>
+            <embedded name="enablement">
+            </embedded>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="tenant_id"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.identity.Person" access="FIELD" name="tbl_person"
+            metadata-complete="true">
+        <attributes>
+            <basic name="name"/>
+            <one-to-one name="user" fetch="LAZY"/>
+            <embedded name="contactInformation"/>
+            <embedded name="tenantId">
+                <attribute-override name="id">
+                    <column name="person_tenant_id"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="com.diaspogift.identityandaccess.domain.model.common.event.StoredEvent" access="FIELD"
+            name="tbl_stored_event" metadata-complete="true">
+        <attributes>
+            <id name="eventId">
+                <column name="event_id" unique="true" nullable="false"/>
+                <generated-value strategy="AUTO"/>
+            </id>
+            <basic name="eventBody">
+                <column name="event_body" length="10000"/>
+            </basic>
+            <basic name="occurredOn">
+                <column name="occurred_on"/>
+            </basic>
+            <basic name="typeName">
+                <column name="type_name"/>
+            </basic>
+        </attributes>
+    </entity>
+
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.ContactInformation">
+        <attributes>
+            <embedded name="primaryTelephone">
+                <attribute-override name="number">
+                    <column name="primary_telephone_number"/>
+                </attribute-override>
+                <attribute-override name="countryCode">
+                    <column name="primary_telephone_country_code"/>
+                </attribute-override>
+                <attribute-override name="countryDialingCode">
+                    <column name="primary_telephone_country_dialing_code"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="secondaryTelephone">
+                <attribute-override name="number">
+                    <column name="secondary_telephone_number"/>
+                </attribute-override>
+                <attribute-override name="countryCode">
+                    <column name="secondary_telephone_country_code"/>
+                </attribute-override>
+                <attribute-override name="countryDialingCode">
+                    <column name="secondary_telephone_country_dialing_code"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </embeddable>
+
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.EmailAddress"/>
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.PostalAddress"/>
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.FullName"/>
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.Telephone"/>
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.TenantId"/>
+    <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.Enablement"/>
+
+</entity-mappings>
+

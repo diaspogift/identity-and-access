@@ -17,8 +17,8 @@ public class ContactInformationTests {
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("CMR", "00237", "669262656")
+                new Telephone("CM", "00237", "691178154"),
+                new Telephone("CM", "00237", "669262656")
         );
 
         ContactInformation contactInformation1 = contactInformation.changeEmailAddress(new EmailAddress("changedemail@gmail.com"));
@@ -31,8 +31,8 @@ public class ContactInformationTests {
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("CMR", "00237", "669262656")
+                new Telephone("CM", "00237", "691178154"),
+                new Telephone("CM", "00237", "669262656")
         );
 
         ContactInformation contactInformation1 = contactInformation.changePostalAddress(
@@ -50,14 +50,14 @@ public class ContactInformationTests {
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("CMR", "00237", "669262656")
+                new Telephone("CM", "00237", "691178154"),
+                new Telephone("CM", "00237", "669262656")
         );
 
         ContactInformation contactInformation1 = contactInformation.changePrimaryTelephone(
-                new Telephone("USA", "001", "333-123-4567"));
+                new Telephone("US", "001", "303-456-4567"));
 
-        assertEquals(new Telephone("USA", "001", "333-123-4567"),
+        assertEquals(new Telephone("US", "001", "303-456-4567"),
                 contactInformation1.primaryTelephone());
 
     }
@@ -67,14 +67,14 @@ public class ContactInformationTests {
         ContactInformation contactInformation = new ContactInformation(
                 new EmailAddress("email@yahoo.fr"),
                 new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CMR", "00237", "691178154"),
-                new Telephone("CMR", "00237", "669262656")
+                new Telephone("CM", "00237", "691178154"),
+                new Telephone("CM", "00237", "669262656")
         );
 
         ContactInformation contactInformation1 = contactInformation.changeSecondaryTelephone(
-                new Telephone("USA", "001", "333-123-4567"));
+                new Telephone("US", "001", "303-807-4567"));
 
-        assertEquals(new Telephone("USA", "001", "333-123-4567"),
+        assertEquals(new Telephone("US", "001", "303-807-4567"),
                 contactInformation1.secondaryTelephone());
 
     }

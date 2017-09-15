@@ -5,6 +5,7 @@ import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -24,10 +25,12 @@ public class GroupTest extends IdentityAndAccessTest {
 
 
     @Test
+    @Rollback(false)
     public void createGroup() {
 
         Tenant tenant = this.actifTenantAggregate();
         Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
         assertNotNull(group);
         DomainRegistry.groupRepository().add(group);
         assertEquals(tenant.tenantId(), group.tenantId());
@@ -35,6 +38,7 @@ public class GroupTest extends IdentityAndAccessTest {
         assertEquals(FIXTURE_GROUP_NAME_1, group.name());
         assertEquals(0, group.groupMembers().size());
         assertEquals(1, DomainRegistry.groupRepository().allGroups(tenant.tenantId()).size());
+
         Group foundGroup = DomainRegistry.groupRepository().groupNamed(group.tenantId(), group.name());
         assertEquals(group, foundGroup);
 

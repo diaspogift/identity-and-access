@@ -1,23 +1,8 @@
-//   Copyright 2012,2013 Vaughn Vernon
-//
-//   Licensed under the Apache License, Version 2.0 (the "License");
-//   you may not use this file except in compliance with the License.
-//   You may obtain a copy of the License at
-//
-//       http://www.apache.org/licenses/LICENSE-2.0
-//
-//   Unless required by applicable law or agreed to in writing, software
-//   distributed under the License is distributed on an "AS IS" BASIS,
-//   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//   See the License for the specific language governing permissions and
-//   limitations under the License.
-
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 
-import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 
@@ -25,19 +10,13 @@ import java.time.ZonedDateTime;
  * Truly a value object need to be serialized and saved as it
  */
 
-@Entity
 public class RegistrationInvitation extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer _id;
-
     private String description;
     private String invitationId;
     private ZonedDateTime startingOn;
-    @Embedded
     private TenantId tenantId;
     private ZonedDateTime until;
 
@@ -72,9 +51,6 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         if (this.startingOn() == null && this.until() == null) {
             isAvailable = true;
         } else {
-            /*ZonedDateTime dateNow = ZonedDateTime.now();
-            if (dateNow.isAfter(this.startingOn()) && dateNow.isBefore(this.until())) {
-                isAvailable = true;*/
 
             ZonedDateTime dateNow = ZonedDateTime.now();
 
