@@ -1,12 +1,17 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
-import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 
-public class User extends AssertionConcern /*extends ConcurrencySafeEntity*/ {
+public class User extends ConcurrencySafeEntity {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * A User unique identifier
+     */
+    private UserId userId;
 
     /**
      * To enable the user
@@ -23,11 +28,6 @@ public class User extends AssertionConcern /*extends ConcurrencySafeEntity*/ {
      */
     private Person person;
 
-    /**
-     * A User unique identifier
-     */
-    private UserId userId;
-
 
     protected User() {
         super();
@@ -40,6 +40,8 @@ public class User extends AssertionConcern /*extends ConcurrencySafeEntity*/ {
             Person aPerson) {
 
         this();
+
+
         this.setEnablement(anEnablement);
         this.setPerson(aPerson);
         this.setUserId(aUserId);
@@ -195,7 +197,6 @@ public class User extends AssertionConcern /*extends ConcurrencySafeEntity*/ {
 
     protected void assertUsernamePasswordNotSame(String aPlainTextPassword) {
 
-        System.out.println("\n\n\n ????????????????????  in assertUsernamePasswordNotSame this.userId() ????????????? " + this.userId());
         this.assertArgumentNotEquals(
                 this.userId().username(),
                 aPlainTextPassword,

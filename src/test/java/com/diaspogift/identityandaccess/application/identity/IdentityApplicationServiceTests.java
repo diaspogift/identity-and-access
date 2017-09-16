@@ -72,15 +72,15 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         ApplicationServiceRegistry
                 .identityApplicationService()
                 .addGroupToGroup(new AddGroupToGroupCommand(
-                        parentGroup.tenantId().id(),
-                        parentGroup.name(),
-                        childGroup.name()));
+                        parentGroup.groupId().tenantId().id(),
+                        parentGroup.groupId().name(),
+                        childGroup.groupId().name()));
 
         assertEquals(1, parentGroup.groupMembers().size());
 
         Group savedParentGroup =
                 DomainRegistry.groupRepository().
-                        groupNamed(parentGroup.tenantId(), parentGroup.name());
+                        groupNamed(parentGroup.groupId().tenantId(), parentGroup.groupId().name());
 
         assertEquals(1, savedParentGroup.groupMembers().size());
 
@@ -106,8 +106,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         ApplicationServiceRegistry
                 .identityApplicationService()
                 .addUserToGroup(new AddUserToGroupCommand(
-                        childGroup.tenantId().id(),
-                        childGroup.name(),
+                        childGroup.groupId().tenantId().id(),
+                        childGroup.groupId().name(),
                         user.userId().username()));
 
         assertEquals(1, parentGroup.groupMembers().size());
@@ -405,16 +405,16 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
                 ApplicationServiceRegistry
                         .identityApplicationService()
                         .isGroupMember(
-                                parentGroup.tenantId().id(),
-                                parentGroup.name(),
+                                parentGroup.groupId().tenantId().id(),
+                                parentGroup.groupId().name(),
                                 user.userId().username()));
 
         assertTrue(
                 ApplicationServiceRegistry
                         .identityApplicationService()
                         .isGroupMember(
-                                childGroup.tenantId().id(),
-                                childGroup.name(),
+                                childGroup.groupId().tenantId().id(),
+                                childGroup.groupId().name(),
                                 user.userId().username()));
     }
 
@@ -434,9 +434,9 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         ApplicationServiceRegistry
                 .identityApplicationService()
                 .removeGroupFromGroup(new RemoveGroupFromGroupCommand(
-                        parentGroup.tenantId().id(),
-                        parentGroup.name(),
-                        childGroup.name()));
+                        parentGroup.groupId().tenantId().id(),
+                        parentGroup.groupId().name(),
+                        childGroup.groupId().name()));
 
         assertEquals(0, parentGroup.groupMembers().size());
     }
@@ -463,8 +463,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         ApplicationServiceRegistry
                 .identityApplicationService()
                 .removeUserFromGroup(new RemoveUserFromGroupCommand(
-                        childGroup.tenantId().id(),
-                        childGroup.name(),
+                        childGroup.groupId().tenantId().id(),
+                        childGroup.groupId().name(),
                         user.userId().username()));
 
         assertEquals(1, parentGroup.groupMembers().size());

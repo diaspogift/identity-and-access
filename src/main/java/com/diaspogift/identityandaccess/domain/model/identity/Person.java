@@ -23,15 +23,7 @@ public class Person extends ConcurrencySafeEntity {
      */
     private FullName name;
 
-    /**
-     * The id of the tenant
-     */
-    //private TenantId tenantId;
 
-    /**
-     * User associated to this person
-     */
-    //private User user;
     public Person(
             FullName aName,
             ContactInformation aContactInformation) {
@@ -40,7 +32,6 @@ public class Person extends ConcurrencySafeEntity {
 
         this.setContactInformation(aContactInformation);
         this.setName(aName);
-        //this.setTenantId(aTenantId);
         this.setPersonId(UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase());
     }
 
@@ -53,8 +44,8 @@ public class Person extends ConcurrencySafeEntity {
     }
 
     /**
-     * @param aContactInformation A person ca change his contact information by providing a new one. <br />
-     *                            When a contactInformation is change a domain Event is sended and change is save.
+     * @param aContactInformation A person can change his contact information by providing a new one. <br />
+     *                            When a contactInformation is changed a domain Event is sent and change is save.
      */
     public void changeContactInformation(ContactInformation aContactInformation) {
         this.setContactInformation(aContactInformation);
@@ -113,23 +104,4 @@ public class Person extends ConcurrencySafeEntity {
         this.name = aName;
     }
 
-/*
-    protected TenantId tenantId() {
-        return this.tenantId;
-    }
-
-    protected void setTenantId(TenantId aTenantId) {
-        this.assertArgumentNotNull(aTenantId, "The tenantId is required.");
-
-        this.tenantId = aTenantId;
-    }
-*/
-
-/*    protected User user() {
-        return this.user;
-    }
-
-    public void internalOnlySetUser(User aUser) {
-        this.user = aUser;
-    }*/
 }

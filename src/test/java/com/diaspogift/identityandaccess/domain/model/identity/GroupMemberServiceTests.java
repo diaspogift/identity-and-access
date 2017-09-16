@@ -44,7 +44,7 @@ public class GroupMemberServiceTests extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group1);
         DomainRegistry.groupRepository().add(group2);
 
-        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.name());
+        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());
         group1.addGroup(group2, DomainRegistry.groupMemberService());
 
         assertTrue(DomainRegistry.groupMemberService().isMemberGroup(group1, group2.toGroupMember()));

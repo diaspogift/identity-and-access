@@ -1,30 +1,31 @@
-package com.diaspogift.identityandaccess.domain.model.identity;
+package com.diaspogift.identityandaccess.domain.model.access;
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
+import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 
 import java.io.Serializable;
 
-public class UserId extends AssertionConcern implements Serializable {
+public class RoleId extends AssertionConcern implements Serializable {
 
 
     /**
-     * Tenant to which belong the user
+     * Tenant to which belong the role
      */
     private TenantId tenantId;
     /**
-     * The username (That uniquelly identify the user)
+     * The name (That uniquelly identify the role)
      */
-    private String username;
+    private String name;
 
-    protected UserId(TenantId tenantId, String username) {
+    public RoleId(TenantId tenantId, String name) {
 
         this.assertArgumentNotNull(tenantId, "Tenant is required.");
-        this.assertArgumentNotNull(username, "Username is required.");
+        this.assertArgumentNotNull(name, " Group name is required.");
         this.setTenantId(tenantId);
-        this.setUsername(username);
+        this.setName(name);
     }
 
-    public UserId() {
+    public RoleId() {
         super();
     }
 
@@ -36,12 +37,12 @@ public class UserId extends AssertionConcern implements Serializable {
         this.tenantId = tenantId;
     }
 
-    public String username() {
-        return this.username;
+    public String name() {
+        return this.name;
     }
 
-    private void setUsername(String username) {
-        this.username = username;
+    private void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -49,21 +50,21 @@ public class UserId extends AssertionConcern implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserId userId = (UserId) o;
+        RoleId userId = (RoleId) o;
 
         if (tenantId != null ? !tenantId.equals(userId.tenantId) : userId.tenantId != null) return false;
-        return username != null ? username.equals(userId.username) : userId.username == null;
+        return name != null ? name.equals(userId.name) : userId.name == null;
     }
 
     @Override
     public int hashCode() {
         int result = tenantId != null ? tenantId.hashCode() : 0;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "UserId = [" + "tenantId=" + tenantId + ", username=" + username + " ]";
+        return "UserId = [" + "tenantId=" + tenantId + ", name=" + name + " ]";
     }
 }

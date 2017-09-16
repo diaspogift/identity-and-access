@@ -33,13 +33,13 @@ public class GroupTest extends IdentityAndAccessTest {
 
         assertNotNull(group);
         DomainRegistry.groupRepository().add(group);
-        assertEquals(tenant.tenantId(), group.tenantId());
+        assertEquals(tenant.tenantId(), group.groupId().tenantId());
         assertEquals(FIXTURE_GROUP_DESCRIPTION_1, group.description());
-        assertEquals(FIXTURE_GROUP_NAME_1, group.name());
+        assertEquals(FIXTURE_GROUP_NAME_1, group.groupId().name());
         assertEquals(0, group.groupMembers().size());
         assertEquals(1, DomainRegistry.groupRepository().allGroups(tenant.tenantId()).size());
 
-        Group foundGroup = DomainRegistry.groupRepository().groupNamed(group.tenantId(), group.name());
+        Group foundGroup = DomainRegistry.groupRepository().groupNamed(group.groupId().tenantId(), group.groupId().name());
         assertEquals(group, foundGroup);
 
     }
@@ -64,7 +64,7 @@ public class GroupTest extends IdentityAndAccessTest {
         }
         assertNotNull(foundGroupMember);
         assertEquals(GroupMemberType.Group, foundGroupMember.type());
-        Group foundGroup = new Group(tenant.tenantId(), foundGroupMember.name(), FIXTURE_GROUP_DESCRIPTION_1);
+        Group foundGroup = new Group(new GroupId(tenant.tenantId(), foundGroupMember.name()), FIXTURE_GROUP_DESCRIPTION_1);
         assertEquals(nestGroup, foundGroup);
         assertTrue(foundGroupMember.isGroup());
         this.expectedEvents(3);
@@ -79,7 +79,7 @@ public class GroupTest extends IdentityAndAccessTest {
         Tenant tenant = this.actifTenantAggregate();
         Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         TenantId tenantId1 = new TenantId(UUID.randomUUID().toString().toUpperCase());
-        Group nestGroupWithWrongTenantId = new Group(tenantId1, FIXTURE_GROUP_NAME_2, FIXTURE_GROUP_DESCRIPTION_2);
+        Group nestGroupWithWrongTenantId = new Group(new GroupId(tenantId1, FIXTURE_GROUP_NAME_2), FIXTURE_GROUP_DESCRIPTION_2);
         group.addGroup(nestGroupWithWrongTenantId, DomainRegistry.groupMemberService());
     }
 
@@ -100,11 +100,11 @@ public class GroupTest extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group3);
         DomainRegistry.groupRepository().add(group4);
 
-        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.name());
-        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.name());
-        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.name());
-        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.name());
-        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.name());
+        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.groupId().name());
+        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());
+        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.groupId().name());
+        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.groupId().name());
+        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.groupId().name());
 
         group1.addGroup(group2, DomainRegistry.groupMemberService());
         group2.addGroup(group3, DomainRegistry.groupMemberService());
@@ -136,11 +136,11 @@ public class GroupTest extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group3);
         DomainRegistry.groupRepository().add(group4);
 
-        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.name());
-        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.name());
-        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.name());
-        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.name());
-        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.name());
+        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.groupId().name());
+        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());
+        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.groupId().name());
+        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.groupId().name());
+        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.groupId().name());
 
         group1.addGroup(group2, DomainRegistry.groupMemberService());
         group2.addGroup(group3, DomainRegistry.groupMemberService());
@@ -173,11 +173,11 @@ public class GroupTest extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group3);
         DomainRegistry.groupRepository().add(group4);
 
-        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.name());
-        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.name());
-        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.name());
-        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.name());
-        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.name());
+        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.groupId().name());
+        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());
+        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.groupId().name());
+        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.groupId().name());
+        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.groupId().name());
 
         group1.addGroup(group2, DomainRegistry.groupMemberService());
         group2.addGroup(group3, DomainRegistry.groupMemberService());
@@ -277,7 +277,7 @@ public class GroupTest extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group);
         assertTrue(DomainRegistry.groupMemberService().confirmUser(group, user));
         assertEquals(1, group.groupMembers().size());
-        group = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group.name());
+        group = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group.groupId().name());
         group.removeUser(user);
         assertEquals(0, group.groupMembers().size());
     }
@@ -306,7 +306,7 @@ public class GroupTest extends IdentityAndAccessTest {
         assertNotNull(foundGroupMember);
         assertEquals(GroupMemberType.Group, foundGroupMember.type());
 
-        Group foundGroup = new Group(tenant.tenantId(), foundGroupMember.name(), FIXTURE_GROUP_DESCRIPTION_1);
+        Group foundGroup = new Group(new GroupId(tenant.tenantId(), foundGroupMember.name()), FIXTURE_GROUP_DESCRIPTION_1);
         assertEquals(nestGroup, foundGroup);
         assertTrue(foundGroupMember.isGroup());
 
@@ -365,11 +365,11 @@ public class GroupTest extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group3);
         DomainRegistry.groupRepository().add(group4);
 
-        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.name());
-        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.name());
-        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.name());
-        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.name());
-        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.name());
+        group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.groupId().name());
+        group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());
+        group2 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group2.groupId().name());
+        group3 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group3.groupId().name());
+        group4 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group4.groupId().name());
 
 
         group1.addGroup(group2, DomainRegistry.groupMemberService());
@@ -404,7 +404,7 @@ public class GroupTest extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group);
         assertTrue(DomainRegistry.groupMemberService().confirmUser(group, user));
         assertEquals(1, group.groupMembers().size());
-        group = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group.name());
+        group = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group.groupId().name());
         group.removeUser(user);
         assertEquals(0, group.groupMembers().size());
 

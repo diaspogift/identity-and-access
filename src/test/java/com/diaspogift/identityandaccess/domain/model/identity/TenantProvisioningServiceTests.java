@@ -5,6 +5,7 @@ import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ public class TenantProvisioningServiceTests extends IdentityAndAccessTest {
 
     //TO DO more asserts to come
     @Test
+    @Rollback(false)
     public void provisionTenant() {
 
         FullName tenantAdminFullName = new FullName(FIXTURE_FIRST_NAME_1, FIXTURE_LAST_NAME_1);

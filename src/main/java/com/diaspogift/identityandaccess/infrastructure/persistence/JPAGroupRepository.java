@@ -25,7 +25,7 @@ public class JPAGroupRepository implements GroupRepository {
     public Collection<Group> allGroups(TenantId aTenantId) {
         return this.entityManager()
                 .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
-                        "where group.tenantId = :tenantId", Group.class)
+                        "where group.groupId.tenantId = :tenantId", Group.class)
                 .setParameter("tenantId", aTenantId)
                 .getResultList();
     }
@@ -34,7 +34,7 @@ public class JPAGroupRepository implements GroupRepository {
     public Group groupNamed(TenantId aTenantId, String aName) {
         return this.entityManager()
                 .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
-                        "where group.tenantId = :tenantId and group.name = :name", Group.class)
+                        "where group.groupId.tenantId = :tenantId and group.groupId.name = :name", Group.class)
                 .setParameter("tenantId", aTenantId)
                 .setParameter("name", aName)
                 .getSingleResult();

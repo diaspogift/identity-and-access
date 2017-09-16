@@ -37,7 +37,12 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // Use MySQL Connector-J
-    compile 'mysql:mysql-connector-java'
+    //compile 'mysql:mysql-connector-java'
+    compile 'org.springframework.boot:spring-boot-devtools'
+
+
+    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+
 
     compile group: 'com.google.code.gson', name: 'gson', version: '2.1'
 

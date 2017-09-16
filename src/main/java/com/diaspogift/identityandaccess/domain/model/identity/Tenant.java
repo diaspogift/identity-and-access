@@ -2,6 +2,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.access.Role;
+import com.diaspogift.identityandaccess.domain.model.access.RoleId;
 import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
@@ -163,7 +164,7 @@ public class Tenant extends ConcurrencySafeEntity {
     public Group provisionGroup(String aName, String aDescription) {
         this.assertStateTrue(this.isActive(), "Tenant is not active.");
 
-        Group group = new Group(this.tenantId(), aName, aDescription);
+        Group group = new Group(new GroupId(this.tenantId(), aName), aDescription);
 
         DomainEventPublisher
                 .instance()
@@ -200,7 +201,7 @@ public class Tenant extends ConcurrencySafeEntity {
     public Role provisionRole(String aName, String aDescription, boolean aSupportsNesting) {
         this.assertStateTrue(this.isActive(), "Tenant is not active.");
 
-        Role role = new Role(this.tenantId(), aName, aDescription, aSupportsNesting);
+        Role role = new Role(new RoleId(this.tenantId(), aName), aDescription, aSupportsNesting);
 
         DomainEventPublisher
                 .instance()

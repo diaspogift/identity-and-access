@@ -165,8 +165,8 @@ public class TenantTest extends IdentityAndAccessTest {
         Tenant tenant = this.actifTenantAggregate();
         Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         assertNotNull(group);
-        assertEquals(FIXTURE_GROUP_NAME_1, group.name());
-        assertEquals(tenant.tenantId(), group.tenantId());
+        assertEquals(FIXTURE_GROUP_NAME_1, group.groupId().name());
+        assertEquals(tenant.tenantId(), group.groupId().tenantId());
         assertEquals(FIXTURE_GROUP_DESCRIPTION_1, group.description());
         this.expectedEvent(GroupProvisioned.class, 1);
         this.expectedEvents(1);
@@ -179,8 +179,8 @@ public class TenantTest extends IdentityAndAccessTest {
         Tenant tenant = this.actifTenantAggregate();
         Role role = tenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         assertNotNull(role);
-        assertEquals(FIXTURE_ROLE_NAME, role.name());
-        assertEquals(tenant.tenantId(), role.tenantId());
+        assertEquals(FIXTURE_ROLE_NAME, role.roleId().name());
+        assertEquals(tenant.tenantId(), role.roleId().tenantId());
         assertEquals(FIXTURE_ROLE_DESCRIPTION, role.description());
         this.expectedEvent(RoleProvisioned.class, 1);
         this.expectedEvents(1);

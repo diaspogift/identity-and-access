@@ -11,17 +11,16 @@ public class Group extends ConcurrencySafeEntity {
 
     public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
     private static final long serialVersionUID = 1L;
+    private GroupId groupId;
     private String description;
     private Set<GroupMember> groupMembers;
-    private String name;
-    private TenantId tenantId;
 
-    public Group(TenantId aTenantId, String aName, String aDescription) {
+
+    public Group(GroupId aGroupId, String aDescription) {
         this();
 
         this.setDescription(aDescription);
-        this.setName(aName);
-        this.setTenantId(aTenantId);
+        this.setGroupId(aGroupId);
     }
 
     protected Group() {
@@ -32,7 +31,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public void addGroup(Group aGroup, GroupMemberService aGroupMemberService) {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.groupId().tenantId(), aGroup.groupId().tenantId(), "Wrong tenant for this group.");
         this.assertArgumentFalse(aGroupMemberService.isMemberGroup(aGroup, this.toGroupMember()), "Group recurrsion.");
 
 
@@ -41,9 +40,9 @@ public class Group extends ConcurrencySafeEntity {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupAdded(
-                            this.tenantId(),
-                            this.name(),
-                            aGroup.name()));
+                            this.groupId().tenantId(),
+                            this.groupId().name(),
+                            aGroup.groupId().name()));
         }
 
     }
@@ -51,15 +50,15 @@ public class Group extends ConcurrencySafeEntity {
 
     public void addUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.groupId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         if (this.groupMembers().add(aUser.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserAdded(
-                            this.tenantId(),
-                            this.name(),
+                            this.groupId().tenantId(),
+                            this.groupId().name(),
                             aUser.userId().username()));
         }
     }
@@ -74,7 +73,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public boolean isMember(User aUser, GroupMemberService aGroupMemberService) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.groupId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         boolean isMember =
@@ -89,70 +88,63 @@ public class Group extends ConcurrencySafeEntity {
         return isMember;
     }
 
-    public String name() {
-        return this.name;
-    }
 
     public void removeGroup(Group aGroup) {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.groupId().tenantId(), aGroup.groupId().tenantId(), "Wrong tenant for this group.");
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aGroup.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupRemoved(
-                            this.tenantId(),
-                            this.name(),
-                            aGroup.name()));
+                            this.groupId().tenantId(),
+                            this.groupId().name(),
+                            aGroup.groupId().name()));
         }
     }
 
     public void removeUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.groupId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
 
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aUser.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserRemoved(
-                            this.tenantId(),
-                            this.name(),
+                            this.groupId().tenantId(),
+                            this.groupId().name(),
                             aUser.userId().username()));
         }
     }
 
-    public TenantId tenantId() {
-        return this.tenantId;
+
+    public GroupId groupId() {
+        return this.groupId;
     }
 
     @Override
-    public boolean equals(Object anObject) {
-        boolean equalObjects = false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        if (anObject != null && this.getClass() == anObject.getClass()) {
-            Group typedObject = (Group) anObject;
-            equalObjects =
-                    this.tenantId().equals(typedObject.tenantId()) &&
-                            this.name().equals(typedObject.name());
-        }
+        Group group = (Group) o;
 
-        return equalObjects;
+        return groupId != null ? groupId.equals(group.groupId) : group.groupId == null;
     }
 
     @Override
     public int hashCode() {
-        int hashCodeValue =
-                +(2061 * 193)
-                        + this.tenantId().hashCode()
-                        + this.name().hashCode();
-
-        return hashCodeValue;
+        return groupId != null ? groupId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "Group [description=" + description + ", name=" + name + ", tenantId=" + tenantId + "]";
+        return "Group{" +
+                "groupId=" + groupId +
+                ", description='" + description + '\'' +
+                ", groupMembers=" + groupMembers +
+                '}';
     }
 
     protected void setDescription(String aDescription) {
@@ -167,19 +159,33 @@ public class Group extends ConcurrencySafeEntity {
     }
 
     protected boolean isInternalGroup() {
-        return this.isInternalGroup(this.name());
+        return this.isInternalGroup(this.groupId().name());
     }
 
     protected boolean isInternalGroup(String aName) {
         return aName.startsWith(ROLE_GROUP_PREFIX);
     }
 
-    protected void setName(String aName) {
-        this.assertArgumentNotEmpty(aName, "Group name is required.");
-        this.assertArgumentLength(aName, 1, 100, "Group name must be 100 characters or less.");
 
-        if (this.isInternalGroup(aName)) {
-            String uuid = aName.substring(ROLE_GROUP_PREFIX.length());
+    protected GroupMember toGroupMember() {
+        GroupMember groupMember =
+                new GroupMember(
+                        this.groupId().tenantId(),
+                        this.groupId().name(),
+                        GroupMemberType.Group);
+
+
+        return groupMember;
+    }
+
+    public void setGroupId(GroupId aGroupId) {
+
+        this.assertArgumentNotNull(aGroupId.tenantId(), "The tenantId must be provided.");
+        this.assertArgumentNotEmpty(aGroupId.name(), "Group name is required.");
+        this.assertArgumentLength(aGroupId.name(), 1, 100, "Group name must be 100 characters or less.");
+
+        if (this.isInternalGroup(aGroupId.name())) {
+            String uuid = aGroupId.name().substring(ROLE_GROUP_PREFIX.length());
 
             try {
                 UUID.fromString(uuid);
@@ -188,23 +194,6 @@ public class Group extends ConcurrencySafeEntity {
             }
         }
 
-        this.name = aName;
-    }
-
-    protected void setTenantId(TenantId aTenantId) {
-        this.assertArgumentNotNull(aTenantId, "The tenantId must be provided.");
-
-        this.tenantId = aTenantId;
-    }
-
-    protected GroupMember toGroupMember() {
-        GroupMember groupMember =
-                new GroupMember(
-                        this.tenantId(),
-                        this.name(),
-                        GroupMemberType.Group);
-
-
-        return groupMember;
+        this.groupId = aGroupId;
     }
 }
