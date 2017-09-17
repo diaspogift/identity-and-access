@@ -7,11 +7,11 @@ import java.util.Collection;
 
 public interface RoleRepository {
 
-    public void add(Role aRole);
+    void add(Role aRole);
 
-    public Collection<Role> allRoles(TenantId aTenantId);
+    Collection<Role> allRoles(TenantId aTenantId);
 
-    public void remove(Role aRole);
+    void remove(Role aRole);
 
-    public Role roleNamed(TenantId aTenantId, String aRoleName);
+    Role roleNamed(TenantId aTenantId, String aRoleName);
 }

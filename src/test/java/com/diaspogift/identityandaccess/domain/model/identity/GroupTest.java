@@ -5,6 +5,7 @@ import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,6 +34,27 @@ public class GroupTest extends IdentityAndAccessTest {
 
         assertNotNull(group);
         DomainRegistry.groupRepository().add(group);
+        assertEquals(tenant.tenantId(), group.groupId().tenantId());
+        assertEquals(FIXTURE_GROUP_DESCRIPTION_1, group.description());
+        assertEquals(FIXTURE_GROUP_NAME_1, group.groupId().name());
+        assertEquals(0, group.groupMembers().size());
+        assertEquals(1, DomainRegistry.groupRepository().allGroups(tenant.tenantId()).size());
+
+        Group foundGroup = DomainRegistry.groupRepository().groupNamed(group.groupId().tenantId(), group.groupId().name());
+        assertEquals(group, foundGroup);
+
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void createGroupGroupIdConstraintViolation() {
+
+        Tenant tenant = this.actifTenantAggregate();
+        Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+        Group duplicateGroup = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
+        assertNotNull(group);
+        DomainRegistry.groupRepository().add(group);
+        DomainRegistry.groupRepository().add(duplicateGroup);
         assertEquals(tenant.tenantId(), group.groupId().tenantId());
         assertEquals(FIXTURE_GROUP_DESCRIPTION_1, group.description());
         assertEquals(FIXTURE_GROUP_NAME_1, group.groupId().name());

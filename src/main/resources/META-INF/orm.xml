@@ -118,13 +118,6 @@
 
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.GroupMember" access="FIELD"
             name="tbl_group_member" metadata-complete="true">
-
-        <table>
-            <unique-constraint>
-                <column-name>tenant_id</column-name>
-                <column-name>name</column-name>
-            </unique-constraint>
-        </table>
         <attributes>
             <basic name="name">
                 <column name="name"/>
@@ -166,7 +159,6 @@
                 </cascade>
             </one-to-one>
             <embedded name="roleId"/>
-
         </attributes>
     </entity>
 
@@ -183,7 +175,7 @@
         <attributes>
 
             <basic name="password">
-                <column name="password"/>
+                <column name="password" nullable="false"/>
             </basic>
             <basic name="name">
                 <column name="name"/>
@@ -307,4 +299,6 @@
 
 
 </entity-mappings>
+
+
 

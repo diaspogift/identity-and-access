@@ -26,7 +26,7 @@ public class AuthorizationService extends AssertionConcern {
 
         User user = this.userRepository().userWithUsername(aTenantId, aUsername);
 
-        return user == null ? false : this.isUserInRole(user, aRoleName);
+        return user != null && this.isUserInRole(user, aRoleName);
     }
 
     public boolean isUserInRole(User aUser, String aRoleName) {

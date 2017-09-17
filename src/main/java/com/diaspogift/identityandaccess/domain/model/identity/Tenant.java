@@ -121,7 +121,7 @@ public class Tenant extends ConcurrencySafeEntity {
         RegistrationInvitation invitation =
                 this.invitation(anInvitationIdentifier);
 
-        return invitation == null ? false : invitation.isAvailable();
+        return invitation != null && invitation.isAvailable();
     }
 
     /**

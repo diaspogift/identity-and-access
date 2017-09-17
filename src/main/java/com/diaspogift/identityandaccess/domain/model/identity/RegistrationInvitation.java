@@ -57,17 +57,9 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
             if (this.startingOn() == null) {
                 isAvailable = false;
             } else if (this.until() == null) {
-                if (dateNow.isAfter(this.startingOn())) {
-                    isAvailable = true;
-                } else {
-                    isAvailable = false;
-                }
+                isAvailable = dateNow.isAfter(this.startingOn());
             } else {
-                if (dateNow.isAfter(this.startingOn()) && dateNow.isBefore(this.until())) {
-                    isAvailable = true;
-                } else {
-                    isAvailable = false;
-                }
+                isAvailable = dateNow.isAfter(this.startingOn()) && dateNow.isBefore(this.until());
             }
 
 
@@ -179,7 +171,7 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
     protected void assertValidInvitationDates() {
         // either both dates must be null, or both dates must be set
         if (this.startingOn() == null && this.until() == null) {
-            ; // valid
+            // valid
         } else if (this.startingOn() == null && this.until() != null) {
             throw new IllegalStateException("This is an invalid open-ended invitation.");
         } else if (this.startingOn() != null && this.until() != null && this.until().isBefore(this.startingOn())) {

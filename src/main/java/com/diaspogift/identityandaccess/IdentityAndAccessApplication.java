@@ -2,6 +2,8 @@ package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
+import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,7 +21,11 @@ public class IdentityAndAccessApplication {
                         "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques", "Douala", "Littoral", "80209",
                         "US");
 
+
         ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand);
+
+        TenantId tenantId =
+                DomainRegistry.tenantRepository().nextIdentity();
 
 
     }

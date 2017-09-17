@@ -4,21 +4,21 @@ import java.util.Collection;
 
 public interface UserRepository {
 
-    public void add(User aUser);
+    void add(User aUser);
 
-    public Collection<User> allSimilarlyNamedUsers(
+    Collection<User> allSimilarlyNamedUsers(
             TenantId aTenantId,
             String aFirstNamePrefix,
             String aLastNamePrefix);
 
-    public void remove(User aUser);
+    void remove(User aUser);
 
-    public User userFromAuthenticCredentials(
+    User userFromAuthenticCredentials(
             TenantId aTenantId,
             String aUsername,
             String anEncryptedPassword);
 
-    public User userWithUsername(
+    User userWithUsername(
             TenantId aTenantId,
             String aUsername);
 }

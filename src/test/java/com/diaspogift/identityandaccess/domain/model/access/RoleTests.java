@@ -7,6 +7,7 @@ import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +27,33 @@ public class RoleTests extends IdentityAndAccessTest {
 
         Tenant activeTenant = this.actifTenantAggregate();
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
+
         assertTrue(role.supportsNesting());
+
         DomainRegistry.roleRepository().add(role);
+        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.roleId().name());
+
+        assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
+        assertEquals(role, savedRole);
+        this.expectedEvents(1);
+        this.expectedEvent(RoleProvisioned.class, 1);
+
+    }
+
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void cretateRoleRoleIdConstraintViolation() {
+
+        Tenant activeTenant = this.actifTenantAggregate();
+        Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
+        Role duplicateRole = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
+
+        assertTrue(role.supportsNesting());
+        assertTrue(duplicateRole.supportsNesting());
+
+        DomainRegistry.roleRepository().add(role);
+        DomainRegistry.roleRepository().add(duplicateRole);
+
         Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.roleId().name());
         assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
         assertEquals(role, savedRole);
@@ -42,9 +68,12 @@ public class RoleTests extends IdentityAndAccessTest {
 
         Tenant activeTenant = this.actifTenantAggregate();
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION);
+
         assertFalse(role.supportsNesting());
+
         DomainRegistry.roleRepository().add(role);
         Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.roleId().name());
+
         assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
         assertEquals(role, savedRole);
         this.expectedEvents(1);
@@ -59,7 +88,9 @@ public class RoleTests extends IdentityAndAccessTest {
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         DomainRegistry.roleRepository().add(role);
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
         role.assignGroup(group, DomainRegistry.groupMemberService());
+
         assertEquals(1, role.group().groupMembers().size());
         GroupMember addedGroupMember = null;
         for (GroupMember next : role.group().groupMembers()) {
@@ -85,7 +116,9 @@ public class RoleTests extends IdentityAndAccessTest {
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         DomainRegistry.roleRepository().add(role);
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
         role.assignGroup(group, DomainRegistry.groupMemberService());
+
         assertEquals(1, role.group().groupMembers().size());
         GroupMember addedGroupMember = null;
         for (GroupMember next : role.group().groupMembers()) {
@@ -114,7 +147,9 @@ public class RoleTests extends IdentityAndAccessTest {
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION);
         DomainRegistry.roleRepository().add(role);
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
         role.assignGroup(group, DomainRegistry.groupMemberService());
+
         this.expectedEvent(GroupAssignedToRole.class, 1);
     }
 
@@ -125,8 +160,10 @@ public class RoleTests extends IdentityAndAccessTest {
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         DomainRegistry.roleRepository().add(role);
         Group group = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
         role.assignGroup(group, DomainRegistry.groupMemberService());
         role.assignGroup(group, DomainRegistry.groupMemberService());
+
         assertEquals(1, role.group().groupMembers().size());
         this.expectedEvents(5);
         this.expectedEvent(GroupAssignedToRole.class, 2);
@@ -145,6 +182,7 @@ public class RoleTests extends IdentityAndAccessTest {
         Role role2 = activeTenant.provisionRole(FIXTURE_ROLE_NAME_2, FIXTURE_ROLE_DESCRIPTION_2, true);
         DomainRegistry.roleRepository().add(role1);
         DomainRegistry.roleRepository().add(role2);
+
         Group group1 = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         Group group2 = activeTenant.provisionGroup(FIXTURE_GROUP_NAME_2, FIXTURE_GROUP_DESCRIPTION_2);
         group2.addGroup(group1, DomainRegistry.groupMemberService());
@@ -152,6 +190,7 @@ public class RoleTests extends IdentityAndAccessTest {
         DomainRegistry.groupRepository().add(group2);
         group1.addGroup(role1.group(), DomainRegistry.groupMemberService());
         role1.assignGroup(group2, DomainRegistry.groupMemberService());
+
         this.expectedEvents(1);
         this.expectedEvent(GroupAssignedToRole.class, 1);
     }
@@ -162,19 +201,17 @@ public class RoleTests extends IdentityAndAccessTest {
         Tenant activeTenant = this.actifTenantAggregate();
         Role role = activeTenant.provisionRole(FIXTURE_ROLE_NAME_1, FIXTURE_ROLE_DESCRIPTION_1, true);
         User user = this.userAggregate();
-
         assertNotNull(user);
-
         DomainRegistry.userRepository().add(user);
-        role.assignUser(user);
-        assertEquals(1, role.group().groupMembers().size());
 
+        role.assignUser(user);
+
+        assertEquals(1, role.group().groupMembers().size());
         for (GroupMember next : role.group().groupMembers()) {
             assertEquals(GroupMemberType.User, next.type());
             assertEquals(user.userId().username(), next.name());
             assertEquals(user.userId().tenantId(), next.tenantId());
         }
-
         this.expectedEvents(4);
         this.expectedEvent(UserAssignedToRole.class, 1);
         this.expectedEvent(RoleProvisioned.class, 1);
@@ -198,7 +235,9 @@ public class RoleTests extends IdentityAndAccessTest {
             assertEquals(user.userId().username(), next.name());
             assertEquals(user.userId().tenantId(), next.tenantId());
         }
+
         role.unassignUser(user);
+
         assertEquals(0, role.group().groupMembers().size());
         this.expectedEvents(5);
         this.expectedEvent(UserAssignedToRole.class, 1);
@@ -215,14 +254,16 @@ public class RoleTests extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
-
         DomainRegistry.userRepository().add(user);
         Role managerRole = tenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
         Group group = new Group(new GroupId(user.userId().tenantId(), FIXTURE_GROUP_NAME_1), FIXTURE_GROUP_DESCRIPTION_1);
+
         group.addUser(user);
+
         DomainRegistry.groupRepository().add(group);
         managerRole.assignGroup(group, DomainRegistry.groupMemberService());
         DomainRegistry.roleRepository().add(managerRole);
+
         assertTrue(group.isMember(user, DomainRegistry.groupMemberService()));
         assertTrue(managerRole.isInRole(user, DomainRegistry.groupMemberService()));
     }
@@ -235,6 +276,7 @@ public class RoleTests extends IdentityAndAccessTest {
         DomainRegistry.userRepository().add(user);
         Role managerRole = tenant.provisionRole(FIXTURE_ROLE_NAME_1, FIXTURE_ROLE_DESCRIPTION_1, true);
         Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
+
         DomainRegistry.groupRepository().add(group);
         managerRole.assignGroup(group, DomainRegistry.groupMemberService());
         DomainRegistry.roleRepository().add(managerRole);

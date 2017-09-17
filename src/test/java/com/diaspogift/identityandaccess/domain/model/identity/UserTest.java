@@ -6,6 +6,7 @@ import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,29 @@ public class UserTest extends IdentityAndAccessTest {
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
         DomainRegistry.userRepository().add(user);
+        assertNotNull(user);
+        assertEquals(FIXTURE_USERNAME_1, user.userId().username());
+        assertTrue(user.isEnabled());
+        assertEquals(new Enablement(true, null, null), user.enablement());
+        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.userId().username());
+        assertEquals(user, foundUser);
+    }
+
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void createUserUserIdConstraintViolation() {
+
+        Tenant tenant = this.actifTenantAggregate();
+        User user = this.userAggregate();
+        User duplicateUser = new User(
+                user.userId(),
+                FIXTURE_PASSWORD,
+                user.enablement(),
+                user.person()
+        );
+        DomainRegistry.userRepository().add(user);
+        DomainRegistry.userRepository().add(duplicateUser);
         assertNotNull(user);
         assertEquals(FIXTURE_USERNAME_1, user.userId().username());
         assertTrue(user.isEnabled());

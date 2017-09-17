@@ -143,10 +143,6 @@ public class IdentityAndAccessTest extends EventTrackingTests {
                         new Enablement(true, null, null),
                         this.personEntity(tenant));
 
-        System.out.println("\n\n USER in userAggregate ==== >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + user);
-        System.out.println("\n\n USER in userAggregate ==== >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + user);
-        System.out.println("\n\n USER in userAggregate ==== >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + user);
-
         return user;
     }
 

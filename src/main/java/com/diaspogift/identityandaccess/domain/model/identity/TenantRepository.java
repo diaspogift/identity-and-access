@@ -2,13 +2,13 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 public interface TenantRepository {
 
-    public void add(Tenant aTenant);
+    void add(Tenant aTenant);
 
-    public TenantId nextIdentity();
+    TenantId nextIdentity();
 
-    public void remove(Tenant aTenant);
+    void remove(Tenant aTenant);
 
-    public Tenant tenantNamed(String aName);
+    Tenant tenantNamed(String aName);
 
-    public Tenant tenantOfId(TenantId aTenantId);
+    Tenant tenantOfId(TenantId aTenantId);
 }

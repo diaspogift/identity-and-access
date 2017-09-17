@@ -4,7 +4,7 @@ import java.util.Date;
 
 public interface DomainEvent {
 
-    public int eventVersion();
+    int eventVersion();
 
-    public Date occurredOn();
+    Date occurredOn();
 }
