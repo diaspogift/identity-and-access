@@ -15,7 +15,10 @@ public class TelephoneTests {
 
     @Test
     public void createTelephone() {
-        Telephone telephone = new Telephone("US", "001", "303-807-3573");
+
+        Telephone telephone =
+                new Telephone("US", "001", "303-807-3573");
+
         assertNotNull(telephone);
         assertEquals("US", telephone.countryCode());
         assertEquals("001", telephone.countryDialingCode());
@@ -24,7 +27,10 @@ public class TelephoneTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void createWrongTelephone() {
-        Telephone telephone = new Telephone("USAAAA", "001", "303-807-3573");
+
+        Telephone telephone =
+                new Telephone("USAAAA", "001", "303-807-3573");
+
         assertNotNull(telephone);
         assertEquals("USAAAA", telephone.countryCode());
         assertEquals("001", telephone.countryDialingCode());
@@ -33,7 +39,10 @@ public class TelephoneTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void createWrongTelephone1() {
-        Telephone telephone = new Telephone("USAAAA", "001", "303-807-3573555");
+
+        Telephone telephone =
+                new Telephone("USA", "001", "303-807-3573555");
+
         assertNotNull(telephone);
         assertEquals("USAAAA", telephone.countryCode());
         assertEquals("001", telephone.countryDialingCode());

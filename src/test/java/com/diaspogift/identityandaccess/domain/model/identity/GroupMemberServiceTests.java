@@ -27,10 +27,14 @@ public class GroupMemberServiceTests extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
+
         DomainRegistry.userRepository().add(user);
+
         Group group = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         group.addUser(user);
+
         DomainRegistry.groupRepository().add(group);
+
         assertTrue(DomainRegistry.groupMemberService().confirmUser(group, user));
     }
 
@@ -41,10 +45,12 @@ public class GroupMemberServiceTests extends IdentityAndAccessTest {
         Tenant tenant = this.actifTenantAggregate();
         Group group1 = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         Group group2 = tenant.provisionGroup(FIXTURE_GROUP_NAME_2, FIXTURE_GROUP_DESCRIPTION_2);
+
         DomainRegistry.groupRepository().add(group1);
         DomainRegistry.groupRepository().add(group2);
 
         group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());
+
         group1.addGroup(group2, DomainRegistry.groupMemberService());
 
         assertTrue(DomainRegistry.groupMemberService().isMemberGroup(group1, group2.toGroupMember()));
@@ -55,16 +61,23 @@ public class GroupMemberServiceTests extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
+
         DomainRegistry.userRepository().add(user);
+
         Group group1 = tenant.provisionGroup(FIXTURE_GROUP_NAME_1, FIXTURE_GROUP_DESCRIPTION_1);
         Group group2 = tenant.provisionGroup(FIXTURE_GROUP_NAME_2, FIXTURE_GROUP_DESCRIPTION_2);
         group1.addGroup(group2, DomainRegistry.groupMemberService());
         group2.addUser(user);
+
         DomainRegistry.groupRepository().add(group1);
         DomainRegistry.groupRepository().add(group2);
+
         Role role = tenant.provisionRole(FIXTURE_ROLE_NAME, FIXTURE_ROLE_DESCRIPTION, true);
+
         DomainRegistry.roleRepository().add(role);
+
         role.assignGroup(group1, DomainRegistry.groupMemberService());
+
         assertTrue(DomainRegistry.groupMemberService().isUserInNestedGroup(group1, user));
     }
 

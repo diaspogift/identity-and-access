@@ -15,21 +15,55 @@ import static org.junit.Assert.assertTrue;
 public class PhoneValidatorServiceTests {
 
     @Test
-    public void validateNumber() {
+    public void validateCamerounCamtelTelephoneNumber() {
+
         assertTrue(DomainRegistry.phoneNumberValidatorService().validate("CM", "233474566"));
+    }
+
+    @Test
+    public void validateCamerounNextelTelephoneNumber() {
+
+        assertTrue(DomainRegistry.phoneNumberValidatorService().validate("CM", "669262656"));
+    }
+
+    @Test
+    public void validateCamerounMtnTelephoneNumber() {
+
+        assertTrue(DomainRegistry.phoneNumberValidatorService().validate("CM", "655545434"));
+    }
+
+
+    @Test
+    public void validateUnitedStateDenverTelephoneNumber() {
+
+        assertTrue(DomainRegistry.phoneNumberValidatorService().validate("US", "8054745660"));
+    }
+
+    @Test
+    public void validateUnitedStateLosAngelesTelephoneNumber() {
+
+        assertTrue(DomainRegistry.phoneNumberValidatorService().validate("US", "8054745660"));
+    }
+
+    @Test
+    public void validateWrongUnitedStateDenverTelephoneNumber() {
+
+        assertFalse(DomainRegistry.phoneNumberValidatorService().validate("US", "30380735734444444444"));
+    }
+
+    @Test
+    public void validateWrongUnitedStateCountryCode() {
+
+        assertFalse(DomainRegistry.phoneNumberValidatorService().validate("USA", "3034745660"));
 
     }
 
     @Test
-    public void validateWrongNumber() {
-        assertFalse(DomainRegistry.phoneNumberValidatorService().validate("CM", "30380735734444"));
+    public void validateWrongCamerounTelephoneNumber() {
+
+        assertFalse(DomainRegistry.phoneNumberValidatorService().validate("CM", "655545434999999999999"));
 
     }
 
-    @Test
-    public void validateWrongCountryCode() {
-        assertFalse(DomainRegistry.phoneNumberValidatorService().validate("US", "233474566"));
-
-    }
 
 }

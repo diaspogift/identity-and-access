@@ -3,10 +3,7 @@ package com.diaspogift.identityandaccess.domain.model.access;
 
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
-import com.diaspogift.identityandaccess.domain.model.identity.Group;
-import com.diaspogift.identityandaccess.domain.model.identity.GroupId;
-import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberService;
-import com.diaspogift.identityandaccess.domain.model.identity.User;
+import com.diaspogift.identityandaccess.domain.model.identity.*;
 
 import java.util.UUID;
 
@@ -63,7 +60,7 @@ public class Role extends ConcurrencySafeEntity {
     public void assignGroup(Group aGroup, GroupMemberService aGroupMemberService) {
         this.assertStateTrue(this.supportsNesting(), "This role does not support group nesting.");
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
-        this.assertArgumentEquals(this.roleId().tenantId(), aGroup.groupId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
 
 
         this.group().addGroup(aGroup, aGroupMemberService);
@@ -71,14 +68,14 @@ public class Role extends ConcurrencySafeEntity {
         DomainEventPublisher
                 .instance()
                 .publish(new GroupAssignedToRole(
-                        this.roleId().tenantId(),
-                        this.roleId().name(),
-                        aGroup.groupId().name()));
+                        this.tenantId(),
+                        this.name(),
+                        aGroup.name()));
     }
 
     public void assignUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.roleId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this user.");
+        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this user.");
 
         this.group().addUser(aUser);
 
@@ -88,9 +85,9 @@ public class Role extends ConcurrencySafeEntity {
         DomainEventPublisher
                 .instance()
                 .publish(new UserAssignedToRole(
-                        this.roleId().tenantId(),
-                        this.roleId().name(),
-                        aUser.userId().username(),
+                        this.tenantId(),
+                        this.name(),
+                        aUser.username(),
                         aUser.person().name().firstName(),
                         aUser.person().name().lastName(),
                         aUser.person().emailAddress().address()));
@@ -104,49 +101,49 @@ public class Role extends ConcurrencySafeEntity {
         return this.group().isMember(aUser, aGroupMemberService);
     }
 
-/*
+
     public String name() {
-        return this.name;
+        return this.roleId().name();
     }
-*/
+
 
     public boolean supportsNesting() {
         return this.supportsNesting;
     }
 
-/*
+
     public TenantId tenantId() {
-        return this.tenantId;
+        return this.roleId().tenantId();
     }
-*/
+
 
     public void unassignGroup(Group aGroup) {
         this.assertStateTrue(this.supportsNesting(), "This role does not support group nesting.");
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
-        this.assertArgumentEquals(this.roleId().tenantId(), aGroup.groupId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
 
         this.group().removeGroup(aGroup);
 
         DomainEventPublisher
                 .instance()
                 .publish(new GroupUnassignedFromRole(
-                        this.roleId().tenantId(),
-                        this.roleId().name(),
-                        aGroup.groupId().name()));
+                        this.tenantId(),
+                        this.name(),
+                        aGroup.name()));
     }
 
     public void unassignUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.roleId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this user.");
+        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this user.");
 
         this.group().removeUser(aUser);
 
         DomainEventPublisher
                 .instance()
                 .publish(new UserUnassignedFromRole(
-                        this.roleId().tenantId(),
-                        this.roleId().name(),
-                        aUser.userId().username()));
+                        this.tenantId(),
+                        this.name(),
+                        aUser.username()));
     }
 
     @Override
@@ -156,8 +153,8 @@ public class Role extends ConcurrencySafeEntity {
         if (anObject != null && this.getClass() == anObject.getClass()) {
             Role typedObject = (Role) anObject;
             equalObjects =
-                    this.roleId().tenantId().equals(typedObject.roleId().tenantId()) &&
-                            this.roleId().name().equals(typedObject.roleId().name());
+                    this.tenantId().equals(typedObject.tenantId()) &&
+                            this.name().equals(typedObject.name());
         }
 
         return equalObjects;
@@ -167,8 +164,8 @@ public class Role extends ConcurrencySafeEntity {
     public int hashCode() {
         int hashCodeValue =
                 +(18723 * 233)
-                        + this.roleId().tenantId().hashCode()
-                        + this.roleId().name().hashCode();
+                        + this.tenantId().hashCode()
+                        + this.name().hashCode();
 
         return hashCodeValue;
     }
@@ -187,7 +184,7 @@ public class Role extends ConcurrencySafeEntity {
         String groupName =
                 Group.ROLE_GROUP_PREFIX + UUID.randomUUID().toString().toUpperCase();
 
-        this.setGroup(new Group(new GroupId(this.roleId().tenantId(), groupName), "Role backing group for: " + this.roleId().name()));
+        this.setGroup(new Group(new GroupId(this.tenantId(), groupName), "Role backing group for: " + this.name()));
     }
 
     protected void setDescription(String aDescription) {

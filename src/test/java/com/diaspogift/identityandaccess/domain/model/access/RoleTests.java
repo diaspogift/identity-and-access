@@ -31,7 +31,7 @@ public class RoleTests extends IdentityAndAccessTest {
         assertTrue(role.supportsNesting());
 
         DomainRegistry.roleRepository().add(role);
-        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.roleId().name());
+        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.name());
 
         assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
         assertEquals(role, savedRole);
@@ -54,7 +54,7 @@ public class RoleTests extends IdentityAndAccessTest {
         DomainRegistry.roleRepository().add(role);
         DomainRegistry.roleRepository().add(duplicateRole);
 
-        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.roleId().name());
+        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.name());
         assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
         assertEquals(role, savedRole);
         this.expectedEvents(1);
@@ -72,7 +72,7 @@ public class RoleTests extends IdentityAndAccessTest {
         assertFalse(role.supportsNesting());
 
         DomainRegistry.roleRepository().add(role);
-        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.roleId().name());
+        Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.name());
 
         assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
         assertEquals(role, savedRole);

@@ -36,7 +36,7 @@ public class AuthorizationService extends AssertionConcern {
         boolean authorized = false;
 
         if (aUser.isEnabled()) {
-            Role role = this.roleRepository().roleNamed(aUser.userId().tenantId(), aRoleName);
+            Role role = this.roleRepository().roleNamed(aUser.tenantId(), aRoleName);
 
             if (role != null) {
 

@@ -2,6 +2,8 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
+import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
+import com.diaspogift.identityandaccess.domain.model.access.UserAssignedToRole;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +41,14 @@ public class TenantProvisioningServiceTests extends IdentityAndAccessTest {
                                 tenantSecondaryTelephone);
 
         assertNotNull(provisionedTenant);
+
+        this.expectedEvents(6);
+        this.expectedEvent(UserRegistered.class, 1);
+        this.expectedEvent(RoleProvisioned.class, 1);
+        this.expectedEvent(GroupUserAdded.class, 1);
+        this.expectedEvent(UserAssignedToRole.class, 1);
+        this.expectedEvent(TenantAdministratorRegistered.class, 1);
+        this.expectedEvent(TenantProvisioned.class, 1);
     }
 
 

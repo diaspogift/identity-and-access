@@ -14,12 +14,19 @@ public class ContactInformationTests {
     @Test
     public void testChangeEmailAddress() {
 
-        ContactInformation contactInformation = new ContactInformation(
-                new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CM", "00237", "691178154"),
-                new Telephone("CM", "00237", "669262656")
-        );
+        ContactInformation contactInformation =
+                new ContactInformation(
+                        new EmailAddress("email@yahoo.fr"),
+                        new PostalAddress(
+                                "Street address",
+                                "Street city",
+                                "State province",
+                                "Postal code",
+                                "US"
+                        ),
+                        new Telephone("CM", "00237", "691178154"),
+                        new Telephone("CM", "00237", "669262656")
+                );
 
         ContactInformation contactInformation1 = contactInformation.changeEmailAddress(new EmailAddress("changedemail@gmail.com"));
 
@@ -28,12 +35,20 @@ public class ContactInformationTests {
 
     @Test
     public void changePostalAddress() {
-        ContactInformation contactInformation = new ContactInformation(
-                new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CM", "00237", "691178154"),
-                new Telephone("CM", "00237", "669262656")
-        );
+
+        ContactInformation contactInformation =
+                new ContactInformation(
+                        new EmailAddress("email@yahoo.fr"),
+                        new PostalAddress(
+                                "Street address",
+                                "Street city",
+                                "State province",
+                                "Postal code",
+                                "US"
+                        ),
+                        new Telephone("CM", "00237", "691178154"),
+                        new Telephone("CM", "00237", "669262656")
+                );
 
         ContactInformation contactInformation1 = contactInformation.changePostalAddress(
                 new PostalAddress("Street address CM", "Street city Douala", "State province LT", "Postal 1234", "CM")
@@ -47,12 +62,20 @@ public class ContactInformationTests {
 
     @Test
     public void changePrimaryTelephone() {
-        ContactInformation contactInformation = new ContactInformation(
-                new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CM", "00237", "691178154"),
-                new Telephone("CM", "00237", "669262656")
-        );
+
+        ContactInformation contactInformation =
+                new ContactInformation(
+                        new EmailAddress("email@yahoo.fr"),
+                        new PostalAddress(
+                                "Street address",
+                                "Street city",
+                                "State province",
+                                "Postal code",
+                                "US"
+                        ),
+                        new Telephone("CM", "00237", "691178154"),
+                        new Telephone("CM", "00237", "669262656")
+                );
 
         ContactInformation contactInformation1 = contactInformation.changePrimaryTelephone(
                 new Telephone("US", "001", "303-456-4567"));
@@ -64,12 +87,20 @@ public class ContactInformationTests {
 
     @Test
     public void changeSecondaryTelephone() {
-        ContactInformation contactInformation = new ContactInformation(
-                new EmailAddress("email@yahoo.fr"),
-                new PostalAddress("Street address", "Street city", "State province", "Postal code", "US"),
-                new Telephone("CM", "00237", "691178154"),
-                new Telephone("CM", "00237", "669262656")
-        );
+
+        ContactInformation contactInformation =
+                new ContactInformation(
+                        new EmailAddress("email@yahoo.fr"),
+                        new PostalAddress(
+                                "Street address",
+                                "Street city",
+                                "State province",
+                                "Postal code",
+                                "US"
+                        ),
+                        new Telephone("CM", "00237", "691178154"),
+                        new Telephone("CM", "00237", "669262656")
+                );
 
         ContactInformation contactInformation1 = contactInformation.changeSecondaryTelephone(
                 new Telephone("US", "001", "303-807-4567"));

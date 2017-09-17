@@ -74,11 +74,8 @@ public class DomainRegistry implements ApplicationContextAware {
 
     }
 
-
     @Override
-    public synchronized void setApplicationContext(
-            ApplicationContext anApplicationContext)
-            throws BeansException {
+    public synchronized void setApplicationContext(ApplicationContext anApplicationContext) throws BeansException {
 
         if (DomainRegistry.applicationContext == null) {
             DomainRegistry.applicationContext = anApplicationContext;

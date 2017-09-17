@@ -31,7 +31,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public void addGroup(Group aGroup, GroupMemberService aGroupMemberService) {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
-        this.assertArgumentEquals(this.groupId().tenantId(), aGroup.groupId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentFalse(aGroupMemberService.isMemberGroup(aGroup, this.toGroupMember()), "Group recurrsion.");
 
 
@@ -40,9 +40,9 @@ public class Group extends ConcurrencySafeEntity {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupAdded(
-                            this.groupId().tenantId(),
-                            this.groupId().name(),
-                            aGroup.groupId().name()));
+                            this.tenantId(),
+                            this.name(),
+                            aGroup.name()));
         }
 
     }
@@ -50,16 +50,16 @@ public class Group extends ConcurrencySafeEntity {
 
     public void addUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.groupId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         if (this.groupMembers().add(aUser.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserAdded(
-                            this.groupId().tenantId(),
-                            this.groupId().name(),
-                            aUser.userId().username()));
+                            this.tenantId(),
+                            this.name(),
+                            aUser.username()));
         }
     }
 
@@ -73,7 +73,7 @@ public class Group extends ConcurrencySafeEntity {
 
     public boolean isMember(User aUser, GroupMemberService aGroupMemberService) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.groupId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(aUser.isEnabled(), "User is not enabled.");
 
         boolean isMember =
@@ -91,30 +91,30 @@ public class Group extends ConcurrencySafeEntity {
 
     public void removeGroup(Group aGroup) {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
-        this.assertArgumentEquals(this.groupId().tenantId(), aGroup.groupId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aGroup.toGroupMember()) /*&& !this.isInternalGroup()*/) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupRemoved(
-                            this.groupId().tenantId(),
-                            this.groupId().name(),
-                            aGroup.groupId().name()));
+                            this.tenantId(),
+                            this.name(),
+                            aGroup.name()));
         }
     }
 
     public void removeUser(User aUser) {
         this.assertArgumentNotNull(aUser, "User must not be null.");
-        this.assertArgumentEquals(this.groupId().tenantId(), aUser.userId().tenantId(), "Wrong tenant for this group.");
+        this.assertArgumentEquals(this.tenantId(), aUser.tenantId(), "Wrong tenant for this group.");
 
         // not a nested remove, only direct member
         if (this.groupMembers().remove(aUser.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserRemoved(
-                            this.groupId().tenantId(),
-                            this.groupId().name(),
-                            aUser.userId().username()));
+                            this.tenantId(),
+                            this.name(),
+                            aUser.username()));
         }
     }
 
@@ -159,7 +159,7 @@ public class Group extends ConcurrencySafeEntity {
     }
 
     protected boolean isInternalGroup() {
-        return this.isInternalGroup(this.groupId().name());
+        return this.isInternalGroup(this.name());
     }
 
     protected boolean isInternalGroup(String aName) {
@@ -170,12 +170,20 @@ public class Group extends ConcurrencySafeEntity {
     protected GroupMember toGroupMember() {
         GroupMember groupMember =
                 new GroupMember(
-                        this.groupId().tenantId(),
-                        this.groupId().name(),
+                        this.tenantId(),
+                        this.name(),
                         GroupMemberType.Group);
 
 
         return groupMember;
+    }
+
+    public TenantId tenantId() {
+        return this.groupId().tenantId();
+    }
+
+    public String name() {
+        return this.groupId().name();
     }
 
     public void setGroupId(GroupId aGroupId) {
@@ -196,4 +204,6 @@ public class Group extends ConcurrencySafeEntity {
 
         this.groupId = aGroupId;
     }
+
+
 }

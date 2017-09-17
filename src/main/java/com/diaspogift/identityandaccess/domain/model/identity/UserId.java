@@ -6,11 +6,11 @@ import java.io.Serializable;
 
 public class UserId extends AssertionConcern implements Serializable {
 
-
     /**
      * Tenant to which belong the user
      */
     private TenantId tenantId;
+
     /**
      * The username (That uniquelly identify the user)
      */

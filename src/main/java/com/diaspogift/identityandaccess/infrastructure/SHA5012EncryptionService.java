@@ -8,10 +8,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 
 @Component
-public class SHA3EncryptionService extends AssertionConcern implements EncryptionService {
+public class SHA5012EncryptionService extends AssertionConcern implements EncryptionService {
 
 
-    public SHA3EncryptionService() {
+    public SHA5012EncryptionService() {
         super();
     }
 

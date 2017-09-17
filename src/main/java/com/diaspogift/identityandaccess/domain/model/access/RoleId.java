@@ -7,11 +7,11 @@ import java.io.Serializable;
 
 public class RoleId extends AssertionConcern implements Serializable {
 
-
     /**
      * Tenant to which belong the role
      */
     private TenantId tenantId;
+
     /**
      * The name (That uniquelly identify the role)
      */
