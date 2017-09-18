@@ -124,6 +124,7 @@
             </basic>
             <basic name="type">
                 <column name="type"/>
+                <enumerated>STRING</enumerated>
             </basic>
             <embedded name="tenantId">
                 <attribute-override name="id">

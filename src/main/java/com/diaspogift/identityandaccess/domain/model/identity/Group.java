@@ -182,7 +182,7 @@ public class Group extends ConcurrencySafeEntity {
         return this.groupId().tenantId();
     }
 
-    public String name() {
+    public String name(){
         return this.groupId().name();
     }
 
@@ -204,6 +204,7 @@ public class Group extends ConcurrencySafeEntity {
 
         this.groupId = aGroupId;
     }
+
 
 
 }
