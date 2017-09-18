@@ -1,11 +1,12 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
-
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
+import com.diaspogift.identityandaccess.infrastructure.exception.DiaspogiftRipositoryException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,19 +25,44 @@ public class UserTest extends IdentityAndAccessTest {
     }
 
     @Test
-    public void createUser() {
+    public void createUser() throws DiaspogiftRipositoryException {
+            Tenant tenant = this.actifTenantAggregate();
+            User user = this.userAggregate();
+            DomainRegistry.userRepository().add(user);
+            assertNotNull(user);
+            assertEquals(FIXTURE_USERNAME_1, user.username());
+            assertTrue(user.isEnabled());
+            assertEquals(new Enablement(true, null, null), user.enablement());
+            assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+            User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.username());
+            assertEquals(user, foundUser);
 
-        Tenant tenant = this.actifTenantAggregate();
-        User user = this.userAggregate();
-        DomainRegistry.userRepository().add(user);
-        assertNotNull(user);
-        assertEquals(FIXTURE_USERNAME_1, user.username());
-        assertTrue(user.isEnabled());
-        assertEquals(new Enablement(true, null, null), user.enablement());
-        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
-        User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.username());
-        assertEquals(user, foundUser);
     }
+
+    @Test(expected = DiaspogiftRipositoryException.class)
+    public void createUserDuplicate() throws DiaspogiftRipositoryException {
+
+        //boolean dataIntegrityViolationExceptionRaised = false;
+        try {
+            Tenant tenant = this.actifTenantAggregate();
+            User user = this.userAggregate();
+            User user1 = this.userAggregate();
+            DomainRegistry.userRepository().add(user);
+            //User getUser = DomainRegistry.userRepository().userWithUsername(user.tenantId(), user.username());
+            DomainRegistry.userRepository().add(user1);
+            assertNotNull(user);
+            assertEquals(FIXTURE_USERNAME_1, user.username());
+            assertTrue(user.isEnabled());
+            assertEquals(new Enablement(true, null, null), user.enablement());
+            assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+            User foundUser = DomainRegistry.userRepository().userWithUsername(tenant.tenantId(), user.username());
+            assertEquals(user, foundUser);
+        }catch (DataIntegrityViolationException e){
+            throw new DiaspogiftRipositoryException("Duplication de cle", e, DataIntegrityViolationException.class.getSimpleName());
+        }
+        //assertTrue(dataIntegrityViolationExceptionRaised);
+    }
+
 
     @Test
     public void changePassword() {

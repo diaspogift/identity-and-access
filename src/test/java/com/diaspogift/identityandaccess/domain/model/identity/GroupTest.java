@@ -2,6 +2,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
+import com.diaspogift.identityandaccess.infrastructure.exception.DiaspogiftRipositoryException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -192,7 +193,7 @@ public class GroupTest extends IdentityAndAccessTest {
 
 
     @Test
-    public void addUser() {
+    public void addUser()  {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
@@ -267,7 +268,7 @@ public class GroupTest extends IdentityAndAccessTest {
     }
 
     @Test
-    public void removeUser() {
+    public void removeUser(){
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();

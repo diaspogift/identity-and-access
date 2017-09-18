@@ -2,6 +2,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
+import com.diaspogift.identityandaccess.infrastructure.exception.DiaspogiftRipositoryException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,15 +27,20 @@ public class TenantProvisioningServiceTests extends IdentityAndAccessTest {
         Telephone tenantSecondaryTelephone = new Telephone(FIXTURE_COUNTRY_CODE_1, FIXTURE_COUNTRY_DAILING_CODE_1, FIXTURE_PHONE_NUMBER_1_1);
 
         Tenant provisionedTenant =
-                DomainRegistry.tenantProvisioningService()
-                        .provisionTenant(
-                                FIXTURE_TENANT_NAME,
-                                FIXTURE_TENANT_DESCRIPTION,
-                                tenantAdminFullName,
-                                tenantAdminEmailAddress,
-                                tenantPostalAddress,
-                                tenantPrimaryTelephone,
-                                tenantSecondaryTelephone);
+                null;
+        try {
+            provisionedTenant = DomainRegistry.tenantProvisioningService()
+                    .provisionTenant(
+                            FIXTURE_TENANT_NAME,
+                            FIXTURE_TENANT_DESCRIPTION,
+                            tenantAdminFullName,
+                            tenantAdminEmailAddress,
+                            tenantPostalAddress,
+                            tenantPrimaryTelephone,
+                            tenantSecondaryTelephone);
+        } catch (DiaspogiftRipositoryException e) {
+            e.printStackTrace();
+        }
 
         assertNotNull(provisionedTenant);
     }

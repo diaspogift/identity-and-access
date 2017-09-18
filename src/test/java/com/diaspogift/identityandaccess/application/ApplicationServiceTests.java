@@ -4,6 +4,7 @@ import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
+import com.diaspogift.identityandaccess.infrastructure.exception.DiaspogiftRipositoryException;
 import org.junit.After;
 import org.junit.Before;
 import org.springframework.context.ApplicationContext;
@@ -50,23 +51,57 @@ public abstract class ApplicationServiceTests {
     protected Tenant activeTenantAggregate() {
         if (activeTenant == null) {
 
-            activeTenant =
-                    DomainRegistry
-                            .tenantProvisioningService()
-                            .provisionTenant(
-                                    FIXTURE_TENANT_NAME,
-                                    FIXTURE_TENANT_DESCRIPTION,
-                                    new FullName("Felicien Papa", "Fotio Manfo"),
-                                    new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS),
-                                    new PostalAddress(
-                                            "400 S Lafayette St",
-                                            "Denver",
-                                            "CO",
-                                            "80209",
-                                            "US"),
-                                    new Telephone("US", "001", "303-555-1210"),
-                                    new Telephone("US", "001", "303-555-1212"));
+            try {
+                activeTenant =
+                        DomainRegistry
+                                .tenantProvisioningService()
+                                .provisionTenant(
+                                        FIXTURE_TENANT_NAME,
+                                        FIXTURE_TENANT_DESCRIPTION,
+                                        new FullName("Felicien Papa", "Fotio Manfo"),
+                                        new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS),
+                                        new PostalAddress(
+                                                "400 S Lafayette St",
+                                                "Denver",
+                                                "CO",
+                                                "80209",
+                                                "US"),
+                                        new Telephone("US", "001", "303-555-1210"),
+                                        new Telephone("US", "001", "303-555-1212"));
+            } catch (DiaspogiftRipositoryException e) {
+                e.printStackTrace();
+            }
         }
+
+        return activeTenant;
+    }
+
+
+    protected Tenant nonActiveTenantAggregate() {
+        if (activeTenant == null) {
+
+            try {
+                activeTenant =
+                        DomainRegistry
+                                .tenantProvisioningService()
+                                .provisionTenant(
+                                        FIXTURE_TENANT_NAME,
+                                        FIXTURE_TENANT_DESCRIPTION,
+                                        new FullName("Felicien Papa", "Fotio Manfo"),
+                                        new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS),
+                                        new PostalAddress(
+                                                "400 S Lafayette St",
+                                                "Denver",
+                                                "CO",
+                                                "80209",
+                                                "US"),
+                                        new Telephone("US", "001", "303-555-1210"),
+                                        new Telephone("US", "001", "303-555-1212"));
+            } catch (DiaspogiftRipositoryException e) {
+                e.printStackTrace();
+            }
+            activeTenant.deactivate();
+        }else activeTenant.deactivate();
 
         return activeTenant;
     }

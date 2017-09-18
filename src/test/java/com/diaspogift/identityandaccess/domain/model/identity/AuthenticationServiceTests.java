@@ -1,12 +1,13 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
+import com.diaspogift.identityandaccess.infrastructure.exception.DiaspogiftRipositoryException;
+import com.diaspogift.identityandaccess.infrastructure.exception.MessageKeyMapping;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,13 +61,6 @@ public class AuthenticationServiceTests {
         person = new Person(tenantId, fullName, contactInformation);
         enablement = new Enablement(true, ZonedDateTime.now().minusDays(1l), ZonedDateTime.now().plusDays(1l));
 
-        /*user = new User(tenantId,
-                "username@gmail.com",
-                "secretSTRENGTH1234",
-                enablement,
-                person
-        );*/
-
         tenant.activate();
         RegistrationInvitation invitation = tenant.offerRegistrationInvitation("First invitation");
         DomainRegistry.tenantRepository().add(tenant);
@@ -83,18 +77,26 @@ public class AuthenticationServiceTests {
     @Test
     public void authenticate() {
 
-        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
-                "email@yahoo.fr", "secretSTRENGTH1234");
+        UserDescriptor userDescriptor = null;
+        try {
+            userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
+                    "email@yahoo.fr", "secretSTRENGTH1234");
+        } catch (DiaspogiftRipositoryException e) {
+            e.printStackTrace();
+        }
         assertNotNull(userDescriptor);
         assertEquals(user.userDescriptor(), userDescriptor);
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
-    public void wrongAuthenticateWithBadUsername() {
+    @Test(expected = DiaspogiftRipositoryException.class)
+    public void wrongAuthenticateWithBadUsername() throws DiaspogiftRipositoryException {
 
 
-        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
-                "email.bad@yahoo.fr", "secretSTRENGTH1234");
+        UserDescriptor userDescriptor = null;
+
+            userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
+                    "email.bad@yahoo.fr", "secretSTRENGTH1234");
+
         assertNotNull(userDescriptor);
         assertNull(userDescriptor.username());
         assertNull(userDescriptor.emailAddress());
@@ -103,25 +105,33 @@ public class AuthenticationServiceTests {
     }
 
 
-    @Test(expected = EmptyResultDataAccessException.class)
-    public void wrongAuthenticateWithBadPassword() {
+    @Test(expected = DiaspogiftRipositoryException.class)
+    public void wrongAuthenticateWithBadPassword() throws DiaspogiftRipositoryException {
 
-        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
-                "email@yahoo.fr", "badsecretSTRENGTH1234");
+        UserDescriptor userDescriptor = null;
+       // try {
+            userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId,
+                    "email@yahoo.fr", "badsecretSTRENGTH1234");
+        //}catch (DiaspogiftRipositoryException e){
+           // System.out.println("\n\n\n\n\n\n\nERROR: " + MessageKeyMapping.map().get(e.getMessageKey()));
+            //throw new DiaspogiftRipositoryException("", e, e.getMessageKey());
+        //}
         assertNotNull(userDescriptor);
         assertNull(userDescriptor.username());
         assertNull(userDescriptor.emailAddress());
         assertNull(userDescriptor.tenantId());
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
-    public void wrongAuthenticateWithBadTenant() {
+    @Test(expected = DiaspogiftRipositoryException.class)
+    public void wrongAuthenticateWithBadTenant() throws DiaspogiftRipositoryException {
 
         String id1 = UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase();
         TenantId tenantId1 = new TenantId(id1);
 
-        UserDescriptor userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId1,
-                "email@yahoo.fr", "secretSTRENGTH1234");
+        UserDescriptor userDescriptor = null;
+
+            userDescriptor = DomainRegistry.authenticationService().authenticate(tenantId1,
+                    "email@yahoo.fr", "secretSTRENGTH1234");
         assertNotNull(userDescriptor);
         assertNull(userDescriptor.username());
         assertNull(userDescriptor.emailAddress());

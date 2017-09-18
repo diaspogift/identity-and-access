@@ -3,6 +3,7 @@ package com.diaspogift.identityandaccess.infrastructure.persistence;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -15,8 +16,10 @@ public class JPAUserRepository implements UserRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void add(User aUser) {
-        this.entityManager().persist(aUser);
+    public void add(User aUser){
+
+       this.entityManager().persist(aUser);
+
     }
 
     public Collection<User> allSimilarlyNamedUsers(TenantId aTenantId, String aFirstNamePrefix, String aLastNamePrefix) {

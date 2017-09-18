@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 public class IdentityAndAccessTest extends EventTrackingTests {
 
@@ -156,7 +157,7 @@ public class IdentityAndAccessTest extends EventTrackingTests {
         ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1l);
 
         RegistrationInvitation registrationInvitation =
-                aTenant.offerRegistrationInvitation("Today-and-Tomorrow: " + today.toString() + " ---- " + tomorrow.toString())
+                aTenant.offerRegistrationInvitation(UUID.randomUUID().toString()/*"Today-and-Tomorrow: " + today.toString() + " ---- " + tomorrow.toString()*/)
                         .startingOn(today)
                         .until(tomorrow);
 

@@ -3,6 +3,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
+import com.diaspogift.identityandaccess.infrastructure.exception.DiaspogiftRipositoryException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,7 +52,7 @@ public class GroupMemberServiceTests extends IdentityAndAccessTest {
     }
 
     @Test
-    public void isUserInNestedGroup() {
+    public void isUserInNestedGroup()  {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();

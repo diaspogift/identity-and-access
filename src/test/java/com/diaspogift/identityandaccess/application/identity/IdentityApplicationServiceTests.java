@@ -29,6 +29,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         tenant.deactivate();
         assertFalse(tenant.isActive());
 
+        //Tenant changedTenant1 = DomainRegistry.tenantRepository().tenantOfId(tenant.tenantId());
+
         ApplicationServiceRegistry
                 .identityApplicationService()
                 .activateTenant(new ActivateTenantCommand(tenant.tenantId().id()));
@@ -39,6 +41,29 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         assertEquals(tenant.tenantId(), changedTenant.tenantId());
         assertEquals(tenant.name(), changedTenant.name());
         assertTrue(changedTenant.isActive());
+    }
+
+
+    @Test
+    public void activateTenant1() throws Exception {
+
+        Tenant tenant = this.nonActiveTenantAggregate();
+        //tenant.deactivate();
+        Tenant changedTenant = DomainRegistry.tenantRepository().tenantOfId(tenant.tenantId());
+        assertFalse(changedTenant.isActive());
+
+        //Tenant changedTenant1 = DomainRegistry.tenantRepository().tenantOfId(tenant.tenantId());
+
+       /* ApplicationServiceRegistry
+                .identityApplicationService()
+                .activateTenant(new ActivateTenantCommand(tenant.tenantId().id()));
+
+        Tenant changedTenant = DomainRegistry.tenantRepository().tenantOfId(tenant.tenantId());
+
+        assertNotNull(changedTenant);
+        assertEquals(tenant.tenantId(), changedTenant.tenantId());
+        assertEquals(tenant.name(), changedTenant.name());
+        assertTrue(changedTenant.isActive());*/
     }
 
     @Test
@@ -186,6 +211,8 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         DomainRegistry.userRepository().add(user);
 
         assertNotEquals("mynewemailaddress@saasovation.com", user.person().emailAddress().address());
+
+        //System.out.println("\n\n in Test \n\naUsername: " + user.username() + "\n\naTenantId: " + user.tenantId().id() + "\n\n");
 
         ApplicationServiceRegistry
                 .identityApplicationService()
