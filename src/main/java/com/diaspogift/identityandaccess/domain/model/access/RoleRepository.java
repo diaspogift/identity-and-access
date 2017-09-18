@@ -9,6 +9,8 @@ public interface RoleRepository {
 
     void add(Role aRole);
 
+    Role roleOfId(RoleId aRoleId);
+
     Collection<Role> allRoles(TenantId aTenantId);
 
     void remove(Role aRole);

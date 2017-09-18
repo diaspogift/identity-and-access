@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.infrastructure.persistence;
+package com.diaspogift.identityandaccess.infrastructure.persistence.jpa;
 
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.UUID;
 
 @Repository
@@ -29,17 +30,23 @@ public class JPATenantRepository implements TenantRepository {
     }
 
     public Tenant tenantNamed(String aName) {
-        return this.entityManager().createQuery("select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant" +
-                " where tenant.name = :name", Tenant.class)
-                .setParameter("name", aName)
-                .getSingleResult();
+
+        Query query =
+                this.entityManager().createQuery("select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant" +
+                        " where tenant.name = :name", Tenant.class)
+                        .setParameter("name", aName);
+
+        return (Tenant) JPASingleResultHelper.getSingleResultOrNull(query);
     }
 
     public Tenant tenantOfId(TenantId aTenantId) {
-        return this.entityManager().createQuery("select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant" +
-                " where tenant.tenantId = :tenantId", Tenant.class)
-                .setParameter("tenantId", aTenantId)
-                .getSingleResult();
+
+        Query query =
+                this.entityManager().createQuery("select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant" +
+                        " where tenant.tenantId = :tenantId", Tenant.class)
+                        .setParameter("tenantId", aTenantId);
+
+        return (Tenant) JPASingleResultHelper.getSingleResultOrNull(query);
     }
 
 

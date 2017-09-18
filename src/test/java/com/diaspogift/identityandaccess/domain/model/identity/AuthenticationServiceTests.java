@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -69,12 +68,12 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                                 FIXTURE_PASSWORD + "BAD PASSWORD");
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
+    @Test
     public void wrongAuthenticateWithBadTenant() {
 
         TenantId tenantId1 = new TenantId(UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase());
-        Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
+
         DomainRegistry.userRepository().add(user);
 
         UserDescriptor userDescriptor =
@@ -83,6 +82,11 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                                 tenantId1,
                                 user.userId().username(),
                                 FIXTURE_PASSWORD + "BAD PASSWORD");
+
+        assertEquals(null, userDescriptor.username());
+        assertEquals(null, userDescriptor.tenantId());
+        assertEquals(null, userDescriptor.emailAddress());
+        assertTrue(userDescriptor.isNullDescriptor());
     }
 
 }

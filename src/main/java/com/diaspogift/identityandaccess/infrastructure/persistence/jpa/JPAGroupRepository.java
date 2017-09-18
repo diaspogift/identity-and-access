@@ -1,12 +1,14 @@
-package com.diaspogift.identityandaccess.infrastructure.persistence;
+package com.diaspogift.identityandaccess.infrastructure.persistence.jpa;
 
 import com.diaspogift.identityandaccess.domain.model.identity.Group;
+import com.diaspogift.identityandaccess.domain.model.identity.GroupId;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupRepository;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.Collection;
 
 
@@ -32,13 +34,32 @@ public class JPAGroupRepository implements GroupRepository {
 
     @Override
     public Group groupNamed(TenantId aTenantId, String aName) {
-        return this.entityManager()
-                .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
-                        "where group.groupId.tenantId = :tenantId and group.groupId.name = :name", Group.class)
-                .setParameter("tenantId", aTenantId)
-                .setParameter("name", aName)
-                .getSingleResult();
+
+        Query query =
+                this.entityManager()
+                        .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
+                                "where group.groupId.tenantId = :tenantId and group.groupId.name = :name", Group.class)
+                        .setParameter("tenantId", aTenantId)
+                        .setParameter("name", aName);
+
+        return (Group) JPASingleResultHelper.getSingleResultOrNull(query);
+
     }
+
+    @Override
+    public Group groupOfGroupId(GroupId aGroupId) {
+
+        Query query =
+                this.entityManager()
+                        .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
+                                "where group.groupId.tenantId = :tenantId and group.groupId.name = :name", Group.class)
+                        .setParameter("tenantId", aGroupId.tenantId())
+                        .setParameter("name", aGroupId.name());
+
+        return (Group) JPASingleResultHelper.getSingleResultOrNull(query);
+
+    }
+
 
     @Override
     public void remove(Group aGroup) {

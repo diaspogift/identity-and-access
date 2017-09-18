@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.infrastructure.persistence;
+package com.diaspogift.identityandaccess.infrastructure.persistence.jpa;
 
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;

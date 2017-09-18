@@ -6,6 +6,8 @@ public interface GroupRepository {
 
     void add(Group aGroup);
 
+    Group groupOfGroupId(GroupId aGroupId);
+
     Collection<Group> allGroups(TenantId aTenantId);
 
     Group groupNamed(TenantId aTenantId, String aName);

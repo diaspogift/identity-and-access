@@ -62,7 +62,6 @@ public class RoleTests extends IdentityAndAccessTest {
 
     }
 
-
     @Test
     public void cretateRoleThatDoesNotSupportNesting() {
 
