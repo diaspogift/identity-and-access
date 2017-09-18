@@ -12,7 +12,6 @@
         </persistence-unit-defaults>
     </persistence-unit-metadata>
 
-
     <mapped-superclass access="FIELD"
                        class="com.diaspogift.identityandaccess.domain.model.common.IdentifiedDomainObject"
                        metadata-complete="true">
@@ -23,7 +22,6 @@
             </id>
         </attributes>
     </mapped-superclass>
-
     <mapped-superclass access="FIELD" class="com.diaspogift.identityandaccess.domain.model.common.AbstractId"
                        metadata-complete="true">
         <attributes>
@@ -32,7 +30,6 @@
             </basic>
         </attributes>
     </mapped-superclass>
-
     <mapped-superclass access="FIELD" class="com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity"
                        metadata-complete="true">
         <attributes>
@@ -41,7 +38,6 @@
             </version>
         </attributes>
     </mapped-superclass>
-
 
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.Tenant" access="FIELD" name="tbl_tenant"
             metadata-complete="true">
@@ -67,7 +63,6 @@
             </embedded>
         </attributes>
     </entity>
-
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.RegistrationInvitation" access="FIELD"
             name="tbl_registration_invitation" metadata-complete="true">
         <attributes>
@@ -90,8 +85,6 @@
             </embedded>
         </attributes>
     </entity>
-
-
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.Group" access="FIELD" name="tbl_group"
             metadata-complete="true">
         <table>
@@ -115,7 +108,6 @@
             <embedded name="groupId"/>
         </attributes>
     </entity>
-
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.GroupMember" access="FIELD"
             name="tbl_group_member" metadata-complete="true">
         <attributes>
@@ -133,8 +125,6 @@
             </embedded>
         </attributes>
     </entity>
-
-
     <entity class="com.diaspogift.identityandaccess.domain.model.access.Role" access="FIELD" name="tbl_role"
             metadata-complete="true">
 
@@ -162,8 +152,6 @@
             <embedded name="roleId"/>
         </attributes>
     </entity>
-
-
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.User" access="FIELD" name="tbl_user"
             metadata-complete="true">
 
@@ -191,7 +179,6 @@
 
         </attributes>
     </entity>
-
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.Person" access="FIELD" name="tbl_person"
             metadata-complete="true">
         <attributes>
@@ -208,7 +195,6 @@
             </embedded>
         </attributes>
     </entity>
-
     <entity class="com.diaspogift.identityandaccess.domain.model.common.event.StoredEvent" access="FIELD"
             name="tbl_stored_event" metadata-complete="true">
         <attributes>
@@ -254,7 +240,6 @@
             </embedded>
         </attributes>
     </embeddable>
-
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.EmailAddress"/>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.PostalAddress"/>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.FullName"/>
