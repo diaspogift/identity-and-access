@@ -25,10 +25,7 @@ public class JPAUserRepository implements UserRepository {
             throw new IllegalArgumentException("Name prefixes must not include %.");
         }
         return this.entityManager()
-                .createQuery("select user from com.diaspogift.identityandaccess.domain.model.identity.User as user " +
-                        "where user.userId.tenantId =:tenantId " +
-                        "and user.person.name.firstName like :firstNamePrefix " +
-                        "and user.person.lastName like :lastNamePrefix", User.class)
+                .createNamedQuery("selectAllSimilarlyNamedUsers", User.class)
                 .setParameter("tenantId", aTenantId)
                 .setParameter("firstNamePrefix", aFirstNamePrefix + "%")
                 .setParameter("lastNamePrefix", aLastNamePrefix + "%")
@@ -42,10 +39,7 @@ public class JPAUserRepository implements UserRepository {
     public User userFromAuthenticCredentials(TenantId aTenantId, String aUsername, String anEncryptedPassword) {
 
         return this.entityManager()
-                .createQuery("select user from com.diaspogift.identityandaccess.domain.model.identity.User as user " +
-                        "where user.userId.tenantId =:tenantId " +
-                        "and user.userId.username =:username " +
-                        "and user.password =:password ", User.class)
+                .createNamedQuery("selectUserFromAuthenticCredentials", User.class)
                 .setParameter("tenantId", aTenantId)
                 .setParameter("username", aUsername)
                 .setParameter("password", anEncryptedPassword)
@@ -55,9 +49,7 @@ public class JPAUserRepository implements UserRepository {
     public User userWithUsername(TenantId aTenantId, String aUsername) {
 
         return this.entityManager()
-                .createQuery("select user from com.diaspogift.identityandaccess.domain.model.identity.User as user " +
-                        "where user.userId.tenantId =:tenantId " +
-                        "and user.userId.username =:username ", User.class)
+                .createNamedQuery("selectUserWithUsername", User.class)
                 .setParameter("tenantId", aTenantId)
                 .setParameter("username", aUsername)
                 .getSingleResult();

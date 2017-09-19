@@ -2,6 +2,8 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 public class UserId extends AssertionConcern implements Serializable {
@@ -9,6 +11,8 @@ public class UserId extends AssertionConcern implements Serializable {
     /**
      * Tenant to which belong the user
      */
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "tenant_id", table = "tbl_tenant")
     private TenantId tenantId;
 
     /**

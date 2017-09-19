@@ -12,6 +12,82 @@
         </persistence-unit-defaults>
     </persistence-unit-metadata>
 
+    <named-query name="selectTenantNamed">
+        <query>
+            select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant where tenant.name
+            = :name
+        </query>
+    </named-query>
+    <named-query name="selectTenantOfId">
+        <query>
+            select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant where
+            tenant.tenantId = :tenantId
+        </query>
+    </named-query>
+
+    <named-query name="selectAllSimilarlyNamedUsers">
+        <query>
+            select user from com.diaspogift.identityandaccess.domain.model.identity.User as user where
+            user.userId.tenantId =:tenantId
+            and user.person.name.firstName like :firstNamePrefix
+            and user.person.name.lastName like :lastNamePrefix
+        </query>
+    </named-query>
+    <named-query name="selectUserFromAuthenticCredentials">
+        <query>
+            select user from com.diaspogift.identityandaccess.domain.model.identity.User as user
+            where user.userId.tenantId =:tenantId
+            and user.userId.username =:username
+            and user.password =:password
+        </query>
+    </named-query>
+    <named-query name="selectUserWithUsername">
+        <query>
+            select user from com.diaspogift.identityandaccess.domain.model.identity.User as user
+            where user.userId.tenantId =:tenantId
+            and user.userId.username =:username
+        </query>
+    </named-query>
+
+    <named-query name="selectAllGroups">
+        <query>
+            select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group
+            where group.groupId.tenantId = :tenantId
+        </query>
+    </named-query>
+    <named-query name="selectGroupNamed">
+        <query>
+            select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group
+            where group.groupId.tenantId = :tenantId and group.groupId.name = :name
+        </query>
+    </named-query>
+    <named-query name="selectGroupOfGroupId">
+        <query>
+            select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group
+            where group.groupId.tenantId = :tenantId and group.groupId.name = :name
+        </query>
+    </named-query>
+
+    <named-query name="selectRoleOfId">
+        <query>
+            select role from com.diaspogift.identityandaccess.domain.model.access.Role as role
+            where role.roleId.tenantId = :tenantId and role.roleId.name = :roleName
+        </query>
+    </named-query>
+    <named-query name="selectAllRoles">
+        <query>
+            select role from com.diaspogift.identityandaccess.domain.model.access.Role as role
+            where role.roleId.tenantId = :tenantId
+        </query>
+    </named-query>
+    <named-query name="selectRoleNamed">
+        <query>
+            select role from com.diaspogift.identityandaccess.domain.model.access.Role as role
+            where role.roleId.tenantId = :tenantId and role.roleId.name = :roleName
+        </query>
+    </named-query>
+
+
     <mapped-superclass access="FIELD"
                        class="com.diaspogift.identityandaccess.domain.model.common.IdentifiedDomainObject"
                        metadata-complete="true">
@@ -38,6 +114,7 @@
             </version>
         </attributes>
     </mapped-superclass>
+
 
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.Tenant" access="FIELD" name="tbl_tenant"
             metadata-complete="true">
@@ -176,7 +253,6 @@
             </many-to-one>
             <embedded name="enablement"/>
             <embedded name="userId"/>
-
         </attributes>
     </entity>
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.Person" access="FIELD" name="tbl_person"

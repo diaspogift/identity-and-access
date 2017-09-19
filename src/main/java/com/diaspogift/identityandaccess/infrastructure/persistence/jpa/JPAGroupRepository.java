@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Collection;
 
 
@@ -25,9 +24,9 @@ public class JPAGroupRepository implements GroupRepository {
 
     @Override
     public Collection<Group> allGroups(TenantId aTenantId) {
+
         return this.entityManager()
-                .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
-                        "where group.groupId.tenantId = :tenantId", Group.class)
+                .createNamedQuery("selectAllGroups", Group.class)
                 .setParameter("tenantId", aTenantId)
                 .getResultList();
     }
@@ -35,29 +34,20 @@ public class JPAGroupRepository implements GroupRepository {
     @Override
     public Group groupNamed(TenantId aTenantId, String aName) {
 
-        Query query =
-                this.entityManager()
-                        .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
-                                "where group.groupId.tenantId = :tenantId and group.groupId.name = :name", Group.class)
-                        .setParameter("tenantId", aTenantId)
-                        .setParameter("name", aName);
-
-        return (Group) JPASingleResultHelper.getSingleResultOrNull(query);
-
+        return this.entityManager()
+                .createNamedQuery("selectGroupNamed", Group.class)
+                .setParameter("tenantId", aTenantId)
+                .setParameter("name", aName)
+                .getSingleResult();
     }
 
     @Override
     public Group groupOfGroupId(GroupId aGroupId) {
 
-        Query query =
-                this.entityManager()
-                        .createQuery("select group from com.diaspogift.identityandaccess.domain.model.identity.Group as group " +
-                                "where group.groupId.tenantId = :tenantId and group.groupId.name = :name", Group.class)
-                        .setParameter("tenantId", aGroupId.tenantId())
-                        .setParameter("name", aGroupId.name());
-
-        return (Group) JPASingleResultHelper.getSingleResultOrNull(query);
-
+        return this.entityManager()
+                .createNamedQuery("selectGroupOfGroupId", Group.class)
+                .setParameter("tenantId", aGroupId.tenantId())
+                .setParameter("name", aGroupId.name()).getSingleResult();
     }
 
 

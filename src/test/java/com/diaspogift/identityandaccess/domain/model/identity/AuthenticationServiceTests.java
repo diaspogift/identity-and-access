@@ -2,10 +2,10 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
+import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class AuthenticationServiceTests extends IdentityAndAccessTest {
 
     @Test
-    public void authenticate() {
+    public void authenticate() throws DiaspoGiftRepositoryException {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
@@ -36,8 +36,8 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
         assertEquals(user.userDescriptor(), userDescriptor);
     }
 
-    @Test(expected = EmptyResultDataAccessException.class)
-    public void wrongAuthenticateWithBadUsername() {
+    @Test(expected = DiaspoGiftRepositoryException.class)
+    public void wrongAuthenticateWithBadUsername() throws DiaspoGiftRepositoryException {
 
         Tenant tenant = this.actifTenantAggregate();
         User user = this.userAggregate();
@@ -52,8 +52,8 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
     }
 
 
-    @Test(expected = EmptyResultDataAccessException.class)
-    public void wrongAuthenticateWithBadPassword() {
+    @Test(expected = DiaspoGiftRepositoryException.class)
+    public void wrongAuthenticateWithBadPassword() throws DiaspoGiftRepositoryException {
 
 
         Tenant tenant = this.actifTenantAggregate();
@@ -68,10 +68,10 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                                 FIXTURE_PASSWORD + "BAD PASSWORD");
     }
 
-    @Test
-    public void wrongAuthenticateWithBadTenant() {
+    @Test(expected = DiaspoGiftRepositoryException.class)
+    public void wrongAuthenticateWithBadTenant() throws DiaspoGiftRepositoryException {
 
-        TenantId tenantId1 = new TenantId(UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase());
+        TenantId wrongTenantId = new TenantId(UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase());
         User user = this.userAggregate();
 
         DomainRegistry.userRepository().add(user);
@@ -79,9 +79,9 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
         UserDescriptor userDescriptor =
                 DomainRegistry.authenticationService()
                         .authenticate(
-                                tenantId1,
+                                wrongTenantId,
                                 user.userId().username(),
-                                FIXTURE_PASSWORD + "BAD PASSWORD");
+                                FIXTURE_PASSWORD);
 
         assertEquals(null, userDescriptor.username());
         assertEquals(null, userDescriptor.tenantId());

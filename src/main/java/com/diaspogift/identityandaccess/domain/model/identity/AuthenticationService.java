@@ -2,7 +2,10 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
+import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,32 +18,41 @@ public class AuthenticationService extends AssertionConcern {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDescriptor authenticate(TenantId aTenantId, String aUsername, String aPassword) {
+    public UserDescriptor authenticate(TenantId aTenantId, String aUsername, String aPassword) throws DiaspoGiftRepositoryException {
 
         this.assertArgumentNotNull(aTenantId, "TenantId must not be null.");
         this.assertArgumentNotEmpty(aUsername, "Username must be provided.");
         this.assertArgumentNotEmpty(aPassword, "Password must be provided.");
 
-        UserDescriptor userDescriptor = UserDescriptor.nullDescriptorInstance();
+        try {
 
-        Tenant tenant = this.tenantRepository().tenantOfId(aTenantId);
+            UserDescriptor userDescriptor = UserDescriptor.nullDescriptorInstance();
 
-        if (tenant != null && tenant.isActive()) {
-            String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
+            Tenant tenant = this.tenantRepository().tenantOfId(aTenantId);
 
-            User user =
-                    this.userRepository
-                            .userFromAuthenticCredentials(
-                                    aTenantId,
-                                    aUsername,
-                                    encryptedPassword);
+            if (tenant != null && tenant.isActive()) {
+                String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
 
-            if (user != null && user.isEnabled()) {
-                userDescriptor = user.userDescriptor();
+                User user =
+                        this.userRepository
+                                .userFromAuthenticCredentials(
+                                        aTenantId,
+                                        aUsername,
+                                        encryptedPassword);
+
+                if (user != null && user.isEnabled()) {
+                    userDescriptor = user.userDescriptor();
+                }
             }
-        }
 
-        return userDescriptor;
+            return userDescriptor;
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new DiaspoGiftRepositoryException(e.getMessage(), e, e.getClass().getSimpleName());
+        } catch (IncorrectResultSizeDataAccessException e) {
+            throw new DiaspoGiftRepositoryException(e.getMessage(), e, e.getClass().getSimpleName());
+
+        }
     }
 
 

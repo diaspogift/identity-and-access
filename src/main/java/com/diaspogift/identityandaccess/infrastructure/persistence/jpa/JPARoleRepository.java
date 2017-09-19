@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.Collection;
 
 @Repository
@@ -24,20 +23,18 @@ public class JPARoleRepository implements RoleRepository {
 
     public Role roleOfId(RoleId aRoleId) {
 
-        Query query =
-                this.entityManager().
-                        createQuery("select role from com.diaspogift.identityandaccess.domain.model.access.Role as role " +
-                                "where role.roleId.tenantId = :tenantId and role.roleId.name = :roleName ", Role.class)
-                        .setParameter("tenantId", aRoleId.tenantId())
-                        .setParameter("roleName", aRoleId.name());
+        return this.entityManager().
+                createNamedQuery("selectRoleOfId", Role.class)
+                .setParameter("tenantId", aRoleId.tenantId())
+                .setParameter("roleName", aRoleId.name())
+                .getSingleResult();
 
-        return (Role) JPASingleResultHelper.getSingleResultOrNull(query);
     }
 
     public Collection<Role> allRoles(TenantId aTenantId) {
+
         return this.entityManager().
-                createQuery("select role from com.diaspogift.identityandaccess.domain.model.access.Role as role " +
-                        "where role.roleId.tenantId = :tenantId", Role.class)
+                createNamedQuery("selectAllRoles", Role.class)
                 .setParameter("tenantId", aTenantId)
                 .getResultList();
     }
@@ -48,14 +45,12 @@ public class JPARoleRepository implements RoleRepository {
 
     public Role roleNamed(TenantId aTenantId, String aRoleName) {
 
-        Query query =
-                this.entityManager().
-                        createQuery("select role from com.diaspogift.identityandaccess.domain.model.access.Role as role " +
-                                "where role.roleId.tenantId = :tenantId and role.roleId.name = :roleName ", Role.class)
-                        .setParameter("tenantId", aTenantId)
-                        .setParameter("roleName", aRoleName);
+        return this.entityManager().
+                createNamedQuery("selectRoleNamed", Role.class)
+                .setParameter("tenantId", aTenantId)
+                .setParameter("roleName", aRoleName)
+                .getSingleResult();
 
-        return (Role) JPASingleResultHelper.getSingleResultOrNull(query);
     }
 
     public EntityManager entityManager() {

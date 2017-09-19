@@ -130,11 +130,13 @@ public class GroupTest extends IdentityAndAccessTest {
         Group group3 = tenant.provisionGroup(FIXTURE_GROUP_NAME_3, FIXTURE_GROUP_DESCRIPTION_3);
         Group group4 = tenant.provisionGroup(FIXTURE_GROUP_NAME_4, FIXTURE_GROUP_DESCRIPTION_4);
 
+
         DomainRegistry.groupRepository().add(group0);
         DomainRegistry.groupRepository().add(group1);
         DomainRegistry.groupRepository().add(group2);
         DomainRegistry.groupRepository().add(group3);
         DomainRegistry.groupRepository().add(group4);
+
 
         group0 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group0.groupId().name());
         group1 = DomainRegistry.groupRepository().groupNamed(tenant.tenantId(), group1.groupId().name());

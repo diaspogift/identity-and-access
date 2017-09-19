@@ -29,28 +29,15 @@ javadoc {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
-
     compile("org.springframework.boot:spring-boot-starter-web")
-
-    // jpa Data (We are going to use Repositories, Entities, Hibernate, etc...)
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-
-    // Use MySQL Connector-J
-    //compile 'mysql:mysql-connector-java'
+    compile 'mysql:mysql-connector-java'
     compile 'org.springframework.boot:spring-boot-devtools'
-
-
-    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
-
-
+    //compile group: 'com.h2database', name: 'h2', version: '1.4.196'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.1'
-
-
+    compile group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.8.1'
+    compile('org.springframework.boot:spring-boot-starter-activemq')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
-    compile group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.8.1'
-
-    compile('org.springframework.boot:spring-boot-starter-activemq')
 
 }

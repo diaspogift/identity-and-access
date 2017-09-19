@@ -4,6 +4,7 @@ import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
+import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -22,7 +23,12 @@ public class IdentityAndAccessApplication {
                         "US");
 
 
-        ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand);
+        try {
+            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand);
+        } catch (DiaspoGiftRepositoryException e) {
+
+            System.out.println(e.getMessage());
+        }
 
         TenantId tenantId =
                 DomainRegistry.tenantRepository().nextIdentity();
