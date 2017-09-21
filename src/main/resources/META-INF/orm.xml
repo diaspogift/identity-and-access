@@ -24,6 +24,13 @@
             tenant.tenantId = :tenantId
         </query>
     </named-query>
+    <named-query name="selectAllTenants">
+        <query>select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant</query>
+    </named-query>
+    <named-query name="selectAllTenantsInterval">
+        <query>select tenant from com.diaspogift.identityandaccess.domain.model.identity.Tenant as tenant</query>
+    </named-query>
+
 
     <named-query name="selectAllSimilarlyNamedUsers">
         <query>

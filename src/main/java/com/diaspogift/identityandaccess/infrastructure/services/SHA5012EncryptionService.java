@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.infrastructure;
+package com.diaspogift.identityandaccess.infrastructure.services;
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import com.diaspogift.identityandaccess.domain.model.identity.EncryptionService;

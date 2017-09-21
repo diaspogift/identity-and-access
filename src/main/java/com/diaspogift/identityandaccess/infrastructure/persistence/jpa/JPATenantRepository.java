@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collection;
 import java.util.UUID;
 
 @Repository
@@ -38,6 +39,21 @@ public class JPATenantRepository implements TenantRepository {
         return this.entityManager().createNamedQuery("selectTenantOfId", Tenant.class).setParameter("tenantId", aTenantId).getSingleResult();
     }
 
+    public Collection<Tenant> allTenants() {
+        return this.entityManager().createNamedQuery("selectAllTenants", Tenant.class).getResultList();
+    }
+
+    public Collection<Tenant> allTenants(Integer aFirst, Integer aRangeSize) {
+
+        Collection<Tenant> tenants = this.entityManager().createNamedQuery("selectAllTenantsInterval", Tenant.class)
+                .setFirstResult(aFirst)
+                .setMaxResults(aRangeSize)
+                .getResultList();
+
+        tenants.forEach(System.out::println);
+
+        return tenants;
+    }
 
     public EntityManager entityManager() {
         return this.entityManager;

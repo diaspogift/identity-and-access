@@ -387,7 +387,7 @@ public class Tenant extends ConcurrencySafeEntity {
     @Override
     public String toString() {
         return "Tenant [active=" + active + ", description=" + description
-                + ", name=" + name + ", tenantId=" + tenantId + "]";
+                + ", name=" + name + ", tenantId=" + tenantId + ", nativeId=" + this.id() + "]";
     }
 
 }

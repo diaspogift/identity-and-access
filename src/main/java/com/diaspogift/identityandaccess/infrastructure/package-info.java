@@ -1,1 +1,0 @@
-package com.diaspogift.identityandaccess.infrastructure;
