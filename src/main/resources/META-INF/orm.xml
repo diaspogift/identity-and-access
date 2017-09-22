@@ -55,6 +55,13 @@
             and user.userId.username =:username
         </query>
     </named-query>
+    <named-query name="selectAllUserForTenant">
+        <query>
+            select user from com.diaspogift.identityandaccess.domain.model.identity.User as user
+            where user.userId.tenantId =:tenantId
+        </query>
+    </named-query>
+
 
     <named-query name="selectAllGroups">
         <query>

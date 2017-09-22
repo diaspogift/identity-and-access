@@ -8,17 +8,17 @@ import org.springframework.hateoas.ResourceSupport;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class TenantsRepresentation extends ResourceSupport {
+public class TenantCollectionRepresentation extends ResourceSupport {
 
-    private static final Logger logger = LoggerFactory.getLogger(TenantsRepresentation.class);
+    private static final Logger logger = LoggerFactory.getLogger(TenantCollectionRepresentation.class);
     ;
     Collection<TenantRepresentation> tenants = new HashSet<TenantRepresentation>();
 
-    public TenantsRepresentation() {
+    public TenantCollectionRepresentation() {
         super();
     }
 
-    public TenantsRepresentation(Collection<Tenant> someTenants) {
+    public TenantCollectionRepresentation(Collection<Tenant> someTenants) {
 
         this.initializeFrom(someTenants);
     }
@@ -42,7 +42,7 @@ public class TenantsRepresentation extends ResourceSupport {
 
     @Override
     public String toString() {
-        return "TenantsRepresentation{" +
+        return "TenantCollectionRepresentation{" +
                 "tenants=" + tenants +
                 '}';
     }

@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class Group extends ConcurrencySafeEntity {
 
-    public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP: ";
+    public static final String ROLE_GROUP_PREFIX = "ROLE-INTERNAL-GROUP:";
     private static final long serialVersionUID = 1L;
     private GroupId groupId;
     private String description;

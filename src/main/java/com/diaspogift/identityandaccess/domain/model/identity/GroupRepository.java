@@ -13,4 +13,6 @@ public interface GroupRepository {
     Group groupNamed(TenantId aTenantId, String aName);
 
     void remove(Group aGroup);
+
+    Collection<GroupMember> groupMembers(TenantId tenantId, String groupName);
 }

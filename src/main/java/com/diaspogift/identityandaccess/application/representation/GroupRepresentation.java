@@ -18,6 +18,7 @@ public class GroupRepresentation extends ResourceSupport {
         this.initialyzeFrom(aGroup);
     }
 
+
     private void initialyzeFrom(Group aGroup) {
 
         this.tenantId = aGroup.tenantId().id();

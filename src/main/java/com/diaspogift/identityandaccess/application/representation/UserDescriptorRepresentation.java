@@ -50,4 +50,24 @@ public class UserDescriptorRepresentation extends ResourceSupport implements Ser
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UserDescriptorRepresentation that = (UserDescriptorRepresentation) o;
+
+        if (tenantId != null ? !tenantId.equals(that.tenantId) : that.tenantId != null) return false;
+        return username != null ? username.equals(that.username) : that.username == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (tenantId != null ? tenantId.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        return result;
+    }
 }

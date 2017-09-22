@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.time.ZonedDateTime;
+
 @SpringBootApplication
 public class IdentityAndAccessApplication {
 
@@ -80,6 +82,14 @@ public class IdentityAndAccessApplication {
                 new ProvisionTenantCommand("BINGO11", "HOPITAL BINGO 11", "Bingo Adminquatre", "Bingoquatre", "didier11@gmail.com",
                         "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 11", "Douala 11", "Littoral 11", "80209",
                         "US");
+
+
+        ZonedDateTime yesterday = ZonedDateTime.now().minusDays(1l);
+        ZonedDateTime tomorow = ZonedDateTime.now().plusDays(1l);
+
+
+        System.out.println(" \n\n\n\n yesterday " + yesterday + " tomorow " + tomorow);
+
 
         try {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand1);

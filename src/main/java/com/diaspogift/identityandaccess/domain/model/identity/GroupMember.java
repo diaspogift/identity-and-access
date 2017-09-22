@@ -12,8 +12,8 @@ public class GroupMember extends IdentifiedValueObject {
 
     private static final long serialVersionUID = 1L;
 
-    private String name;
     private TenantId tenantId;
+    private String name;
     private GroupMemberType type;
 
     protected GroupMember(TenantId aTenantId, String aName, GroupMemberType aType) {

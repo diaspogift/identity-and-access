@@ -1,9 +1,6 @@
 package com.diaspogift.identityandaccess.infrastructure.persistence.jpa;
 
-import com.diaspogift.identityandaccess.domain.model.identity.Group;
-import com.diaspogift.identityandaccess.domain.model.identity.GroupId;
-import com.diaspogift.identityandaccess.domain.model.identity.GroupRepository;
-import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
+import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -54,6 +51,19 @@ public class JPAGroupRepository implements GroupRepository {
     @Override
     public void remove(Group aGroup) {
         this.entityManager().remove(aGroup);
+
+    }
+
+    @Override
+    public Collection<GroupMember> groupMembers(TenantId tenantId, String aGroupName) {
+
+        return this.entityManager()
+                .createNamedQuery("selectGroupNamed", Group.class)
+                .setParameter("tenantId", tenantId)
+                .setParameter("name", aGroupName)
+                .getSingleResult()
+                .groupMembers();
+
 
     }
 

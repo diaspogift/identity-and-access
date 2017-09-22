@@ -13,4 +13,7 @@ public interface UserRepository {
     User userFromAuthenticCredentials(TenantId aTenantId, String aUsername, String anEncryptedPassword);
 
     User userWithUsername(TenantId aTenantId, String aUsername);
+
+    //TO DO TEST
+    Collection<User> allUserFor(TenantId aTenantId);
 }

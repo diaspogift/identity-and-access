@@ -55,6 +55,15 @@ public class JPAUserRepository implements UserRepository {
                 .getSingleResult();
     }
 
+    @Override
+    public Collection<User> allUserFor(TenantId aTenantId) {
+
+        return this.entityManager()
+                .createNamedQuery("selectAllUserForTenant", User.class)
+                .setParameter("tenantId", aTenantId)
+                .getResultList();
+    }
+
     private EntityManager entityManager() {
         return this.entityManager;
     }

@@ -4,6 +4,7 @@ package com.diaspogift.identityandaccess.resources;
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
 import com.diaspogift.identityandaccess.application.command.AuthenticateUserCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
+import com.diaspogift.identityandaccess.application.representation.UserDescriptorCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.UserDescriptorRepresentation;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
@@ -43,9 +44,6 @@ public class UserResource {
         );
 
 
-        logger.info(" \n\n\n aTenantId = " + aTenantId + " aUsername " + aUsername + " aPassword " + aPassword + " userDescriptor " + userDescriptor);
-
-
         return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(userDescriptor), HttpStatus.FOUND);
     }
 
@@ -72,6 +70,16 @@ public class UserResource {
                         aRoleName);
 
         return new ResponseEntity<User>(user, HttpStatus.FOUND);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<UserDescriptorCollectionRepresentation> getUsers(@PathVariable("tenantId") String aTenantId) throws DiaspoGiftRepositoryException {
+
+        UserDescriptorCollectionRepresentation userDescriptorCollectionRepresentation =
+                new UserDescriptorCollectionRepresentation(this.identityApplicationService().allUserFor(aTenantId));
+
+        return new ResponseEntity<UserDescriptorCollectionRepresentation>(userDescriptorCollectionRepresentation, HttpStatus.FOUND);
     }
 
     /**
