@@ -3,9 +3,11 @@ package com.diaspogift.identityandaccess.resources;
 
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
 import com.diaspogift.identityandaccess.application.command.AuthenticateUserCommand;
+import com.diaspogift.identityandaccess.application.command.RegisterUserCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.UserDescriptorCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.UserDescriptorRepresentation;
+import com.diaspogift.identityandaccess.application.representation.UserRegistrationReprensentation;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
@@ -20,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 @RestController
-@RequestMapping(path = "/api/tenants/{tenantId}/users")
+@RequestMapping(path = "/api/v1/tenants/{tenantId}/users")
 public class UserResource {
 
 
@@ -45,6 +47,15 @@ public class UserResource {
 
 
         return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(userDescriptor), HttpStatus.FOUND);
+    }
+
+    @PostMapping("{username}/registered")
+    public ResponseEntity<UserDescriptorRepresentation> registerNewUser(@PathVariable("tenantId") String aTenantId,
+                                                                        @PathVariable("username") String username,
+                                                                        @RequestBody UserRegistrationReprensentation userRegistrationReprensentation) throws DiaspoGiftRepositoryException {
+        User user = this.identityApplicationService().registerUser(new RegisterUserCommand(userRegistrationReprensentation));
+
+        return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(user.userDescriptor()), HttpStatus.FOUND);
     }
 
     @GetMapping("{username}")

@@ -10,9 +10,9 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
 
     private String description;
     private String invitationId;
-    private ZonedDateTime startingOn;
+    private String startingOn;
     private String tenantId;
-    private ZonedDateTime until;
+    private String until;
 
 
     public RegistrationInvitationRepresentation() {
@@ -23,9 +23,9 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
                                                 String tenantId, ZonedDateTime until) {
         this.description = description;
         this.invitationId = invitationId;
-        this.startingOn = startingOn;
+        this.startingOn = startingOn.toString();
         this.tenantId = tenantId;
-        this.until = until;
+        this.until = until.toString();
     }
 
     public RegistrationInvitationRepresentation(InvitationDescriptor invitationDescriptor) {
@@ -47,11 +47,11 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
         this.invitationId = invitationId;
     }
 
-    public ZonedDateTime getStartingOn() {
+    public String getStartingOn() {
         return startingOn;
     }
 
-    public void setStartingOn(ZonedDateTime startingOn) {
+    public void setStartingOn(String startingOn) {
         this.startingOn = startingOn;
     }
 
@@ -63,11 +63,11 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
         this.tenantId = tenantId;
     }
 
-    public ZonedDateTime getUntil() {
+    public String getUntil() {
         return until;
     }
 
-    public void setUntil(ZonedDateTime until) {
+    public void setUntil(String until) {
         this.until = until;
     }
 

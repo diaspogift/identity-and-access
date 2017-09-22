@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(path = "/api/tenants/{tenantId}/roles")
+@RequestMapping(path = "/api/v1/tenants/{tenantId}/roles")
 public class RoleResource {
 
     @Autowired

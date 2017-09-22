@@ -28,7 +28,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping(path = "/api/tenants/{tenantId}/groups")
+@RequestMapping(path = "/api/v1/tenants/{tenantId}/groups")
 public class GroupResource {
 
     private static final Logger logger = LoggerFactory.getLogger(TenantResource.class);
