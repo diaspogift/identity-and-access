@@ -149,9 +149,6 @@ public class TenantResource {
             this.identityApplicationService().activateTenant(new ActivateTenantCommand(tenantId));
         } else {
 
-            logger.info(" in else tenantId == " + tenantId + " tenantAvailabilityRepresentation =  " + tenantAvailabilityRepresentation.toString());
-
-
             this.identityApplicationService().deactivateTenant(new DeactivateTenantCommand(tenantId));
         }
 

@@ -1,9 +1,7 @@
 package com.diaspogift.identityandaccess.resources;
 
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
-import com.diaspogift.identityandaccess.application.command.AddGroupToGroupCommand;
-import com.diaspogift.identityandaccess.application.command.AddUserToGroupCommand;
-import com.diaspogift.identityandaccess.application.command.ProvisionGroupCommand;
+import com.diaspogift.identityandaccess.application.command.*;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.GroupCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.GroupMemberCollectionRepresentation;
@@ -53,9 +51,11 @@ public class GroupResource {
 
             Link link1 = linkTo(methodOn(GroupResource.class).getGroup(next.getTenantId(), next.getName())).withSelfRel();
             Link link2 = linkTo(methodOn(GroupResource.class).getGroupMembers(next.getTenantId(), next.getName())).withRel("members");
+            Link link3 = linkTo(methodOn(GroupResource.class).removeGroup(next.getTenantId(), next.getName())).withRel("removeThis");
 
             next.add(link1);
             next.add(link2);
+            next.add(link3);
 
         }
 
@@ -92,6 +92,15 @@ public class GroupResource {
         return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.FOUND);
     }
 
+    @DeleteMapping("{groupName}")
+    public ResponseEntity removeGroup(@PathVariable("tenantId") String tenantId,
+                                      @PathVariable("groupName") String groupName) throws DiaspoGiftRepositoryException {
+
+        this.identityApplicationService().removeGroup(tenantId, groupName);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 
     @GetMapping("{groupName}/members")
     public ResponseEntity<GroupMemberCollectionRepresentation> getGroupMembers(@PathVariable("tenantId") String tenantId,
@@ -103,7 +112,10 @@ public class GroupResource {
 
         for (GroupMemberRepresentation next : groupMemberCollectionRepresentation.getGroupMembes()) {
 
-            Link link = linkTo(methodOn(GroupResource.class).getGroup(next.getTenantId(), next.getName())).withSelfRel();
+            Link link1 = linkTo(methodOn(GroupResource.class).getGroup(next.getTenantId(), next.getName())).withSelfRel();
+
+            next.add(link1);
+
         }
 
         return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.FOUND);
@@ -113,8 +125,7 @@ public class GroupResource {
     @PostMapping("{groupName}/members")
     public ResponseEntity<GroupMemberRepresentation> createGroupMember(@PathVariable("tenantId") String tenantId,
                                                                        @PathVariable("groupName") String groupName,
-                                                                       @RequestBody GroupMemberRepresentation groupMemberRepresentation
-    ) throws DiaspoGiftRepositoryException {
+                                                                       @RequestBody GroupMemberRepresentation groupMemberRepresentation) throws DiaspoGiftRepositoryException {
 
 
         if (tenantId == null || !tenantId.equals(groupMemberRepresentation.getTenantId())) {
@@ -122,16 +133,8 @@ public class GroupResource {
             throw new IllegalArgumentException("Wrong tenant.");
         }
 
-        logger.info(" \n\n\n\n groupMemberRepresentation == " + groupMemberRepresentation.toString());
-
-        logger.info(" groupMemberRepresentation.getType() " + groupMemberRepresentation.getType());
-        logger.info(" GroupMemberType.User = " + GroupMemberType.User);
 
         if (groupMemberRepresentation.getType().equals(GroupMemberType.User.name())) {
-
-
-            logger.info(" in if groupMemberRepresentation.getType().equals(GroupMemberType.User) ");
-
 
             this.identityApplicationService().addUserToGroup(
                     new AddUserToGroupCommand(
@@ -141,9 +144,6 @@ public class GroupResource {
 
 
         } else if (groupMemberRepresentation.getType().equals(GroupMemberType.Group.name())) {
-
-            logger.info("in else if f groupMemberRepresentation.getType().equals(GroupMemberType.Group) ");
-
 
             this.identityApplicationService().addGroupToGroup(
                     new AddGroupToGroupCommand(
@@ -157,6 +157,37 @@ public class GroupResource {
         }
 
         return new ResponseEntity<GroupMemberRepresentation>(groupMemberRepresentation, HttpStatus.CREATED);
+    }
+
+
+    @DeleteMapping("{groupName}/members/{name}")
+    public ResponseEntity removeGroupMember(@PathVariable("tenantId") String tenantId,
+                                            @PathVariable("groupName") String groupName,
+                                            @PathVariable("name") String name,
+                                            @RequestParam("type") String type) throws DiaspoGiftRepositoryException {
+
+
+        if (tenantId == null || groupName == null || type == null) {
+
+            throw new IllegalArgumentException("Wrong tenant.");
+        }
+
+
+        if (type.equals(GroupMemberType.User.name())) {
+
+            this.identityApplicationService().removeUserFromGroup(new RemoveUserFromGroupCommand(tenantId, groupName, name));
+
+
+        } else if (type.equals(GroupMemberType.Group.name())) {
+
+            this.identityApplicationService().removeGroupFromGroup(new RemoveGroupFromGroupCommand(tenantId, groupName, name));
+
+
+        } else {
+            //Do nothhing
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 

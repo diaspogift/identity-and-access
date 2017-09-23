@@ -1,15 +1,19 @@
 package com.diaspogift.identityandaccess;
 
-import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
-import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
-import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.TenantRepresentation;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class IdentityAndAccessApplication {
@@ -87,13 +91,51 @@ public class IdentityAndAccessApplication {
         ZonedDateTime yesterday = ZonedDateTime.now().minusDays(1l);
         ZonedDateTime tomorow = ZonedDateTime.now().plusDays(1l);
 
+        RestTemplate template = new RestTemplate();
 
-        System.out.println(" \n\n\n\n yesterday " + yesterday + " tomorow " + tomorow);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(acceptableMediaTypes);
+
+        HttpEntity requestEntity = new HttpEntity(httpHeaders);
 
 
+        ProvisionTenantRepresentation provisionTenantRepresentation =
+                new ProvisionTenantRepresentation(
+                        "Cadeaux",
+                        "Super marche de bonamoussadi",
+                        "Didier",
+                        "Nkalla",
+                        "didier@yahoo.fr",
+                        "669262656",
+                        "669262656",
+                        "CM",
+                        "00237",
+                        "CM",
+                        "00237",
+                        "Rond point laureat",
+                        "Douala",
+                        "Littoral",
+                        "80209",
+                        "CM"
+                );
+
+
+        TenantRepresentation tr = template.postForObject("http://localhost:8083/api/v1/tenants/provisions", provisionTenantRepresentation, TenantRepresentation.class);
+
+
+        System.out.println(" \n\n tr ============================== " + tr);
+        System.out.println(" \n\n tr ============================== " + tr);
+        System.out.println(" \n\n tr ============================== " + tr);
+
+
+        //System.out.println(" \n\n\n\n yesterday " + yesterday + " tomorow " + tomorow);
+
+/*
         try {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand1);
-/*            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand2);
+            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand2);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand3);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand4);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand5);
@@ -102,14 +144,14 @@ public class IdentityAndAccessApplication {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand8);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand9);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand10);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand11);*/
+            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand11);
         } catch (DiaspoGiftRepositoryException e) {
 
             System.out.println(e.getMessage());
         }
 
         TenantId tenantId =
-                DomainRegistry.tenantRepository().nextIdentity();
+                DomainRegistry.tenantRepository().nextIdentity();*/
 
 
     }
