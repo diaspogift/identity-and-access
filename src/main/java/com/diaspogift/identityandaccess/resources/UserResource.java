@@ -3,10 +3,12 @@ package com.diaspogift.identityandaccess.resources;
 
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
 import com.diaspogift.identityandaccess.application.command.AuthenticateUserCommand;
+import com.diaspogift.identityandaccess.application.command.DefineUserEnablementCommand;
 import com.diaspogift.identityandaccess.application.command.RegisterUserCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.UserDescriptorCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.UserDescriptorRepresentation;
+import com.diaspogift.identityandaccess.application.representation.UserEnablementReprensentation;
 import com.diaspogift.identityandaccess.application.representation.UserRegistrationReprensentation;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
@@ -49,14 +51,44 @@ public class UserResource {
         return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(userDescriptor), HttpStatus.FOUND);
     }
 
-    @PostMapping("{username}/registered")
+    @PostMapping("{username}/registrations")
     public ResponseEntity<UserDescriptorRepresentation> registerNewUser(@PathVariable("tenantId") String aTenantId,
                                                                         @PathVariable("username") String username,
                                                                         @RequestBody UserRegistrationReprensentation userRegistrationReprensentation) throws DiaspoGiftRepositoryException {
+
+        if (aTenantId == null || username == null)
+            throw new IllegalArgumentException("Wrong tenant or username provided");
+        if (aTenantId != null &&
+                username != null &&
+                username.equals(userRegistrationReprensentation.getUsername()) &&
+                !aTenantId.equals(userRegistrationReprensentation.getTenantId()))
+
+            throw new IllegalArgumentException("Wrong tenant or username provided");
+
         User user = this.identityApplicationService().registerUser(new RegisterUserCommand(userRegistrationReprensentation));
 
         return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(user.userDescriptor()), HttpStatus.FOUND);
     }
+
+    @PostMapping("{username}/enablement")
+    public ResponseEntity<UserEnablementReprensentation> defineUserEnablement(@PathVariable("tenantId") String aTenantId,
+                                                                              @PathVariable("username") String username,
+                                                                              @RequestBody UserEnablementReprensentation userEnablementReprensentation) throws DiaspoGiftRepositoryException {
+
+        if (aTenantId == null || username == null)
+            throw new IllegalArgumentException("Wrong tenant or username provided");
+        if (aTenantId != null &&
+                username != null &&
+                username.equals(userEnablementReprensentation.getUsername()) &&
+                !aTenantId.equals(userEnablementReprensentation.getTenantId()))
+
+            throw new IllegalArgumentException("Wrong tenant or username provided");
+
+        this.identityApplicationService().defineUserEnablement(new DefineUserEnablementCommand(userEnablementReprensentation));
+
+        return new ResponseEntity<UserEnablementReprensentation>(userEnablementReprensentation, HttpStatus.CREATED);
+    }
+
 
     @GetMapping("{username}")
     public ResponseEntity<User> getUser(@PathVariable("tenantId") String aTenantId,
