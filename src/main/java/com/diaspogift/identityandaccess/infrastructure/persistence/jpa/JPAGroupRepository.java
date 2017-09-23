@@ -31,6 +31,10 @@ public class JPAGroupRepository implements GroupRepository {
     @Override
     public Group groupNamed(TenantId aTenantId, String aName) {
 
+        if (aName.startsWith(Group.ROLE_GROUP_PREFIX)) {
+            throw new IllegalArgumentException("May not find internal groups.");
+        }
+
         return this.entityManager()
                 .createNamedQuery("selectGroupNamed", Group.class)
                 .setParameter("tenantId", aTenantId)
