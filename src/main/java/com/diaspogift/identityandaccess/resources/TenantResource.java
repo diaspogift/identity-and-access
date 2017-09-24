@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -79,7 +80,7 @@ public class TenantResource {
     }
 
     @PostMapping("/provisions")
-    public ResponseEntity<TenantRepresentation> provisionTenant(@RequestBody ProvisionTenantRepresentation provisionTenantRepresentation) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<TenantRepresentation> provisionTenant(@RequestBody @Valid ProvisionTenantRepresentation provisionTenantRepresentation) throws DiaspoGiftRepositoryException {
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -99,7 +100,7 @@ public class TenantResource {
 
     @PostMapping("/{tenantId}/registration-invitations")
     public ResponseEntity<RegistrationInvitationRepresentation> offerRegistrationInvitation(@PathVariable("tenantId") String tenantId,
-                                                                                            @RequestBody RegistrationInvitationRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
+                                                                                            @RequestBody @Valid RegistrationInvitationRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
 
 
         RegistrationInvitationRepresentation registrationInvitationRepresentation1 =
@@ -135,7 +136,7 @@ public class TenantResource {
     }
 
     @PostMapping("/{tenantId}/status")
-    public ResponseEntity<TenantRepresentation> changeTenantAvailability(@PathVariable("tenantId") String tenantId, @RequestBody TenantAvailabilityRepresentation tenantAvailabilityRepresentation) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<TenantRepresentation> changeTenantAvailability(@PathVariable("tenantId") String tenantId, @RequestBody @Valid TenantAvailabilityRepresentation tenantAvailabilityRepresentation) throws DiaspoGiftRepositoryException {
 
 
         if (tenantId != null && !tenantId.equals(tenantAvailabilityRepresentation.getTenantId())) {
@@ -157,7 +158,7 @@ public class TenantResource {
 
 
     @GetMapping("/{tenantId}/status")
-    public ResponseEntity<TenantRepresentation> getTenantAvailability(@PathVariable("tenantId") String tenantId, @RequestBody TenantAvailabilityRepresentation tenantAvailabilityRepresentation) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<TenantRepresentation> getTenantAvailability(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
 
         //this.identityApplicationService().availabilityStatus();
 

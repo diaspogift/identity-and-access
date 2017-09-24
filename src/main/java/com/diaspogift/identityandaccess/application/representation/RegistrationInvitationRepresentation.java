@@ -71,4 +71,15 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
         this.until = until;
     }
 
+
+    @Override
+    public String toString() {
+        return "RegistrationInvitationRepresentation{" +
+                "description='" + description + '\'' +
+                ", invitationId='" + invitationId + '\'' +
+                ", startingOn='" + startingOn + '\'' +
+                ", tenantId='" + tenantId + '\'' +
+                ", until='" + until + '\'' +
+                '}';
+    }
 }

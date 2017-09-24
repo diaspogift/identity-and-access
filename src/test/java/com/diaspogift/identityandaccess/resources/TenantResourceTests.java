@@ -1,48 +1,44 @@
 package com.diaspogift.identityandaccess.resources;
 
 
+import com.diaspogift.identityandaccess.IdentityAndAccessApplication;
+import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
-import com.diaspogift.identityandaccess.application.representation.TenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.RegistrationInvitationRepresentation;
+import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.*;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.Collection;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = IdentityAndAccessApplication.class)
 @Transactional
-public class TenantResourceTests {
+public class TenantResourceTests extends AbstractResourseTests {
 
 
     @LocalServerPort
-    private int port;
+    private int SERVER_PORT;
+
+
+    public TenantResourceTests() {
+        super();
+    }
 
     @Test
-    @Rollback(false)
     public void provisionTenant() {
 
-        RestTemplate template = new RestTemplate();
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-
-        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
-
-        httpHeaders.setAccept(acceptableMediaTypes);
-
-        ProvisionTenantRepresentation provisionTenantRepresentation =
+        ProvisionTenantRepresentation ptr =
                 new ProvisionTenantRepresentation(
                         "Cadeaux",
                         "Super marche de bonamoussadi",
@@ -63,18 +59,77 @@ public class TenantResourceTests {
                 );
 
 
-        HttpEntity<ProvisionTenantRepresentation> requestEntity = new HttpEntity<ProvisionTenantRepresentation>(provisionTenantRepresentation, httpHeaders);
+        HttpEntity requestEntity = new HttpEntity(ptr, this.httpHeaders());
 
 
-        ResponseEntity<TenantRepresentation> responseEntity
-                = template.exchange("http://localhost:" + port + "/api/v1/tenants/provisions", HttpMethod.POST, requestEntity, TenantRepresentation.class);
+        HttpEntity responseEntity
+                = this.template().exchange(
+                "http://localhost:" + SERVER_PORT + "/api/v1/tenants/provisions",
+                HttpMethod.POST, requestEntity,
+                String.class);
+
+
+        System.out.println("  \n\n ");
+        System.out.println("  \n\n responseEntity =================== " + responseEntity);
+        System.out.println("  \n\n ");
 
 
         assertNotNull(responseEntity.getBody());
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-
-        //Mor asserts to come
-
-
+        //More asserts to come
     }
+
+    @Test
+    public void getTenants() throws Exception {
+
+
+        HttpEntity requestEntity = new HttpEntity(this.httpHeaders());
+        HttpEntity responseEntity = this.template().exchange("http://localhost:" + SERVER_PORT + "/api/v1/tenants", HttpMethod.GET, requestEntity, String.class);
+
+        System.out.println("  \n\n requestEntity =================== " + requestEntity.getBody());
+        System.out.println("  \n\n requestEntity =================== " + requestEntity.getBody());
+
+
+        Collection<Tenant> tenants = ApplicationServiceRegistry.identityApplicationService().allTenants();
+
+
+        System.out.println("  \n\n tenants =================== " + tenants);
+        System.out.println("  \n\n tenants =================== " + tenants);
+
+        //assertNotNull(responseEntity.getBody());
+        //More asserts to come
+    }
+
+    @Test
+    public void offerRegistrationInvitation() throws Exception {
+
+        Tenant bingoTenant = this.bingoTenantAggregate();
+
+
+        RegistrationInvitationRepresentation rir = new RegistrationInvitationRepresentation(
+                "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Bingo hospital",
+                "",
+                ZonedDateTime.now().minusDays(1),
+                bingoTenant.tenantId().id(),
+                ZonedDateTime.now().plusDays(1)
+        );
+
+        System.out.println("\n\n bingoTenant ================================== " + bingoTenant);
+        System.out.println("\n\n rir ================================== " + rir);
+
+
+        HttpEntity requestEntity = new HttpEntity(rir, this.httpHeaders());
+
+
+       /* HttpEntity responseEntity = this.template().exchange("http://localhost:" + SERVER_PORT + "/api/v1/tenants/" +bingoTenant.tenantId()+ "/registration-invitations", HttpMethod.POST, requestEntity, String.class);
+
+
+        System.out.println("\n\n responseEntity ================================== " + responseEntity);
+        System.out.println("\n\n responseEntity.toString() ================================== " + responseEntity.toString());
+        System.out.println("\n\n responseEntity.getBody() ================================== " + responseEntity.getBody());
+        System.out.println("\n\n responseEntity.getHeaders ================================== " + responseEntity.getHeaders());
+
+        assertNotNull(responseEntity.getBody());*/
+        //More asserts to come
+    }
+
 }

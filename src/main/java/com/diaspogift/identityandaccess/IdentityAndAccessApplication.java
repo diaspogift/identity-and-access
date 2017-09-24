@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
@@ -123,6 +124,16 @@ public class IdentityAndAccessApplication {
 
 
         TenantRepresentation tr = template.postForObject("http://localhost:8083/api/v1/tenants/provisions", provisionTenantRepresentation, TenantRepresentation.class);
+
+
+        HttpEntity requestEntity1 = new HttpEntity(httpHeaders);
+
+
+        HttpEntity result = template.exchange("http://localhost:8083/api/v1/tenants", HttpMethod.GET, requestEntity1, String.class);
+
+
+        System.out.println("\n\n\n result  == " + result);
+        System.out.println("\n\n\n result body == " + result.getBody());
 
 
         System.out.println(" \n\n tr ============================== " + tr);

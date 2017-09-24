@@ -2,6 +2,7 @@ package com.diaspogift.identityandaccess.application.representation;
 
 public class ProvisionTenantRepresentation {
 
+
     private String tenantName;
     private String tenantDescription;
     private String administorFirstName;
@@ -109,5 +110,28 @@ public class ProvisionTenantRepresentation {
 
     public String getAddressCountryCode() {
         return addressCountryCode;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ProvisionTenantRepresentation{" +
+                "tenantName='" + tenantName + '\'' +
+                ", tenantDescription='" + tenantDescription + '\'' +
+                ", administorFirstName='" + administorFirstName + '\'' +
+                ", administorLastName='" + administorLastName + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", primaryTelephone='" + primaryTelephone + '\'' +
+                ", secondaryTelephone='" + secondaryTelephone + '\'' +
+                ", primaryCountryCode='" + primaryCountryCode + '\'' +
+                ", primaryDialingCountryCode='" + primaryDialingCountryCode + '\'' +
+                ", secondaryCountryCode='" + secondaryCountryCode + '\'' +
+                ", secondaryDialingCountryCode='" + secondaryDialingCountryCode + '\'' +
+                ", addressStreetAddress='" + addressStreetAddress + '\'' +
+                ", addressCity='" + addressCity + '\'' +
+                ", addressStateProvince='" + addressStateProvince + '\'' +
+                ", addressPostalCode='" + addressPostalCode + '\'' +
+                ", addressCountryCode='" + addressCountryCode + '\'' +
+                '}';
     }
 }

@@ -40,7 +40,11 @@ public class JPATenantRepository implements TenantRepository {
     }
 
     public Collection<Tenant> allTenants() {
-        return this.entityManager().createNamedQuery("selectAllTenants", Tenant.class).getResultList();
+
+        Collection<Tenant> tenants = this.entityManager().createNamedQuery("selectAllTenants", Tenant.class).getResultList();
+
+        return tenants;
+
     }
 
     public Collection<Tenant> allTenants(Integer aFirst, Integer aRangeSize) {
