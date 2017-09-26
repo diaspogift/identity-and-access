@@ -1,5 +1,6 @@
 package com.diaspogift.identityandaccess.infrastructure.persistence.jpa;
 
+import com.diaspogift.identityandaccess.domain.model.identity.ContactInformation;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserRepository;
@@ -62,6 +63,18 @@ public class JPAUserRepository implements UserRepository {
                 .createNamedQuery("selectAllUserForTenant", User.class)
                 .setParameter("tenantId", aTenantId)
                 .getResultList();
+    }
+
+    @Override
+    public ContactInformation userContactInformation(String aTenantId, String aUsername) {
+
+        return this.entityManager()
+                .createNamedQuery("selectUserWithUsername", User.class)
+                .setParameter("tenantId", aTenantId)
+                .setParameter("username", aUsername)
+                .getSingleResult()
+                .person()
+                .contactInformation();
     }
 
     private EntityManager entityManager() {

@@ -16,4 +16,6 @@ public interface UserRepository {
 
     //TO DO TEST
     Collection<User> allUserFor(TenantId aTenantId);
+
+    ContactInformation userContactInformation(String aTenantId, String aUsername);
 }
