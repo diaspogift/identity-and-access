@@ -2,7 +2,7 @@ package com.diaspogift.identityandaccess.application.representation;
 
 import org.springframework.hateoas.ResourceSupport;
 
-public class UserEmailRepresentation extends ResourceSupport{
+public class UserEmailRepresentation extends ResourceSupport {
 
     private String tenantId;
     private String username;

@@ -2,7 +2,7 @@ package com.diaspogift.identityandaccess.application.representation;
 
 import org.springframework.hateoas.ResourceSupport;
 
-public class UserPersonalNameRepresentation extends ResourceSupport{
+public class UserPersonalNameRepresentation extends ResourceSupport {
 
     private String firstName;
     private String lastName;

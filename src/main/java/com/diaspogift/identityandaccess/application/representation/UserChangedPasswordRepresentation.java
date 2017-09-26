@@ -2,7 +2,7 @@ package com.diaspogift.identityandaccess.application.representation;
 
 import org.springframework.hateoas.ResourceSupport;
 
-public class UserChangedPasswordRepresentation extends ResourceSupport{
+public class UserChangedPasswordRepresentation extends ResourceSupport {
 
     private String currentPassword;
     private String changedPassword;

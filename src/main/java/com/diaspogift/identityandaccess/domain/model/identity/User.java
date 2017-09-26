@@ -151,7 +151,9 @@ public class User extends ConcurrencySafeEntity {
         return this.userId().username();
     }
 
-    public Person contactInformation () {return this.person();}
+    public Person contactInformation() {
+        return this.person();
+    }
 
 
     @Override

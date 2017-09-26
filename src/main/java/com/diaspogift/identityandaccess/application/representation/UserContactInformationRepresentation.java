@@ -4,7 +4,7 @@ import com.diaspogift.identityandaccess.domain.model.identity.ContactInformation
 import org.springframework.hateoas.ResourceSupport;
 
 
-public class UserContactInformationRepresentation extends ResourceSupport{
+public class UserContactInformationRepresentation extends ResourceSupport {
 
 
     private String tenantId;
