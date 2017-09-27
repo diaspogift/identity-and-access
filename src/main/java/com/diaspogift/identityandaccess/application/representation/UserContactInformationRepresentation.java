@@ -6,10 +6,6 @@ import org.springframework.hateoas.ResourceSupport;
 
 public class UserContactInformationRepresentation extends ResourceSupport {
 
-
-    private String tenantId;
-    private String username;
-
     //Email address
     private String emailAddress;
 
@@ -50,6 +46,7 @@ public class UserContactInformationRepresentation extends ResourceSupport {
         this.postalCode = contactInformation.postalAddress().postalCode();
         this.stateProvince = contactInformation.postalAddress().stateProvince();
         this.streetAddress = contactInformation.postalAddress().streetAddress();
+
         this.primaryCountryCode = contactInformation.primaryTelephone().countryCode();
         this.primaryCountryDialingCode = contactInformation.primaryTelephone().countryDialingCode();
         this.primaryNumber = contactInformation.primaryTelephone().number();
@@ -60,21 +57,6 @@ public class UserContactInformationRepresentation extends ResourceSupport {
 
     }
 
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmailAddress() {
         return emailAddress;
@@ -175,8 +157,6 @@ public class UserContactInformationRepresentation extends ResourceSupport {
     @Override
     public String toString() {
         return "UserContactInformationRepresentation{" +
-                "tenantId='" + tenantId + '\'' +
-                ", username='" + username + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", city='" + city + '\'' +
                 ", countryCode='" + countryCode + '\'' +

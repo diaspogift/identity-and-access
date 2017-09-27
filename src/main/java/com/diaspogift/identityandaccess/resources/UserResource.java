@@ -103,8 +103,6 @@ public class UserResource {
         UserContactInformationRepresentation userContactInformationRepresentation =
                 new UserContactInformationRepresentation(this.identityApplicationService().userContactInformation(aTenantId, username));
 
-        userContactInformationRepresentation.setTenantId(aTenantId);
-        userContactInformationRepresentation.setUsername(username);
 
         return new ResponseEntity<UserContactInformationRepresentation>(userContactInformationRepresentation, HttpStatus.OK);
     }
@@ -115,7 +113,7 @@ public class UserResource {
                                                                                           @PathVariable("username") String username,
                                                                                           @RequestBody UserContactInformationRepresentation userContactInformationRepresentation) throws DiaspoGiftRepositoryException {
 
-        this.identityApplicationService().changeUserContactInformation(new ChangeContactInfoCommand(userContactInformationRepresentation));
+        this.identityApplicationService().changeUserContactInformation(new ChangeContactInfoCommand(aTenantId, username, userContactInformationRepresentation));
 
         return new ResponseEntity<UserContactInformationRepresentation>(userContactInformationRepresentation, HttpStatus.CREATED);
     }
