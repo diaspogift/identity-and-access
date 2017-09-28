@@ -1,33 +1,38 @@
 package com.diaspogift.identityandaccess.resources;
 
 
-import com.diaspogift.identityandaccess.IdentityAndAccessApplication;
-import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
 import com.diaspogift.identityandaccess.application.representation.RegistrationInvitationRepresentation;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.context.embedded.LocalServerPort;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
-import java.util.Collection;
 
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = IdentityAndAccessApplication.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 @Transactional
 public class TenantResourceTests extends AbstractResourseTests {
 
 
-    @LocalServerPort
-    private int SERVER_PORT;
+    @Autowired
+    private MockMvc mockMvc;
 
 
     public TenantResourceTests() {
@@ -35,10 +40,11 @@ public class TenantResourceTests extends AbstractResourseTests {
     }
 
     @Test
-    public void provisionTenant() {
+    public void provisionTenant() throws Exception {
 
 
         ProvisionTenantRepresentation ptr =
+
                 new ProvisionTenantRepresentation(
                         "Cadeaux",
                         "Super marche de bonamoussadi",
@@ -59,44 +65,34 @@ public class TenantResourceTests extends AbstractResourseTests {
                 );
 
 
-        HttpEntity requestEntity = new HttpEntity(ptr, this.httpHeaders());
+        Gson gson = new Gson();
 
+        MvcResult mvcResult =
 
-        HttpEntity responseEntity
-                = this.template().exchange(
-                "http://localhost:" + SERVER_PORT + "/api/v1/tenants/provisions",
-                HttpMethod.POST, requestEntity,
-                String.class);
+                mockMvc.perform(post("/api/v1/tenants/provisions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(ptr).toString()))
+                        .andExpect(status().isCreated())
+                        .andReturn();
 
+        System.out.println(" mvcResult.getResponse().getContentAsString() ====================== " + mvcResult.getResponse().getContentAsString());
 
-        System.out.println("  \n\n ");
-        System.out.println("  \n\n responseEntity =================== " + responseEntity);
-        System.out.println("  \n\n ");
-
-
-        assertNotNull(responseEntity.getBody());
-        //More asserts to come
     }
 
     @Test
     public void getTenants() throws Exception {
 
+        Tenant bingoTenant = this.bingoTenantAggregate();
+        Tenant cadeauxTenant = this.cadeauxTenantAggregate();
 
-        HttpEntity requestEntity = new HttpEntity(this.httpHeaders());
-        HttpEntity responseEntity = this.template().exchange("http://localhost:" + SERVER_PORT + "/api/v1/tenants", HttpMethod.GET, requestEntity, String.class);
+        MvcResult mvcResult =
 
-        System.out.println("  \n\n requestEntity =================== " + requestEntity.getBody());
-        System.out.println("  \n\n requestEntity =================== " + requestEntity.getBody());
-
-
-        Collection<Tenant> tenants = ApplicationServiceRegistry.identityApplicationService().allTenants();
+                mockMvc.perform(get("/api/v1/tenants"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.tenants", hasSize(2)))
+                        .andReturn();
 
 
-        System.out.println("  \n\n tenants =================== " + tenants);
-        System.out.println("  \n\n tenants =================== " + tenants);
-
-        //assertNotNull(responseEntity.getBody());
-        //More asserts to come
     }
 
     @Test
@@ -109,27 +105,23 @@ public class TenantResourceTests extends AbstractResourseTests {
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Bingo hospital",
                 "",
                 ZonedDateTime.now().minusDays(1),
-                bingoTenant.tenantId().id(),
                 ZonedDateTime.now().plusDays(1)
         );
 
-        System.out.println("\n\n bingoTenant ================================== " + bingoTenant);
-        System.out.println("\n\n rir ================================== " + rir);
+        Gson gson = new Gson();
 
+        MvcResult mvcResult =
 
-        HttpEntity requestEntity = new HttpEntity(rir, this.httpHeaders());
+                mockMvc.perform(post("/api/v1/tenants/" + bingoTenant.tenantId().id() + "/registration-invitations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(rir).toString()))
+                        .andExpect(status().isCreated())
+                        .andReturn();
 
+        System.out.println(" \n\n");
+        System.out.println(" mvcResult.getResponse().getContentAsString() ====================== " + mvcResult.getResponse().getContentAsString());
+        System.out.println(" \n\n");
 
-       /* HttpEntity responseEntity = this.template().exchange("http://localhost:" + SERVER_PORT + "/api/v1/tenants/" +bingoTenant.tenantId()+ "/registration-invitations", HttpMethod.POST, requestEntity, String.class);
-
-
-        System.out.println("\n\n responseEntity ================================== " + responseEntity);
-        System.out.println("\n\n responseEntity.toString() ================================== " + responseEntity.toString());
-        System.out.println("\n\n responseEntity.getBody() ================================== " + responseEntity.getBody());
-        System.out.println("\n\n responseEntity.getHeaders ================================== " + responseEntity.getHeaders());
-
-        assertNotNull(responseEntity.getBody());*/
-        //More asserts to come
     }
 
 }

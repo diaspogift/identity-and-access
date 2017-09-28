@@ -6,7 +6,6 @@ import org.springframework.hateoas.ResourceSupport;
 public class GroupMemberRepresentation extends ResourceSupport {
 
     private String name;
-    private String tenantId;
     private String type;
 
 
@@ -21,7 +20,6 @@ public class GroupMemberRepresentation extends ResourceSupport {
 
     private void initialyzeFrom(GroupMember aGroupMember) {
 
-        this.tenantId = aGroupMember.tenantId().id();
         this.name = aGroupMember.name();
         this.type = aGroupMember.type().name();
     }
@@ -33,14 +31,6 @@ public class GroupMemberRepresentation extends ResourceSupport {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
     }
 
     public String getType() {
@@ -55,26 +45,26 @@ public class GroupMemberRepresentation extends ResourceSupport {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         GroupMemberRepresentation that = (GroupMemberRepresentation) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return tenantId != null ? tenantId.equals(that.tenantId) : that.tenantId == null;
+        return type != null ? type.equals(that.type) : that.type == null;
     }
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (tenantId != null ? tenantId.hashCode() : 0);
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
-
 
     @Override
     public String toString() {
         return "GroupMemberRepresentation{" +
                 "name='" + name + '\'' +
-                ", tenantId='" + tenantId + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }

@@ -18,4 +18,8 @@ public interface UserRepository {
     Collection<User> allUserFor(TenantId aTenantId);
 
     ContactInformation userContactInformation(String aTenantId, String aUsername);
+
+    EmailAddress userEmailAddress(String aTenantId, String aUsername);
+
+    FullName userPersonalName(String aTenantId, String aUsername);
 }

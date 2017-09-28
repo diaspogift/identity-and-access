@@ -81,24 +81,16 @@ public class UserResource {
                                                                               @PathVariable("username") String username,
                                                                               @RequestBody UserEnablementReprensentation userEnablementReprensentation) throws DiaspoGiftRepositoryException {
 
-        if (aTenantId == null || username == null)
-            throw new IllegalArgumentException("Wrong tenant or username provided");
-        if (aTenantId != null &&
-                username != null &&
-                username.equals(userEnablementReprensentation.getUsername()) &&
-                !aTenantId.equals(userEnablementReprensentation.getTenantId()))
 
-            throw new IllegalArgumentException("Wrong tenant or username provided");
-
-        this.identityApplicationService().defineUserEnablement(new DefineUserEnablementCommand(userEnablementReprensentation));
+        this.identityApplicationService().defineUserEnablement(new DefineUserEnablementCommand(aTenantId, username, userEnablementReprensentation));
 
         return new ResponseEntity<UserEnablementReprensentation>(userEnablementReprensentation, HttpStatus.CREATED);
     }
 
 
     @GetMapping("{username}/contact")
-    public ResponseEntity<UserContactInformationRepresentation> changeUserContactInformation(@PathVariable("tenantId") String aTenantId,
-                                                                                             @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<UserContactInformationRepresentation> getUserContactInformation(@PathVariable("tenantId") String aTenantId,
+                                                                                          @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
 
         UserContactInformationRepresentation userContactInformationRepresentation =
                 new UserContactInformationRepresentation(this.identityApplicationService().userContactInformation(aTenantId, username));
@@ -109,9 +101,9 @@ public class UserResource {
 
 
     @PostMapping("{username}/contact")
-    public ResponseEntity<UserContactInformationRepresentation> getUserContactInformation(@PathVariable("tenantId") String aTenantId,
-                                                                                          @PathVariable("username") String username,
-                                                                                          @RequestBody UserContactInformationRepresentation userContactInformationRepresentation) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<UserContactInformationRepresentation> changeUserContactInformation(@PathVariable("tenantId") String aTenantId,
+                                                                                             @PathVariable("username") String username,
+                                                                                             @RequestBody UserContactInformationRepresentation userContactInformationRepresentation) throws DiaspoGiftRepositoryException {
 
         this.identityApplicationService().changeUserContactInformation(new ChangeContactInfoCommand(aTenantId, username, userContactInformationRepresentation));
 
@@ -124,7 +116,7 @@ public class UserResource {
                                                                    @PathVariable("username") String username,
                                                                    @RequestBody UserEmailRepresentation userEmailRepresentation) throws DiaspoGiftRepositoryException {
 
-        this.identityApplicationService().changeUserEmailAddress(new ChangeEmailAddressCommand(userEmailRepresentation));
+        this.identityApplicationService().changeUserEmailAddress(new ChangeEmailAddressCommand(aTenantId, username, userEmailRepresentation));
 
         return new ResponseEntity<UserEmailRepresentation>(userEmailRepresentation, HttpStatus.CREATED);
     }
@@ -133,13 +125,11 @@ public class UserResource {
     public ResponseEntity<UserEmailRepresentation> getUserEmail(@PathVariable("tenantId") String aTenantId,
                                                                 @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
 
-        //this.identityApplicationService().userEmailAddress(aTenantId, username));
+        UserEmailRepresentation userEmailRepresentation = new UserEmailRepresentation(identityApplicationService().userEmailAddress(aTenantId, username));
 
-        //return new ResponseEntity<UserEmailRepresentation>(userEmailRepresentation, HttpStatus.CREATED);
+        return new ResponseEntity<UserEmailRepresentation>(userEmailRepresentation, HttpStatus.OK);
 
-        return null;
     }
-
 
     @PostMapping("{username}/name")
     public ResponseEntity<UserPersonalNameRepresentation> changeUserPersonalName(@PathVariable("tenantId") String aTenantId,
@@ -155,11 +145,9 @@ public class UserResource {
     public ResponseEntity<UserPersonalNameRepresentation> getUserPersonalName(@PathVariable("tenantId") String aTenantId,
                                                                               @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
 
-        //this.identityApplicationService().userPersonalName(aTenantId, username);
+        UserPersonalNameRepresentation userPersonalNameRepresentation = new UserPersonalNameRepresentation(this.identityApplicationService().userPersonalName(aTenantId, username));
 
-        //return new ResponseEntity<UserPersonalNameRepresentation>(userPersonalNameRepresentation, HttpStatus.CREATED);
-
-        return null;
+        return new ResponseEntity<UserPersonalNameRepresentation>(userPersonalNameRepresentation, HttpStatus.OK);
 
     }
 

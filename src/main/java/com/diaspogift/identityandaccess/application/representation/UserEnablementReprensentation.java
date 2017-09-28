@@ -4,30 +4,12 @@ import org.springframework.hateoas.ResourceSupport;
 
 public class UserEnablementReprensentation extends ResourceSupport {
 
-    private String tenantId;
-    private String username;
     private boolean enabled;
     private String startDate;
     private String endDate;
 
-
     public UserEnablementReprensentation() {
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        super();
     }
 
     public boolean isEnabled() {

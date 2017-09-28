@@ -32,13 +32,16 @@ public class TenantResource {
 
 
     private static final Logger logger = LoggerFactory.getLogger(TenantResource.class);
+
+
     @Autowired
     private IdentityApplicationService identityApplicationService;
     @Autowired
     private AccessApplicationService accessApplicationService;
 
     @GetMapping
-    public ResponseEntity<TenantCollectionRepresentation> getTenants(@RequestParam(required = false) Integer first, @RequestParam(required = false) Integer rangeSize) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<TenantCollectionRepresentation> getTenants(@RequestParam(required = false) Integer first,
+                                                                     @RequestParam(required = false) Integer rangeSize) throws DiaspoGiftRepositoryException {
 
         Collection<Tenant> tenants = new HashSet<Tenant>();
 
@@ -98,34 +101,29 @@ public class TenantResource {
 
     }
 
+
+    @GetMapping("/{tenantId}/provisions")
+    public ResponseEntity<ProvisionedTenantRepresentation> getTenantProvision(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
+
+        ProvisionedTenantRepresentation provisionedTenantRepresentation = new ProvisionedTenantRepresentation(this.identityApplicationService.tenant(tenantId));
+
+        return new ResponseEntity<ProvisionedTenantRepresentation>(provisionedTenantRepresentation, HttpStatus.OK);
+
+    }
+
     @PostMapping("/{tenantId}/registration-invitations")
     public ResponseEntity<RegistrationInvitationRepresentation> offerRegistrationInvitation(@PathVariable("tenantId") String tenantId,
-                                                                                            @RequestBody @Valid RegistrationInvitationRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
+                                                                                            @RequestBody RegistrationInvitationRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
 
-
-        RegistrationInvitationRepresentation registrationInvitationRepresentation1 =
+        RegistrationInvitationRepresentation offeredRegistrationInvitationRepresentation =
                 new RegistrationInvitationRepresentation(
-                        this.identityApplicationService()
-                                .offerRegistrationInvitation(
-                                        new OfferRegistrationInvitationCommand(
-                                                registrationInvitationRepresentation.getDescription(),
-                                                registrationInvitationRepresentation.getStartingOn(),
-                                                registrationInvitationRepresentation.getTenantId(),
-                                                registrationInvitationRepresentation.getUntil()
-                                        )));
+                        this.identityApplicationService().offerRegistrationInvitation(new OfferRegistrationInvitationCommand(tenantId, registrationInvitationRepresentation)));
 
-        return new ResponseEntity<RegistrationInvitationRepresentation>(registrationInvitationRepresentation, HttpStatus.CREATED);
+
+        return new ResponseEntity<RegistrationInvitationRepresentation>(offeredRegistrationInvitationRepresentation, HttpStatus.CREATED);
 
     }
 
-    @PostMapping("/{tenantId}/provisions")
-    public ResponseEntity<ProvisionTenantRepresentation> getTenantProvision(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-
-        return null;
-
-    }
 
     @GetMapping("/{tenantId}")
     public ResponseEntity<TenantRepresentation> getTenant(@PathVariable String tenantId) throws DiaspoGiftRepositoryException {
@@ -135,36 +133,28 @@ public class TenantResource {
         return new ResponseEntity<TenantRepresentation>(tenantRepresentation, HttpStatus.FOUND);
     }
 
-    @PostMapping("/{tenantId}/status")
-    public ResponseEntity<TenantRepresentation> changeTenantAvailability(@PathVariable("tenantId") String tenantId, @RequestBody @Valid TenantAvailabilityRepresentation tenantAvailabilityRepresentation) throws DiaspoGiftRepositoryException {
+    @PostMapping("/{tenantId}/availability-status")
+    public ResponseEntity<TenantAvailabilityRepresentation> changeTenantAvailability(@PathVariable("tenantId") String tenantId,
+                                                                                     @RequestBody TenantAvailabilityRepresentation tenantAvailabilityRepresentation) throws DiaspoGiftRepositoryException {
 
-
-        if (tenantId != null && !tenantId.equals(tenantAvailabilityRepresentation.getTenantId())) {
-
-            throw new IllegalArgumentException("Wrong tenant.");
-        }
 
         if (tenantAvailabilityRepresentation.isActive()) {
-
-
             this.identityApplicationService().activateTenant(new ActivateTenantCommand(tenantId));
-        } else {
 
+        } else {
             this.identityApplicationService().deactivateTenant(new DeactivateTenantCommand(tenantId));
         }
 
-        return new ResponseEntity<TenantRepresentation>(new TenantRepresentation(this.identityApplicationService().tenant(tenantId)), HttpStatus.OK);
+        return new ResponseEntity<TenantAvailabilityRepresentation>(tenantAvailabilityRepresentation, HttpStatus.CREATED);
     }
 
 
-    @GetMapping("/{tenantId}/status")
-    public ResponseEntity<TenantRepresentation> getTenantAvailability(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
+    @GetMapping("/{tenantId}/availability-status")
+    public ResponseEntity<TenantAvailabilityRepresentation> getTenantAvailability(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
 
-        //this.identityApplicationService().availabilityStatus();
+        TenantAvailabilityRepresentation tenantAvailabilityRepresentation = new TenantAvailabilityRepresentation(this.identityApplicationService().availabilityStatus(tenantId));
 
-        return null;
-
-        //new ResponseEntity<TenantRepresentation>(new TenantRepresentation(this.identityApplicationService().tenant(tenantId)), HttpStatus.OK);
+        return new ResponseEntity<TenantAvailabilityRepresentation>(tenantAvailabilityRepresentation, HttpStatus.OK);
     }
 
 

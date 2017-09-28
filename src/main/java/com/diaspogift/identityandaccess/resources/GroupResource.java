@@ -49,13 +49,11 @@ public class GroupResource {
 
         for (GroupRepresentation next : allGroupReps) {
 
-            Link link1 = linkTo(methodOn(GroupResource.class).getGroup(next.getTenantId(), next.getName())).withSelfRel();
-            Link link2 = linkTo(methodOn(GroupResource.class).getGroupMembers(next.getTenantId(), next.getName())).withRel("members");
-            Link link3 = linkTo(methodOn(GroupResource.class).removeGroup(next.getTenantId(), next.getName())).withRel("removeThis");
+            Link link1 = linkTo(methodOn(GroupResource.class).getGroup(tenantId, next.getName())).withSelfRel();
+            Link link2 = linkTo(methodOn(GroupResource.class).getGroupMembers(tenantId, next.getName())).withRel("members");
 
             next.add(link1);
             next.add(link2);
-            next.add(link3);
 
         }
 
@@ -68,12 +66,8 @@ public class GroupResource {
     public ResponseEntity<GroupRepresentation> createGroup(@PathVariable("tenantId") String tenantId,
                                                            @RequestBody GroupRepresentation groupRepresentation) throws DiaspoGiftRepositoryException {
 
-        if (tenantId != null && !tenantId.equals(groupRepresentation.getTenantId())) {
 
-            throw new IllegalArgumentException("Wrong tenant.");
-        }
-
-        this.identityApplicationService().provisionGroup(new ProvisionGroupCommand(groupRepresentation));
+        this.identityApplicationService().provisionGroup(new ProvisionGroupCommand(tenantId, groupRepresentation));
 
 
         return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.CREATED);
@@ -112,7 +106,7 @@ public class GroupResource {
 
         for (GroupMemberRepresentation next : groupMemberCollectionRepresentation.getGroupMembes()) {
 
-            Link link1 = linkTo(methodOn(GroupResource.class).getGroup(next.getTenantId(), next.getName())).withSelfRel();
+            Link link1 = linkTo(methodOn(GroupResource.class).getGroup(tenantId, next.getName())).withSelfRel();
 
             next.add(link1);
 
@@ -128,17 +122,11 @@ public class GroupResource {
                                                                        @RequestBody GroupMemberRepresentation groupMemberRepresentation) throws DiaspoGiftRepositoryException {
 
 
-        if (tenantId == null || !tenantId.equals(groupMemberRepresentation.getTenantId())) {
-
-            throw new IllegalArgumentException("Wrong tenant.");
-        }
-
-
         if (groupMemberRepresentation.getType().equals(GroupMemberType.User.name())) {
 
             this.identityApplicationService().addUserToGroup(
                     new AddUserToGroupCommand(
-                            groupMemberRepresentation.getTenantId(),
+                            tenantId,
                             groupName,
                             groupMemberRepresentation.getName()));
 
@@ -147,7 +135,7 @@ public class GroupResource {
 
             this.identityApplicationService().addGroupToGroup(
                     new AddGroupToGroupCommand(
-                            groupMemberRepresentation.getTenantId(),
+                            tenantId,
                             groupName,
                             groupMemberRepresentation.getName()));
 
@@ -165,12 +153,6 @@ public class GroupResource {
                                             @PathVariable("groupName") String groupName,
                                             @PathVariable("name") String name,
                                             @RequestParam("type") String type) throws DiaspoGiftRepositoryException {
-
-
-        if (tenantId == null || groupName == null || type == null) {
-
-            throw new IllegalArgumentException("Wrong tenant.");
-        }
 
 
         if (type.equals(GroupMemberType.User.name())) {

@@ -1,5 +1,7 @@
 package com.diaspogift.identityandaccess.application.command;
 
+import com.diaspogift.identityandaccess.application.representation.RegistrationInvitationRepresentation;
+
 public class OfferRegistrationInvitationCommand {
 
 
@@ -14,6 +16,14 @@ public class OfferRegistrationInvitationCommand {
         this.startingOn = startingOn;
         this.tenantId = tenantId;
         this.until = until;
+    }
+
+    public OfferRegistrationInvitationCommand(String aTenantId, RegistrationInvitationRepresentation aRegistrationInvitationRepresentation) {
+
+        this.description = aRegistrationInvitationRepresentation.getDescription();
+        this.startingOn = aRegistrationInvitationRepresentation.getStartingOn();
+        this.tenantId = aTenantId;
+        this.until = aRegistrationInvitationRepresentation.getUntil();
     }
 
     public String getDescription() {

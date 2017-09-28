@@ -5,7 +5,6 @@ import org.springframework.hateoas.ResourceSupport;
 
 public class GroupRepresentation extends ResourceSupport {
 
-    private String tenantId;
     private String name;
     private String description;
 
@@ -21,20 +20,10 @@ public class GroupRepresentation extends ResourceSupport {
 
     private void initialyzeFrom(Group aGroup) {
 
-        this.tenantId = aGroup.tenantId().id();
-
         this.name = aGroup.name();
         this.description = aGroup.description();
     }
 
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
 
     public String getName() {
         return name;
@@ -52,21 +41,20 @@ public class GroupRepresentation extends ResourceSupport {
         this.description = description;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         GroupRepresentation that = (GroupRepresentation) o;
 
-        if (tenantId != null ? !tenantId.equals(that.tenantId) : that.tenantId != null) return false;
         return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
-        int result = tenantId != null ? tenantId.hashCode() : 0;
+        int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
@@ -74,7 +62,6 @@ public class GroupRepresentation extends ResourceSupport {
     @Override
     public String toString() {
         return "GroupRepresentation{" +
-                "tenantId='" + tenantId + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

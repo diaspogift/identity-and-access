@@ -11,7 +11,6 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
     private String description;
     private String invitationId;
     private String startingOn;
-    private String tenantId;
     private String until;
 
 
@@ -19,16 +18,19 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
         super();
     }
 
-    public RegistrationInvitationRepresentation(String description, String invitationId, ZonedDateTime startingOn,
-                                                String tenantId, ZonedDateTime until) {
+    public RegistrationInvitationRepresentation(String description, String invitationId, ZonedDateTime startingOn, ZonedDateTime until) {
         this.description = description;
         this.invitationId = invitationId;
         this.startingOn = startingOn.toString();
-        this.tenantId = tenantId;
         this.until = until.toString();
     }
 
     public RegistrationInvitationRepresentation(InvitationDescriptor invitationDescriptor) {
+
+        this.description = invitationDescriptor.description();
+        this.invitationId = invitationDescriptor.invitationId();
+        this.startingOn = invitationDescriptor.startingOn().toString();
+        this.until = invitationDescriptor.until().toString();
     }
 
     public String getDescription() {
@@ -55,14 +57,6 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
         this.startingOn = startingOn;
     }
 
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
-
     public String getUntil() {
         return until;
     }
@@ -78,7 +72,6 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
                 "description='" + description + '\'' +
                 ", invitationId='" + invitationId + '\'' +
                 ", startingOn='" + startingOn + '\'' +
-                ", tenantId='" + tenantId + '\'' +
                 ", until='" + until + '\'' +
                 '}';
     }

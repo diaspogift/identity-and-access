@@ -54,9 +54,13 @@ public class JPATenantRepository implements TenantRepository {
                 .setMaxResults(aRangeSize)
                 .getResultList();
 
-        tenants.forEach(System.out::println);
-
         return tenants;
+    }
+
+    @Override
+    public boolean availabilityStatus(TenantId aTenantId) {
+
+        return this.entityManager().createNamedQuery("selectTenantOfId", Tenant.class).setParameter("tenantId", aTenantId).getSingleResult().isActive();
     }
 
     public EntityManager entityManager() {

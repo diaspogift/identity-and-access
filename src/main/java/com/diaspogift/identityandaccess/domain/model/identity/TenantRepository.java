@@ -20,4 +20,5 @@ public interface TenantRepository {
     Collection<Tenant> allTenants(Integer aFirst, Integer aRangeSize);
 
 
+    boolean availabilityStatus(TenantId tenantId);
 }

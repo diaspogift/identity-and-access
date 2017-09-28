@@ -1,5 +1,6 @@
 package com.diaspogift.identityandaccess.application.representation;
 
+import com.diaspogift.identityandaccess.domain.model.identity.FullName;
 import org.springframework.hateoas.ResourceSupport;
 
 public class UserPersonalNameRepresentation extends ResourceSupport {
@@ -10,6 +11,12 @@ public class UserPersonalNameRepresentation extends ResourceSupport {
 
     public UserPersonalNameRepresentation() {
         super();
+    }
+
+    public UserPersonalNameRepresentation(FullName fullName) {
+
+        this.firstName = fullName.firstName();
+        this.lastName = fullName.lastName();
     }
 
     public String getFirstName() {

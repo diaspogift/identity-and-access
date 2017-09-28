@@ -41,7 +41,7 @@ public class RoleResource {
 
         for (RoleRepresentation next : allRolesReps) {
 
-            Link link = linkTo(methodOn(RoleResource.class).getTenantRole(next.getTenantId(), next.getName())).withSelfRel();
+            Link link = linkTo(methodOn(RoleResource.class).getTenantRole(tenantId, next.getName())).withSelfRel();
 
             next.add(link);
 
@@ -54,10 +54,7 @@ public class RoleResource {
     public ResponseEntity<RoleRepresentation> addTenantRoles(@PathVariable("tenantId") String tenantId,
                                                              @RequestBody RoleRepresentation roleRepresentation) throws DiaspoGiftRepositoryException {
 
-        if (tenantId != null && !tenantId.equals(roleRepresentation.getTenantId()))
-            throw new IllegalArgumentException("Wrong teanant");
-
-        this.accessApplicationService().provisionRole(new ProvisionRoleCommand(roleRepresentation));
+        this.accessApplicationService().provisionRole(new ProvisionRoleCommand(tenantId, roleRepresentation));
 
         return new ResponseEntity<RoleRepresentation>(roleRepresentation, HttpStatus.CREATED);
     }
