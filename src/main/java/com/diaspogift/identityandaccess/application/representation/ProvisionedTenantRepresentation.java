@@ -1,8 +1,9 @@
 package com.diaspogift.identityandaccess.application.representation;
 
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
+import org.springframework.hateoas.ResourceSupport;
 
-public class ProvisionedTenantRepresentation {
+public class ProvisionedTenantRepresentation extends ResourceSupport {
 
 
     private String tenantId;
@@ -29,14 +30,30 @@ public class ProvisionedTenantRepresentation {
         this.tenantDescription = aTenant.description();
     }
 
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
     public String getTenantName() {
         return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 
     public String getTenantDescription() {
         return tenantDescription;
     }
 
+    public void setTenantDescription(String tenantDescription) {
+        this.tenantDescription = tenantDescription;
+    }
 
     @Override
     public String toString() {

@@ -33,6 +33,8 @@ public class RoleTests extends IdentityAndAccessTest {
         DomainRegistry.roleRepository().add(role);
         Role savedRole = DomainRegistry.roleRepository().roleNamed(activeTenant.tenantId(), role.name());
 
+        System.out.println(" \n\n role ref check ==== " + (role == savedRole));
+
         assertEquals(1, DomainRegistry.roleRepository().allRoles(activeTenant.tenantId()).size());
         assertEquals(role, savedRole);
         this.expectedEvents(1);

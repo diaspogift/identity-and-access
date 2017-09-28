@@ -35,7 +35,7 @@ dependencies {
     compile('mysql:mysql-connector-java')
     compile('org.springframework.boot:spring-boot-devtools')
     compile('org.springframework.boot:spring-boot-starter-hateoas')
-    compile group: 'com.h2database', name: 'h2', version: '1.4.196'
+    //compile group: 'com.h2database', name: 'h2', version: '1.4.196'
     compile('com.google.code.gson:gson:2.1')
     compile('com.googlecode.libphonenumber:libphonenumber:8.8.1')
     compile('org.springframework.boot:spring-boot-starter-activemq')

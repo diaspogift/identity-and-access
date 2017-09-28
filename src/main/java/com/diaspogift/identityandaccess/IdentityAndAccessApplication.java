@@ -2,13 +2,13 @@ package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
 import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
-import com.diaspogift.identityandaccess.application.representation.TenantRepresentation;
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
+import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
@@ -123,28 +123,28 @@ public class IdentityAndAccessApplication {
                 );
 
 
-        TenantRepresentation tr = template.postForObject("http://localhost:8083/api/v1/tenants/provisions", provisionTenantRepresentation, TenantRepresentation.class);
+        // TenantRepresentation tr = template.postForObject("http://localhost:8083/api/v1/tenants/provisions", provisionTenantRepresentation, TenantRepresentation.class);
 
 
         HttpEntity requestEntity1 = new HttpEntity(httpHeaders);
 
 
-        HttpEntity result = template.exchange("http://localhost:8083/api/v1/tenants", HttpMethod.GET, requestEntity1, String.class);
+        //HttpEntity result = template.exchange("http://localhost:8083/api/v1/tenants", HttpMethod.GET, requestEntity1, String.class);
 
 
-        System.out.println("\n\n\n result  == " + result);
-        System.out.println("\n\n\n result body == " + result.getBody());
+        // System.out.println("\n\n\n result  == " + result);
+        //System.out.println("\n\n\n result body == " + result.getBody());
 
 
-        System.out.println(" \n\n tr ============================== " + tr);
-        System.out.println(" \n\n tr ============================== " + tr);
-        System.out.println(" \n\n tr ============================== " + tr);
+        //System.out.println(" \n\n tr ============================== " + tr);
+        //System.out.println(" \n\n tr ============================== " + tr);
+        //System.out.println(" \n\n tr ============================== " + tr);
 
 
         //System.out.println(" \n\n\n\n yesterday " + yesterday + " tomorow " + tomorow);
 
-/*
-        try {
+
+        /*try {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand1);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand2);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand3);
@@ -160,9 +160,9 @@ public class IdentityAndAccessApplication {
 
             System.out.println(e.getMessage());
         }
-
+*/
         TenantId tenantId =
-                DomainRegistry.tenantRepository().nextIdentity();*/
+                DomainRegistry.tenantRepository().nextIdentity();
 
 
     }

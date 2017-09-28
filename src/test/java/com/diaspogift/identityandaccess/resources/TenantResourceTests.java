@@ -2,42 +2,55 @@ package com.diaspogift.identityandaccess.resources;
 
 
 import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.ProvisionedTenantRepresentation;
 import com.diaspogift.identityandaccess.application.representation.RegistrationInvitationRepresentation;
-import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
+import com.diaspogift.identityandaccess.application.representation.TenantAvailabilityRepresentation;
 import com.google.gson.Gson;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.ZonedDateTime;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
+@WebAppConfiguration
 public class TenantResourceTests extends AbstractResourseTests {
 
 
-    @Autowired
     private MockMvc mockMvc;
+    private ProvisionedTenantRepresentation bingoTenant;
+    private ProvisionedTenantRepresentation cadeauxTenant;
+
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
 
     public TenantResourceTests() {
         super();
     }
+
 
     @Test
     public void provisionTenant() throws Exception {
@@ -74,16 +87,28 @@ public class TenantResourceTests extends AbstractResourseTests {
                         .content(gson.toJson(ptr).toString()))
                         .andExpect(status().isCreated())
                         .andReturn();
+    }
 
-        System.out.println(" mvcResult.getResponse().getContentAsString() ====================== " + mvcResult.getResponse().getContentAsString());
+    @Test
+    public void getTenantProvision() throws Exception {
 
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+
+        MvcResult mvcResult =
+
+                mockMvc.perform(get("/api/v1/tenants/" + this.bingoTenant.getTenantId() + "/provisions"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.tenantId", is(this.bingoTenant.getTenantId())))
+                        .andExpect(jsonPath("$.tenantName", is(this.bingoTenant.getTenantName())))
+                        .andExpect(jsonPath("$.tenantDescription", is(this.bingoTenant.getTenantDescription())))
+                        .andReturn();
     }
 
     @Test
     public void getTenants() throws Exception {
 
-        Tenant bingoTenant = this.bingoTenantAggregate();
-        Tenant cadeauxTenant = this.cadeauxTenantAggregate();
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+        this.cadeauxTenant = this.cadeauxTenantAggregate(this.mockMvc);
 
         MvcResult mvcResult =
 
@@ -92,14 +117,12 @@ public class TenantResourceTests extends AbstractResourseTests {
                         .andExpect(jsonPath("$.tenants", hasSize(2)))
                         .andReturn();
 
-
     }
 
     @Test
     public void offerRegistrationInvitation() throws Exception {
 
-        Tenant bingoTenant = this.bingoTenantAggregate();
-
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
 
         RegistrationInvitationRepresentation rir = new RegistrationInvitationRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Bingo hospital",
@@ -110,18 +133,86 @@ public class TenantResourceTests extends AbstractResourseTests {
 
         Gson gson = new Gson();
 
+
         MvcResult mvcResult =
 
-                mockMvc.perform(post("/api/v1/tenants/" + bingoTenant.tenantId().id() + "/registration-invitations")
+                mockMvc.perform(post("/api/v1/tenants/" + this.bingoTenant.getTenantId() + "/registration-invitations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(rir).toString()))
                         .andExpect(status().isCreated())
                         .andReturn();
 
-        System.out.println(" \n\n");
-        System.out.println(" mvcResult.getResponse().getContentAsString() ====================== " + mvcResult.getResponse().getContentAsString());
-        System.out.println(" \n\n");
+    }
+
+    @Test
+    public void getTenant() throws Exception {
+
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+
+        MvcResult mvcResult =
+
+                mockMvc.perform(get("/api/v1/tenants/" + this.bingoTenant.getTenantId()))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.tenantId", is(this.bingoTenant.getTenantId())))
+                        .andExpect(jsonPath("$.name", is(this.bingoTenant.getTenantName())))
+                        .andExpect(jsonPath("$.description", is(this.bingoTenant.getTenantDescription())))
+                        .andReturn();
+
 
     }
 
+    @Test
+    public void changeTenantAvailability() throws Exception {
+
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+
+        TenantAvailabilityRepresentation tar = new TenantAvailabilityRepresentation(false);
+
+        Gson gson = new Gson();
+
+        MvcResult mvcResult =
+
+                mockMvc.perform(post("/api/v1/tenants/" + this.bingoTenant.getTenantId() + "/availability-status")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(tar).toString()))
+                        .andExpect(status().isCreated())
+                        .andExpect(jsonPath("$.active", is(false)))
+                        .andReturn();
+
+    }
+
+    @Test
+    public void getTenantAvailability() throws Exception {
+
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+
+
+        Gson gson = new Gson();
+
+        MvcResult mvcResult =
+
+                mockMvc.perform(get("/api/v1/tenants/" + this.bingoTenant.getTenantId() + "/availability-status"))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.active", is(true)))
+                        .andReturn();
+
+    }
+
+
+    @Before
+    public void setUp() throws Exception {
+
+        super.setUp();
+        this.mockMvc = webAppContextSetup(webApplicationContext).build();
+
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        super.tearDown();
+
+        this.mockMvc = null;
+        this.bingoTenant = null;
+        this.cadeauxTenant = null;
+    }
 }
