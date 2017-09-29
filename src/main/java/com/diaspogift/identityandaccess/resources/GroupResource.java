@@ -83,7 +83,7 @@ public class GroupResource {
 
         groupRepresentation.add(link);
 
-        return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.FOUND);
+        return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.OK);
     }
 
     @DeleteMapping("{groupName}")
@@ -104,15 +104,21 @@ public class GroupResource {
 
         GroupMemberCollectionRepresentation groupMemberCollectionRepresentation = new GroupMemberCollectionRepresentation(groupMembers);
 
-        for (GroupMemberRepresentation next : groupMemberCollectionRepresentation.getGroupMembes()) {
+        for (GroupMemberRepresentation next : groupMemberCollectionRepresentation.getGroupMembers()) {
 
-            Link link1 = linkTo(methodOn(GroupResource.class).getGroup(tenantId, next.getName())).withSelfRel();
+            if (next.getType().endsWith(GroupMemberType.Group.name())) {
+                Link link = linkTo(methodOn(GroupResource.class).getGroup(tenantId, next.getName())).withSelfRel();
+                next.add(link);
+            } else if (next.getType().endsWith(GroupMemberType.User.name())) {
 
-            next.add(link1);
+                Link link = linkTo(methodOn(UserResource.class).getUser(tenantId, next.getName())).withSelfRel();
+                next.add(link);
+            }
+
 
         }
 
-        return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.FOUND);
+        return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.OK);
     }
 
 

@@ -38,6 +38,24 @@ public class UserContactInformationRepresentation extends ResourceSupport {
         this.initialyzeFrom(contactInformation);
     }
 
+    public UserContactInformationRepresentation(String emailAddress, String city, String countryCode, String postalCode, String stateProvince, String streetAddress,
+                                                String primaryCountryCode, String primaryCountryDialingCode, String primaryNumber, String secondaryCountryCode,
+                                                String secondaryCountryDialingCode, String secondaryNumber) {
+
+        this.emailAddress = emailAddress;
+        this.city = city;
+        this.countryCode = countryCode;
+        this.postalCode = postalCode;
+        this.stateProvince = stateProvince;
+        this.streetAddress = streetAddress;
+        this.primaryCountryCode = primaryCountryCode;
+        this.primaryCountryDialingCode = primaryCountryDialingCode;
+        this.primaryNumber = primaryNumber;
+        this.secondaryCountryCode = secondaryCountryCode;
+        this.secondaryCountryDialingCode = secondaryCountryDialingCode;
+        this.secondaryNumber = secondaryNumber;
+    }
+
     private void initialyzeFrom(ContactInformation contactInformation) {
 
         this.emailAddress = contactInformation.emailAddress().address();

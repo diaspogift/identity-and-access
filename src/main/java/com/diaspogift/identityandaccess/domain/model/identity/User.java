@@ -273,4 +273,15 @@ public class User extends ConcurrencySafeEntity {
     public UserId userId() {
         return this.userId;
     }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", enablement=" + enablement +
+                ", password='" + password + '\'' +
+                ", person=" + person +
+                '}';
+    }
 }

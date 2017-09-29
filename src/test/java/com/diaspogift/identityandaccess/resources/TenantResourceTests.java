@@ -33,8 +33,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Transactional
 @WebAppConfiguration
+@Transactional
 public class TenantResourceTests extends AbstractResourseTests {
 
 
@@ -197,7 +197,6 @@ public class TenantResourceTests extends AbstractResourseTests {
                         .andReturn();
 
     }
-
 
     @Before
     public void setUp() throws Exception {

@@ -8,6 +8,7 @@ import com.diaspogift.identityandaccess.application.command.ProvisionTenantComma
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.*;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
+import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +94,13 @@ public class TenantResource {
 
         Link link = linkTo(methodOn(TenantResource.class).getTenantProvision(provisionedTenantRepresentation.getTenantId())).withSelfRel();
         provisionedTenantRepresentation.add(link);
+
+        User user = this.identityApplicationService().user(provisionedTenantRepresentation.getTenantId(), "admin");
+
+
+        System.out.println(" \n\n tenant admin user ====== " + user);
+        System.out.println(" \n\n tenant admin user ====== " + user);
+        System.out.println(" \n\n provisionedTenantRepresentationr ====== " + provisionedTenantRepresentation);
 
         return new ResponseEntity<ProvisionedTenantRepresentation>(provisionedTenantRepresentation, HttpStatus.CREATED);
 

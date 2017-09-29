@@ -79,11 +79,17 @@ public class Group extends ConcurrencySafeEntity {
         boolean isMember =
                 this.groupMembers().contains(aUser.toGroupMember());
 
+        System.out.println(" \n\n isMember in isMember " + isMember);
+        System.out.println(" \n\n isMember in isMember " + isMember);
+        System.out.println(" \n\n isMember in isMember " + isMember);
+
         if (isMember) {
             isMember = aGroupMemberService.confirmUser(this, aUser);
         } else {
             isMember = aGroupMemberService.isUserInNestedGroup(this, aUser);
         }
+
+        System.out.println(" \n\n isMember in isMember " + isMember);
 
         return isMember;
     }

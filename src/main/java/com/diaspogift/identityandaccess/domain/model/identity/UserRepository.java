@@ -17,9 +17,9 @@ public interface UserRepository {
     //TO DO TEST
     Collection<User> allUserFor(TenantId aTenantId);
 
-    ContactInformation userContactInformation(String aTenantId, String aUsername);
+    ContactInformation userContactInformation(TenantId aTenantId, String aUsername);
 
-    EmailAddress userEmailAddress(String aTenantId, String aUsername);
+    EmailAddress userEmailAddress(TenantId aTenantId, String aUsername);
 
-    FullName userPersonalName(String aTenantId, String aUsername);
+    FullName userPersonalName(TenantId aTenantId, String aUsername);
 }

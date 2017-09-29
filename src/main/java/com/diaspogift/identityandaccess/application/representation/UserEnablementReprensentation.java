@@ -12,6 +12,13 @@ public class UserEnablementReprensentation extends ResourceSupport {
         super();
     }
 
+    public UserEnablementReprensentation(boolean anEnablement, String aStartDate, String anEndDate) {
+
+        this.enabled = anEnablement;
+        this.startDate = aStartDate;
+        this.endDate = anEndDate;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }

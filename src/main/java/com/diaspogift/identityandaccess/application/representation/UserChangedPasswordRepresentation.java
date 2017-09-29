@@ -12,6 +12,12 @@ public class UserChangedPasswordRepresentation extends ResourceSupport {
         super();
     }
 
+    public UserChangedPasswordRepresentation(String aCurrentPassword, String aChangedPassword) {
+
+        this.currentPassword = aCurrentPassword;
+        this.changedPassword = aChangedPassword;
+    }
+
     public String getCurrentPassword() {
         return currentPassword;
     }

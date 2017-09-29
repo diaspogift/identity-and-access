@@ -46,6 +46,8 @@ public class JPAUserRepository implements UserRepository {
 
     public User userWithUsername(TenantId aTenantId, String aUsername) {
 
+        System.out.println(" \n\n in userWithUsername repo: aTenantId, aUsername = " + aTenantId + " , " + aUsername);
+
         return this.entityManager()
                 .createNamedQuery("selectUserWithUsername", User.class)
                 .setParameter("tenantId", aTenantId)
@@ -63,7 +65,7 @@ public class JPAUserRepository implements UserRepository {
     }
 
     @Override
-    public ContactInformation userContactInformation(String aTenantId, String aUsername) {
+    public ContactInformation userContactInformation(TenantId aTenantId, String aUsername) {
 
         return this.entityManager()
                 .createNamedQuery("selectUserWithUsername", User.class)
@@ -75,7 +77,7 @@ public class JPAUserRepository implements UserRepository {
     }
 
     @Override
-    public EmailAddress userEmailAddress(String aTenantId, String aUsername) {
+    public EmailAddress userEmailAddress(TenantId aTenantId, String aUsername) {
 
         return this.entityManager()
                 .createNamedQuery("selectUserWithUsername", User.class)
@@ -87,7 +89,7 @@ public class JPAUserRepository implements UserRepository {
     }
 
     @Override
-    public FullName userPersonalName(String aTenantId, String aUsername) {
+    public FullName userPersonalName(TenantId aTenantId, String aUsername) {
 
         return this.entityManager()
                 .createNamedQuery("selectUserWithUsername", User.class)

@@ -33,6 +33,34 @@ public class UserRegistrationReprensentation extends ResourceSupport {
         super();
     }
 
+    public UserRegistrationReprensentation(String tenantId, String invitationIdentifier, String username, String password, String firstName,
+                                           String lastName, boolean enabled, String startDate, String endDate, String emailAddress, String primaryTelephone,
+                                           String secondaryTelephone, String primaryCountryCode, String primaryDialingCountryCode, String secondaryCountryCode,
+                                           String secondaryDialingCountryCode, String addressStreetAddress, String addressCity, String addressStateProvince,
+                                           String addressPostalCode, String addressCountryCode) {
+        this.tenantId = tenantId;
+        this.invitationIdentifier = invitationIdentifier;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.enabled = enabled;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.emailAddress = emailAddress;
+        this.primaryTelephone = primaryTelephone;
+        this.secondaryTelephone = secondaryTelephone;
+        this.primaryCountryCode = primaryCountryCode;
+        this.primaryDialingCountryCode = primaryDialingCountryCode;
+        this.secondaryCountryCode = secondaryCountryCode;
+        this.secondaryDialingCountryCode = secondaryDialingCountryCode;
+        this.addressStreetAddress = addressStreetAddress;
+        this.addressCity = addressCity;
+        this.addressStateProvince = addressStateProvince;
+        this.addressPostalCode = addressPostalCode;
+        this.addressCountryCode = addressCountryCode;
+    }
+
     public String getTenantId() {
         return tenantId;
     }

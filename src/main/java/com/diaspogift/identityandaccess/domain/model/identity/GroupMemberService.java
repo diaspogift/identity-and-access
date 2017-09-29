@@ -24,13 +24,23 @@ public class GroupMemberService {
     public boolean confirmUser(Group aGroup, User aUser) {
         boolean userConfirmed = true;
 
+
+        System.out.println(" \n\n aGroup.tenantId(),  aUser.username() = " + aGroup.tenantId() + "  ,  " + aUser.username());
+
         User confirmedUser =
                 this.userRepository()
                         .userWithUsername(aGroup.tenantId(), aUser.username());
 
+
+        System.out.println(" \n\n confirmedUser = " + confirmedUser);
+
+
         if (confirmedUser == null || !confirmedUser.isEnabled()) {
             userConfirmed = false;
         }
+
+
+        System.out.println(" \n\n userConfirmed = " + userConfirmed);
 
         return userConfirmed;
     }

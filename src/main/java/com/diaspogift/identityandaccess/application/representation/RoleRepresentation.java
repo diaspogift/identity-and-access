@@ -7,11 +7,18 @@ public class RoleRepresentation extends ResourceSupport {
 
 
     private String name;
-    private String descrition;
+    private String description;
     private boolean supportsNesting;
 
 
     public RoleRepresentation() {
+        super();
+    }
+
+    public RoleRepresentation(String name, String description, boolean supportsNesting) {
+        this.name = name;
+        this.description = description;
+        this.supportsNesting = supportsNesting;
     }
 
     public RoleRepresentation(Role aRole) {
@@ -22,7 +29,7 @@ public class RoleRepresentation extends ResourceSupport {
     private void initializeFrom(Role aRole) {
 
         this.name = aRole.name();
-        this.descrition = aRole.description();
+        this.description = aRole.description();
         this.supportsNesting = aRole.supportsNesting();
     }
 
@@ -35,12 +42,12 @@ public class RoleRepresentation extends ResourceSupport {
         this.name = name;
     }
 
-    public String getDescrition() {
-        return descrition;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescrition(String descrition) {
-        this.descrition = descrition;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public boolean isSupportsNesting() {

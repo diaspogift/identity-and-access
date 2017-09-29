@@ -8,7 +8,7 @@ import java.util.HashSet;
 
 public class GroupMemberCollectionRepresentation extends ResourceSupport {
 
-    Collection<GroupMemberRepresentation> groupMembes = new HashSet<GroupMemberRepresentation>();
+    Collection<GroupMemberRepresentation> groupMembers = new HashSet<GroupMemberRepresentation>();
 
     public GroupMemberCollectionRepresentation() {
         super();
@@ -23,15 +23,15 @@ public class GroupMemberCollectionRepresentation extends ResourceSupport {
 
         for (GroupMember next : groupMembers) {
 
-            this.groupMembes.add(new GroupMemberRepresentation((next)));
+            this.groupMembers.add(new GroupMemberRepresentation((next)));
         }
     }
 
-    public Collection<GroupMemberRepresentation> getGroupMembes() {
-        return groupMembes;
+    public Collection<GroupMemberRepresentation> getGroupMembers() {
+        return groupMembers;
     }
 
-    public void setGroupMembes(Collection<GroupMemberRepresentation> groupMembes) {
-        this.groupMembes = groupMembes;
+    public void setGroupMembers(Collection<GroupMemberRepresentation> groupMembers) {
+        this.groupMembers = groupMembers;
     }
 }

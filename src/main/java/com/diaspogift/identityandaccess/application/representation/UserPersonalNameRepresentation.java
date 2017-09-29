@@ -19,6 +19,12 @@ public class UserPersonalNameRepresentation extends ResourceSupport {
         this.lastName = fullName.lastName();
     }
 
+    public UserPersonalNameRepresentation(String aFirstName, String aLastName) {
+
+        this.firstName = aFirstName;
+        this.lastName = aLastName;
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -12,6 +12,11 @@ public class GroupRepresentation extends ResourceSupport {
         super();
     }
 
+    public GroupRepresentation(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public GroupRepresentation(Group aGroup) {
 
         this.initialyzeFrom(aGroup);

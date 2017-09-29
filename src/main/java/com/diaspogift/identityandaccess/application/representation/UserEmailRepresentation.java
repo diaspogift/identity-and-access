@@ -16,6 +16,12 @@ public class UserEmailRepresentation extends ResourceSupport {
         this.emailAddress = emailAddress.address();
     }
 
+    public UserEmailRepresentation(String anEmailAddress) {
+
+        this.emailAddress = anEmailAddress;
+
+    }
+
     public String getEmailAddress() {
         return emailAddress;
     }

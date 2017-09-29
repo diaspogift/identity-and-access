@@ -43,7 +43,7 @@ public class UserResource {
         );
 
 
-        return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(userDescriptor), HttpStatus.FOUND);
+        return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(userDescriptor), HttpStatus.OK);
     }
 
 
@@ -73,7 +73,7 @@ public class UserResource {
 
         User user = this.identityApplicationService().registerUser(new RegisterUserCommand(userRegistrationReprensentation));
 
-        return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(user.userDescriptor()), HttpStatus.FOUND);
+        return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(user.userDescriptor()), HttpStatus.CREATED);
     }
 
     @PostMapping("{username}/enablement")
@@ -94,7 +94,6 @@ public class UserResource {
 
         UserContactInformationRepresentation userContactInformationRepresentation =
                 new UserContactInformationRepresentation(this.identityApplicationService().userContactInformation(aTenantId, username));
-
 
         return new ResponseEntity<UserContactInformationRepresentation>(userContactInformationRepresentation, HttpStatus.OK);
     }
@@ -162,10 +161,15 @@ public class UserResource {
     }
 
     @GetMapping("{username}/in-role/{roleName}")
-    public ResponseEntity<User> getUserInRole(@PathVariable("tenantId") String aTenantId,
-                                              @PathVariable("username") String aUsername,
-                                              @PathVariable("roleName") String aRoleName) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<UserRepresentation> getUserInRole(@PathVariable("tenantId") String aTenantId,
+                                                            @PathVariable("username") String aUsername,
+                                                            @PathVariable("roleName") String aRoleName) throws DiaspoGiftRepositoryException {
 
+
+        System.out.println(" \n\n tenantId ==== " + aTenantId + " username === " + aUsername + " roleName === " + aRoleName);
+        System.out.println(" \n\n tenantId ==== " + aTenantId + " username === " + aUsername + " roleName === " + aRoleName);
+
+        UserRepresentation userRepresentation = null;
 
         User user = this.accessApplicationService()
                 .userInRole(
@@ -173,7 +177,13 @@ public class UserResource {
                         aUsername,
                         aRoleName);
 
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        if (user != null) {
+
+            userRepresentation = new UserRepresentation(user);
+
+        }
+
+        return new ResponseEntity<UserRepresentation>(userRepresentation, HttpStatus.OK);
     }
 
 

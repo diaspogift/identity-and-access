@@ -13,6 +13,11 @@ public class GroupMemberRepresentation extends ResourceSupport {
         super();
     }
 
+    public GroupMemberRepresentation(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
+
     public GroupMemberRepresentation(GroupMember aGroupMember) {
 
         this.initialyzeFrom(aGroupMember);
