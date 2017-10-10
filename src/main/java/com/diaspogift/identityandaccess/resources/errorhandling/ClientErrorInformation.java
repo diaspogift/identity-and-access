@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.resources;
+package com.diaspogift.identityandaccess.resources.errorhandling;
 
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.ExceptionMessageKeyMap;
 

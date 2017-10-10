@@ -1,9 +1,11 @@
 package com.diaspogift.identityandaccess;
 
+import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
 import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
+import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -144,10 +146,10 @@ public class IdentityAndAccessApplication {
         //System.out.println(" \n\n\n\n yesterday " + yesterday + " tomorow " + tomorow);
 
 
-        /*try {
+        try {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand1);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand2);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand3);
+              /*ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand3);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand4);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand5);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand6);
@@ -155,12 +157,11 @@ public class IdentityAndAccessApplication {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand8);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand9);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand10);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand11);
+            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand11);*/
         } catch (DiaspoGiftRepositoryException e) {
 
             System.out.println(e.getMessage());
         }
-*/
         TenantId tenantId =
                 DomainRegistry.tenantRepository().nextIdentity();
 

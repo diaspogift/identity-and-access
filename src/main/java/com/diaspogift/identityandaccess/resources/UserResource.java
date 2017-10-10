@@ -5,9 +5,13 @@ import com.diaspogift.identityandaccess.application.access.AccessApplicationServ
 import com.diaspogift.identityandaccess.application.command.*;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
+import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 
 @RestController
 @RequestMapping(path = "/api/v1/tenants/{tenantId}/users")
+@Api(value = "iam", description = "Operations pertaining to users in the iam System")
 public class UserResource {
 
 
@@ -29,6 +32,8 @@ public class UserResource {
     @Autowired
     private AccessApplicationService accessApplicationService;
 
+
+    @ApiOperation(value = "Authenticate a user with username and password")
     @GetMapping("{username}/autenticated-with/{password}")
     public ResponseEntity<UserDescriptorRepresentation> getAuthenticUser(@PathVariable("tenantId") String aTenantId,
                                                                          @PathVariable("username") String aUsername,
@@ -46,7 +51,7 @@ public class UserResource {
         return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(userDescriptor), HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "Change a user password")
     @PostMapping("{username}/password")
     public ResponseEntity<UserChangedPasswordRepresentation> changeUserPassword(@PathVariable("tenantId") String aTenantId,
                                                                                 @PathVariable("username") String username,
@@ -57,6 +62,7 @@ public class UserResource {
         return new ResponseEntity<UserChangedPasswordRepresentation>(userChangedPasswordRepresentation, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Register a new user with username and password")
     @PostMapping("{username}/registrations")
     public ResponseEntity<UserDescriptorRepresentation> registerNewUser(@PathVariable("tenantId") String aTenantId,
                                                                         @PathVariable("username") String username,
@@ -76,6 +82,7 @@ public class UserResource {
         return new ResponseEntity<UserDescriptorRepresentation>(new UserDescriptorRepresentation(user.userDescriptor()), HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Change user enablement")
     @PostMapping("{username}/enablement")
     public ResponseEntity<UserEnablementReprensentation> defineUserEnablement(@PathVariable("tenantId") String aTenantId,
                                                                               @PathVariable("username") String username,
@@ -87,7 +94,7 @@ public class UserResource {
         return new ResponseEntity<UserEnablementReprensentation>(userEnablementReprensentation, HttpStatus.CREATED);
     }
 
-
+    @ApiOperation(value = "Retrieve user contact")
     @GetMapping("{username}/contact")
     public ResponseEntity<UserContactInformationRepresentation> getUserContactInformation(@PathVariable("tenantId") String aTenantId,
                                                                                           @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
@@ -98,7 +105,7 @@ public class UserResource {
         return new ResponseEntity<UserContactInformationRepresentation>(userContactInformationRepresentation, HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "Change user contact")
     @PostMapping("{username}/contact")
     public ResponseEntity<UserContactInformationRepresentation> changeUserContactInformation(@PathVariable("tenantId") String aTenantId,
                                                                                              @PathVariable("username") String username,
@@ -109,7 +116,7 @@ public class UserResource {
         return new ResponseEntity<UserContactInformationRepresentation>(userContactInformationRepresentation, HttpStatus.CREATED);
     }
 
-
+    @ApiOperation(value = "Change user email")
     @PostMapping("{username}/email")
     public ResponseEntity<UserEmailRepresentation> changeUserEmail(@PathVariable("tenantId") String aTenantId,
                                                                    @PathVariable("username") String username,
@@ -120,6 +127,7 @@ public class UserResource {
         return new ResponseEntity<UserEmailRepresentation>(userEmailRepresentation, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Retrieve user email")
     @GetMapping("{username}/email")
     public ResponseEntity<UserEmailRepresentation> getUserEmail(@PathVariable("tenantId") String aTenantId,
                                                                 @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
@@ -130,6 +138,7 @@ public class UserResource {
 
     }
 
+    @ApiOperation(value = "Change user name")
     @PostMapping("{username}/name")
     public ResponseEntity<UserPersonalNameRepresentation> changeUserPersonalName(@PathVariable("tenantId") String aTenantId,
                                                                                  @PathVariable("username") String username,
@@ -140,6 +149,8 @@ public class UserResource {
         return new ResponseEntity<UserPersonalNameRepresentation>(userPersonalNameRepresentation, HttpStatus.CREATED);
     }
 
+
+    @ApiOperation(value = "Retrieve user name")
     @GetMapping("{username}/name")
     public ResponseEntity<UserPersonalNameRepresentation> getUserPersonalName(@PathVariable("tenantId") String aTenantId,
                                                                               @PathVariable("username") String username) throws DiaspoGiftRepositoryException {
@@ -150,6 +161,7 @@ public class UserResource {
 
     }
 
+    @ApiOperation(value = "Retrieve a user")
     @GetMapping("{username}")
     public ResponseEntity<User> getUser(@PathVariable("tenantId") String aTenantId,
                                         @PathVariable("username") String aUsername) throws DiaspoGiftRepositoryException {
@@ -160,6 +172,7 @@ public class UserResource {
         return new ResponseEntity<User>(user, HttpStatus.FOUND);
     }
 
+    @ApiOperation(value = "Retrieve a user in role")
     @GetMapping("{username}/in-role/{roleName}")
     public ResponseEntity<UserRepresentation> getUserInRole(@PathVariable("tenantId") String aTenantId,
                                                             @PathVariable("username") String aUsername,
@@ -168,6 +181,12 @@ public class UserResource {
 
         System.out.println(" \n\n tenantId ==== " + aTenantId + " username === " + aUsername + " roleName === " + aRoleName);
         System.out.println(" \n\n tenantId ==== " + aTenantId + " username === " + aUsername + " roleName === " + aRoleName);
+
+        System.out.println("\n\n " + "HERE THE USER I MUST FIND LATER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        User user1 = DomainRegistry.userRepository().userWithUsername(new TenantId(aTenantId), aUsername);
+
+        System.out.println("\n\n " + "HERE THE USER I MUST FIND LATER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + user1);
 
         UserRepresentation userRepresentation = null;
 
@@ -187,6 +206,7 @@ public class UserResource {
     }
 
 
+    @ApiOperation(value = "Retrieve all users")
     @GetMapping
     public ResponseEntity<UserDescriptorCollectionRepresentation> getUsers(@PathVariable("tenantId") String aTenantId) throws DiaspoGiftRepositoryException {
 
@@ -196,27 +216,6 @@ public class UserResource {
         return new ResponseEntity<UserDescriptorCollectionRepresentation>(userDescriptorCollectionRepresentation, HttpStatus.FOUND);
     }
 
-    /**
-     * Exception handling
-     */
-
-    @ExceptionHandler(DiaspoGiftRepositoryException.class)
-    public ResponseEntity rulesForTenantNotFound(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity rulesForIllegalArgument(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity rulesForIllegalState(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.BAD_REQUEST);
-    }
 
     public IdentityApplicationService identityApplicationService() {
         return this.identityApplicationService;

@@ -10,6 +10,8 @@ import com.diaspogift.identityandaccess.application.representation.*;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1/tenants")
+@Api(value = "iam", description = "Operations pertaining to tenants in the iam System")
 public class TenantResource {
 
 
@@ -40,6 +42,8 @@ public class TenantResource {
     @Autowired
     private AccessApplicationService accessApplicationService;
 
+
+    @ApiOperation(value = "Retrieve all tenants")
     @GetMapping
     public ResponseEntity<TenantCollectionRepresentation> getTenants(@RequestParam(required = false) Integer first,
                                                                      @RequestParam(required = false) Integer rangeSize) throws DiaspoGiftRepositoryException {
@@ -83,6 +87,7 @@ public class TenantResource {
         return new ResponseEntity<TenantCollectionRepresentation>(tenantCollectionRepresentation, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Provision a tenant")
     @PostMapping("/provisions")
     public ResponseEntity<ProvisionedTenantRepresentation> provisionTenant(@RequestBody @Valid ProvisionTenantRepresentation provisionTenantRepresentation) throws DiaspoGiftRepositoryException {
 
@@ -97,16 +102,12 @@ public class TenantResource {
 
         User user = this.identityApplicationService().user(provisionedTenantRepresentation.getTenantId(), "admin");
 
-
-        System.out.println(" \n\n tenant admin user ====== " + user);
-        System.out.println(" \n\n tenant admin user ====== " + user);
-        System.out.println(" \n\n provisionedTenantRepresentationr ====== " + provisionedTenantRepresentation);
-
         return new ResponseEntity<ProvisionedTenantRepresentation>(provisionedTenantRepresentation, HttpStatus.CREATED);
 
     }
 
 
+    @ApiOperation(value = "Retrieve a provisioned tenant")
     @GetMapping("/{tenantId}/provisions")
     public ResponseEntity<ProvisionedTenantRepresentation> getTenantProvision(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
 
@@ -116,6 +117,7 @@ public class TenantResource {
 
     }
 
+    @ApiOperation(value = "Offer a registration invitation to a tenant")
     @PostMapping("/{tenantId}/registration-invitations")
     public ResponseEntity<RegistrationInvitationRepresentation> offerRegistrationInvitation(@PathVariable("tenantId") String tenantId,
                                                                                             @RequestBody RegistrationInvitationRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
@@ -129,7 +131,7 @@ public class TenantResource {
 
     }
 
-
+    @ApiOperation(value = "Retrieve a tenant with the spcified identitifier")
     @GetMapping("/{tenantId}")
     public ResponseEntity<TenantRepresentation> getTenant(@PathVariable String tenantId) throws DiaspoGiftRepositoryException {
 
@@ -138,6 +140,7 @@ public class TenantResource {
         return new ResponseEntity<TenantRepresentation>(tenantRepresentation, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Change tenant's availability status")
     @PostMapping("/{tenantId}/availability-status")
     public ResponseEntity<TenantAvailabilityRepresentation> changeTenantAvailability(@PathVariable("tenantId") String tenantId,
                                                                                      @RequestBody TenantAvailabilityRepresentation tenantAvailabilityRepresentation) throws DiaspoGiftRepositoryException {
@@ -152,7 +155,7 @@ public class TenantResource {
         return new ResponseEntity<TenantAvailabilityRepresentation>(tenantAvailabilityRepresentation, HttpStatus.CREATED);
     }
 
-
+    @ApiOperation(value = "Retrieve tenant's availability status")
     @GetMapping("/{tenantId}/availability-status")
     public ResponseEntity<TenantAvailabilityRepresentation> getTenantAvailability(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
 
@@ -161,28 +164,6 @@ public class TenantResource {
         return new ResponseEntity<TenantAvailabilityRepresentation>(tenantAvailabilityRepresentation, HttpStatus.OK);
     }
 
-
-    /**
-     * Exception handling
-     */
-
-    @ExceptionHandler(DiaspoGiftRepositoryException.class)
-    public ResponseEntity rulesForTenantNotFound(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity rulesForIllegalArgument(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity rulesForIllegalState(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.BAD_REQUEST);
-    }
 
     private IdentityApplicationService identityApplicationService() {
         return this.identityApplicationService;

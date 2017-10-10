@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -87,6 +88,26 @@ public class UserResourceTests extends AbstractResourseTests {
                         .andExpect(jsonPath("$.tenantId", is(bingoTenant.getTenantId())))
                         .andExpect(jsonPath("$.username", is(urr.getUsername())))
                         .andExpect(jsonPath("$.emailAddress", is(urr.getEmailAddress())))
+                        .andReturn();
+
+        System.out.println(" \n\n mvcResult === " + mvcResult.getResponse().getContentAsString());
+
+
+    }
+
+
+    @Test
+    public void getUserNotFound() throws Exception {
+
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+
+
+        Gson gson = new Gson();
+
+        MvcResult mvcResult =
+
+                mockMvc.perform(get("/api/v1/tenants/" + bingoTenant.getTenantId() + "/users/" + "nonRegisterUsername"))
+                        .andExpect(status().isNotFound())
                         .andReturn();
 
         System.out.println(" \n\n mvcResult === " + mvcResult.getResponse().getContentAsString());
@@ -524,6 +545,7 @@ public class UserResourceTests extends AbstractResourseTests {
     }
 
     @Test
+    @Rollback(false)
     public void getUserInRole() throws Exception {
 
         this.cadeauxTenant = this.cadeauxTenantAggregate(this.mockMvc);
@@ -558,6 +580,7 @@ public class UserResourceTests extends AbstractResourseTests {
     @After
     public void tearDown() throws Exception {
         super.tearDown();
+
         this.mockMvc = null;
         this.bingoTenant = null;
         this.cadeauxTenant = null;

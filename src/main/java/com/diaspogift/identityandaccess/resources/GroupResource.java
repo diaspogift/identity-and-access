@@ -11,6 +11,8 @@ import com.diaspogift.identityandaccess.domain.model.identity.Group;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupMember;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberType;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -27,6 +28,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1/tenants/{tenantId}/groups")
+@Api(value = "iam", description = "Operations pertaining to groups in the iam System")
 public class GroupResource {
 
     private static final Logger logger = LoggerFactory.getLogger(TenantResource.class);
@@ -35,6 +37,7 @@ public class GroupResource {
     @Autowired
     private AccessApplicationService accessApplicationService;
 
+    @ApiOperation(value = "Retrieve all groups")
     @GetMapping
     public ResponseEntity<GroupCollectionRepresentation> getGroups(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
 
@@ -62,6 +65,7 @@ public class GroupResource {
         return new ResponseEntity<GroupCollectionRepresentation>(groupCollectionRepresentation, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create a new group")
     @PostMapping
     public ResponseEntity<GroupRepresentation> createGroup(@PathVariable("tenantId") String tenantId,
                                                            @RequestBody GroupRepresentation groupRepresentation) throws DiaspoGiftRepositoryException {
@@ -73,6 +77,7 @@ public class GroupResource {
         return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Retrieve a group")
     @GetMapping("{groupName}")
     public ResponseEntity<GroupRepresentation> getGroup(@PathVariable("tenantId") String tenantId,
                                                         @PathVariable("groupName") String groupName) throws DiaspoGiftRepositoryException {
@@ -86,6 +91,8 @@ public class GroupResource {
         return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.OK);
     }
 
+
+    @ApiOperation(value = "Delete a group")
     @DeleteMapping("{groupName}")
     public ResponseEntity removeGroup(@PathVariable("tenantId") String tenantId,
                                       @PathVariable("groupName") String groupName) throws DiaspoGiftRepositoryException {
@@ -95,7 +102,7 @@ public class GroupResource {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-
+    @ApiOperation(value = "Retrieve groups members")
     @GetMapping("{groupName}/members")
     public ResponseEntity<GroupMemberCollectionRepresentation> getGroupMembers(@PathVariable("tenantId") String tenantId,
                                                                                @PathVariable("groupName") String groupName) throws DiaspoGiftRepositoryException {
@@ -121,7 +128,7 @@ public class GroupResource {
         return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "Add a new group member")
     @PostMapping("{groupName}/members")
     public ResponseEntity<GroupMemberRepresentation> createGroupMember(@PathVariable("tenantId") String tenantId,
                                                                        @PathVariable("groupName") String groupName,
@@ -147,13 +154,13 @@ public class GroupResource {
 
 
         } else {
-            //Do nothhing
+            //Do nothing
         }
 
         return new ResponseEntity<GroupMemberRepresentation>(groupMemberRepresentation, HttpStatus.CREATED);
     }
 
-
+    @ApiOperation(value = "Delete a group member")
     @DeleteMapping("{groupName}/members/{name}")
     public ResponseEntity removeGroupMember(@PathVariable("tenantId") String tenantId,
                                             @PathVariable("groupName") String groupName,
@@ -178,28 +185,6 @@ public class GroupResource {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-
-    /**
-     * Exception handling
-     */
-
-    @ExceptionHandler(DiaspoGiftRepositoryException.class)
-    public ResponseEntity rulesForTenantNotFound(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity rulesForIllegalArgument(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity rulesForIllegalState(Exception e, HttpServletRequest req) {
-        ClientErrorInformation errorInformation = new ClientErrorInformation(e.getClass().getName(), req.getRequestURI());
-        return new ResponseEntity(errorInformation, HttpStatus.BAD_REQUEST);
-    }
 
     public IdentityApplicationService identityApplicationService() {
         return this.identityApplicationService;
