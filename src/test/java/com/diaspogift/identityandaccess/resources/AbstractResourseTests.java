@@ -248,6 +248,25 @@ public abstract class AbstractResourseTests {
 
     }
 
+    protected void addGroupToRole(ProvisionedTenantRepresentation bingoTenant, GroupRepresentation gr1, RoleRepresentation roleRepresentation, MockMvc mockMvc) throws Exception {
+
+
+        Gson gson = new Gson();
+
+        System.out.println("\n URL ======== /api/v1/tenants/" + bingoTenant.getTenantId() + "/roles/" + roleRepresentation.getName() + "/groups");
+
+        MvcResult mvcResult =
+
+                mockMvc.perform(post("/api/v1/tenants/" + bingoTenant.getTenantId() + "/roles/" + roleRepresentation.getName() + "/groups")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(gr1).toString()))
+                        .andExpect(status().isCreated())
+                        .andReturn();
+
+        System.out.println("\n mvcResult ======== " + mvcResult);
+
+    }
+
 
     @After
     public void tearDown() throws Exception {

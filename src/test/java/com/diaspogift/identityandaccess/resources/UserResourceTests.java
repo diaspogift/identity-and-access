@@ -2,6 +2,7 @@ package com.diaspogift.identityandaccess.resources;
 
 
 import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberType;
 import com.google.gson.Gson;
 import org.junit.After;
 import org.junit.Before;
@@ -10,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +38,8 @@ public class UserResourceTests extends AbstractResourseTests {
     private ProvisionedTenantRepresentation bingoTenant;
     private ProvisionedTenantRepresentation cadeauxTenant;
     private RegistrationInvitationRepresentation registrationInvitationRepresentation;
+    private GroupRepresentation groupRepresentation;
+    private RoleRepresentation roleRepresentation;
 
 
     @Autowired
@@ -544,27 +546,64 @@ public class UserResourceTests extends AbstractResourseTests {
 
     }
 
-    @Test
-    @Rollback(false)
-    public void getUserInRole() throws Exception {
 
-        this.cadeauxTenant = this.cadeauxTenantAggregate(this.mockMvc);
+    @Test
+    public void getUserInRole2() throws Exception {
+
+        GroupRepresentation gr1 = new GroupRepresentation("INFIRMIERS", "Tous infirmiers d'ici comme d'ailleur.");
+
+        Gson gson = new Gson();
+
+        GroupMemberRepresentation ugmr = new GroupMemberRepresentation("elberto2008", GroupMemberType.User.name());
+
+
+        this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
+
+        UserRegistrationReprensentation urr =
+                new UserRegistrationReprensentation(
+                        this.bingoTenant.getTenantId(),
+                        null,
+                        "elberto2008",
+                        "Secret@@2008Password",
+                        "Felicien",
+                        "Fotio",
+                        true,
+                        ZonedDateTime.now().minusDays(1).toString(),
+                        ZonedDateTime.now().plusDays(1).toString(),
+                        "felicien@yahoo.fr",
+                        "669262656",
+                        "669262656",
+                        "CM",
+                        "00237",
+                        "CM",
+                        "00237",
+                        "Denver Rond Point Laureat",
+                        "Douala",
+                        "Littoral",
+                        "80209",
+                        "CM");
+        RoleRepresentation rr = new RoleRepresentation("SOIGNANT", "Tute personne pouvant soigner", true);
+
+        this.groupRepresentation = this.provisionTenantWithAGroup(this.bingoTenant, gr1, this.mockMvc);
+        this.roleRepresentation = this.provisionTenantWithARole(this.bingoTenant, rr, this.mockMvc);
+        this.registrationInvitationRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        urr.setInvitationIdentifier(this.registrationInvitationRepresentation.getInvitationId());
+        this.addGroupMemberToGroup(this.bingoTenant, gr1, ugmr, this.mockMvc);
+        this.addGroupToRole(this.bingoTenant, gr1, this.roleRepresentation, this.mockMvc);
 
 
         MvcResult mvcResult1 =
 
-                mockMvc.perform(get("/api/v1/tenants/" + this.cadeauxTenant.getTenantId() + "/users/" + "admin" + "/in-role/Administrator"))
+                mockMvc.perform(get("/api/v1/tenants/" + this.bingoTenant.getTenantId() + "/users/" + ugmr.getName() + "/in-role/" + rr.getName()))
                         .andExpect(status().isOk())
-                       /* .andExpect(jsonPath("$.emailAddress", is(urr.getEmailAddress())))
+                        .andExpect(jsonPath("$.emailAddress", is(urr.getEmailAddress())))
                         .andExpect(jsonPath("$.enabled", is(urr.isEnabled())))
                         .andExpect(jsonPath("$.firstName", is(urr.getFirstName())))
                         .andExpect(jsonPath("$.lastName", is(urr.getLastName())))
-                        .andExpect(jsonPath("$.tenantId", is(urr.getTenantId())))*/
+                        .andExpect(jsonPath("$.tenantId", is(urr.getTenantId())))
                         .andReturn();
 
         System.out.println(" \n\n mvcResult1 === " + mvcResult1.getResponse().getContentAsString());
-
-        System.out.println("\n\n\n\n ??????????????????????????????????? ENDINGGGGGGGGGGGG");
 
 
     }

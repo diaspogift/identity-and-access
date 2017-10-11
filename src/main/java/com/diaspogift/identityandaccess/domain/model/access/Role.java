@@ -62,6 +62,7 @@ public class Role extends ConcurrencySafeEntity {
         this.assertArgumentNotNull(aGroup, "Group must not be null.");
         this.assertArgumentEquals(this.tenantId(), aGroup.tenantId(), "Wrong tenant for this group.");
 
+        System.out.println("ASSIGNING THIS GROUP: " + aGroup.toString() + "TO THIS ROLE: " + this.toString());
 
         this.group().addGroup(aGroup, aGroupMemberService);
 

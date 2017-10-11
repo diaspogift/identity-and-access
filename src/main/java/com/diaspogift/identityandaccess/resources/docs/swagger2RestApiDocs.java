@@ -15,6 +15,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 public class swagger2RestApiDocs {
 
+
     @Bean
     public Docket resourcesApi() {
 
@@ -23,6 +24,7 @@ public class swagger2RestApiDocs {
                 .paths(regex("/api/v1/tenants.*"))
                 .build()
                 .apiInfo(metaData());
+
 
     }
 

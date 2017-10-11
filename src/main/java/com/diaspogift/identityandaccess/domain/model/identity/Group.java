@@ -80,8 +80,6 @@ public class Group extends ConcurrencySafeEntity {
                 this.groupMembers().contains(aUser.toGroupMember());
 
         System.out.println(" \n\n isMember in isMember " + isMember);
-        System.out.println(" \n\n isMember in isMember " + isMember);
-        System.out.println(" \n\n isMember in isMember " + isMember);
 
         if (isMember) {
             isMember = aGroupMemberService.confirmUser(this, aUser);

@@ -1,8 +1,10 @@
 package com.diaspogift.identityandaccess.resources;
 
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
+import com.diaspogift.identityandaccess.application.command.AssignGroupToRoleCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionRoleCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
+import com.diaspogift.identityandaccess.application.representation.GroupRepresentation;
 import com.diaspogift.identityandaccess.application.representation.RoleCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.RoleRepresentation;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
@@ -60,6 +62,19 @@ public class RoleResource {
         this.accessApplicationService().provisionRole(new ProvisionRoleCommand(tenantId, roleRepresentation));
 
         return new ResponseEntity<RoleRepresentation>(roleRepresentation, HttpStatus.CREATED);
+    }
+
+
+    @ApiOperation(value = "Add a new group to play a role")
+    @PostMapping(value = "/{roleName}/groups")
+    public ResponseEntity<GroupRepresentation> addGroupToRole(@PathVariable("tenantId") String tenantId,
+                                                              @PathVariable("roleName") String roleName,
+                                                              @RequestBody GroupRepresentation groupRepresentation) throws DiaspoGiftRepositoryException {
+
+        this.accessApplicationService().assignGroupToRole(new AssignGroupToRoleCommand(tenantId, roleName, groupRepresentation));
+
+
+        return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Retrieve a tenants role")
