@@ -37,7 +37,7 @@ public class swagger2RestApiDocs {
     private ApiInfo metaData() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "IAM REST API",
+                "IAM REST API VERSION ONE  (01 snapshot may be? ) SPECIFICATIONS",
                 "Spring Boot REST API for Identity and Access",
                 "1.0",
                 "Terms of service",
