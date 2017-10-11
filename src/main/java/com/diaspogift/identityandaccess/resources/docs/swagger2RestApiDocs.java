@@ -1,13 +1,17 @@
 package com.diaspogift.identityandaccess.resources.docs;
 
+import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -23,11 +27,12 @@ public class swagger2RestApiDocs {
                 .select().apis(RequestHandlerSelectors.basePackage("com.diaspogift.identityandaccess.resources"))
                 .paths(regex("/api/v1/tenants.*"))
                 .build()
-                .apiInfo(metaData());
+                .apiInfo(metaData())
+                .securityContexts(Lists.newArrayList(securityContext()))
+                .securitySchemes(Lists.newArrayList(apiKey()));
 
 
     }
-
 
     private ApiInfo metaData() {
 
@@ -41,4 +46,28 @@ public class swagger2RestApiDocs {
                 "https://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;
     }
+
+
+    private ApiKey apiKey() {
+        return new ApiKey("Authorization", "api_key", "header");
+    }
+
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("/anyPath.*"))
+                .build();
+    }
+
+    List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope
+                = new AuthorizationScope("write", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(
+                new SecurityReference("AUTHORIZATION", authorizationScopes));
+    }
+
+
 }
