@@ -1,7 +1,12 @@
 package com.diaspogift.identityandaccess.resources;
 
 
-import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.application.representation.group.GroupMemberRepresentation;
+import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionedTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.RegistrationInvitationRespRepresentation;
+import com.diaspogift.identityandaccess.application.representation.user.*;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberType;
 import com.google.gson.Gson;
 import org.junit.After;
@@ -37,7 +42,7 @@ public class UserResourceTests extends AbstractResourseTests {
     private MockMvc mockMvc;
     private ProvisionedTenantRepresentation bingoTenant;
     private ProvisionedTenantRepresentation cadeauxTenant;
-    private RegistrationInvitationRepresentation registrationInvitationRepresentation;
+    private RegistrationInvitationRespRepresentation registrationInvitationRespRepresentation;
     private GroupRepresentation groupRepresentation;
     private RoleRepresentation roleRepresentation;
 
@@ -75,7 +80,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.offerRegistrationInvitation(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.offerRegistrationInvitation(this.bingoTenant, urr, this.mockMvc);
 
         urr.setInvitationIdentifier(rir.getInvitationId());
 
@@ -146,7 +151,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         urr.setInvitationIdentifier(rir.getInvitationId());
 
         Gson gson = new Gson();
@@ -197,7 +202,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         urr.setInvitationIdentifier(rir.getInvitationId());
 
         Gson gson = new Gson();
@@ -287,7 +292,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         urr.setInvitationIdentifier(rir.getInvitationId());
 
         Gson gson = new Gson();
@@ -344,7 +349,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         urr.setInvitationIdentifier(rir.getInvitationId());
 
         Gson gson = new Gson();
@@ -425,7 +430,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         urr.setInvitationIdentifier(rir.getInvitationId());
 
         Gson gson = new Gson();
@@ -500,7 +505,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
 
-        RegistrationInvitationRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        RegistrationInvitationRespRepresentation rir = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         urr.setInvitationIdentifier(rir.getInvitationId());
 
         Gson gson = new Gson();
@@ -586,8 +591,8 @@ public class UserResourceTests extends AbstractResourseTests {
 
         this.groupRepresentation = this.provisionTenantWithAGroup(this.bingoTenant, gr1, this.mockMvc);
         this.roleRepresentation = this.provisionTenantWithARole(this.bingoTenant, rr, this.mockMvc);
-        this.registrationInvitationRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
-        urr.setInvitationIdentifier(this.registrationInvitationRepresentation.getInvitationId());
+        this.registrationInvitationRespRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        urr.setInvitationIdentifier(this.registrationInvitationRespRepresentation.getInvitationId());
         this.addGroupMemberToGroup(this.bingoTenant, gr1, ugmr, this.mockMvc);
         this.addGroupToRole(this.bingoTenant, gr1, this.roleRepresentation, this.mockMvc);
 
@@ -624,6 +629,6 @@ public class UserResourceTests extends AbstractResourseTests {
         this.bingoTenant = null;
         this.cadeauxTenant = null;
         this.cadeauxTenant = null;
-        this.registrationInvitationRepresentation = null;
+        this.registrationInvitationRespRepresentation = null;
     }
 }

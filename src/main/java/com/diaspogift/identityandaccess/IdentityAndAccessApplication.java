@@ -2,7 +2,7 @@ package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;

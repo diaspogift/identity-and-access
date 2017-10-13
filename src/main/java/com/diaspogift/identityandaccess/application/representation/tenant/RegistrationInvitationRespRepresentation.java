@@ -1,11 +1,11 @@
-package com.diaspogift.identityandaccess.application.representation;
+package com.diaspogift.identityandaccess.application.representation.tenant;
 
 import com.diaspogift.identityandaccess.domain.model.identity.InvitationDescriptor;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.time.ZonedDateTime;
 
-public class RegistrationInvitationRepresentation extends ResourceSupport {
+public class RegistrationInvitationRespRepresentation extends ResourceSupport {
 
 
     private String description;
@@ -14,18 +14,18 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
     private String until;
 
 
-    public RegistrationInvitationRepresentation() {
+    public RegistrationInvitationRespRepresentation() {
         super();
     }
 
-    public RegistrationInvitationRepresentation(String description, String invitationId, ZonedDateTime startingOn, ZonedDateTime until) {
+    public RegistrationInvitationRespRepresentation(String description, String invitationId, ZonedDateTime startingOn, ZonedDateTime until) {
         this.description = description;
         this.invitationId = invitationId;
         this.startingOn = startingOn.toString();
         this.until = until.toString();
     }
 
-    public RegistrationInvitationRepresentation(InvitationDescriptor invitationDescriptor) {
+    public RegistrationInvitationRespRepresentation(InvitationDescriptor invitationDescriptor) {
 
         this.description = invitationDescriptor.description();
         this.invitationId = invitationDescriptor.invitationId();
@@ -68,7 +68,7 @@ public class RegistrationInvitationRepresentation extends ResourceSupport {
 
     @Override
     public String toString() {
-        return "RegistrationInvitationRepresentation{" +
+        return "RegistrationInvitationRespRepresentation{" +
                 "description='" + description + '\'' +
                 ", invitationId='" + invitationId + '\'' +
                 ", startingOn='" + startingOn + '\'' +

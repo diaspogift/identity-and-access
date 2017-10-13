@@ -1,10 +1,10 @@
 package com.diaspogift.identityandaccess.resources;
 
 
-import com.diaspogift.identityandaccess.application.representation.ProvisionTenantRepresentation;
-import com.diaspogift.identityandaccess.application.representation.ProvisionedTenantRepresentation;
-import com.diaspogift.identityandaccess.application.representation.RegistrationInvitationRepresentation;
-import com.diaspogift.identityandaccess.application.representation.TenantAvailabilityRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionedTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.RegistrationInvitationReqRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.TenantAvailabilityRepresentation;
 import com.google.gson.Gson;
 import org.junit.After;
 import org.junit.Before;
@@ -124,11 +124,11 @@ public class TenantResourceTests extends AbstractResourseTests {
 
         this.bingoTenant = this.bingoTenantAggregate(this.mockMvc);
 
-        RegistrationInvitationRepresentation rir = new RegistrationInvitationRepresentation(
+        RegistrationInvitationReqRepresentation rir = new RegistrationInvitationReqRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Bingo hospital",
-                "",
-                ZonedDateTime.now().minusDays(1),
-                ZonedDateTime.now().plusDays(1)
+                ZonedDateTime.now().minusDays(1).toString(),
+                ZonedDateTime.now().plusDays(1).toString()
+                /*""*/
         );
 
         Gson gson = new Gson();
@@ -140,7 +140,14 @@ public class TenantResourceTests extends AbstractResourseTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(rir).toString()))
                         .andExpect(status().isCreated())
+                        .andExpect(jsonPath("$.description", is(rir.getDescription())))
+                        .andExpect(jsonPath("$.startingOn", is(rir.getStartingOn())))
+                        .andExpect(jsonPath("$.until", is(rir.getUntil())))
                         .andReturn();
+
+        System.out.println(" \n\n RESULT ))))))))))))===============)))))))))))))))) " + mvcResult.getResponse());
+        System.out.println(" \n\n RESULT ))))))))))))===============)))))))))))))))) " + mvcResult.getResponse().getContentAsString());
+
 
     }
 

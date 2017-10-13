@@ -1,7 +1,13 @@
 package com.diaspogift.identityandaccess.resources;
 
 
-import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.application.representation.group.GroupMemberRepresentation;
+import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionedTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.RegistrationInvitationRespRepresentation;
+import com.diaspogift.identityandaccess.application.representation.user.UserRegistrationReprensentation;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.google.gson.Gson;
 import org.junit.After;
@@ -151,10 +157,10 @@ public abstract class AbstractResourseTests {
     }
 
 
-    public RegistrationInvitationRepresentation provisionTenantWithAUser(ProvisionedTenantRepresentation bingoTenant, UserRegistrationReprensentation urr, MockMvc mockMvc) throws Exception {
+    public RegistrationInvitationRespRepresentation provisionTenantWithAUser(ProvisionedTenantRepresentation bingoTenant, UserRegistrationReprensentation urr, MockMvc mockMvc) throws Exception {
 
 
-        RegistrationInvitationRepresentation rir = new RegistrationInvitationRepresentation(
+        RegistrationInvitationRespRepresentation rir = new RegistrationInvitationRespRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Mrs. " + urr.getLastName() + " " + urr.getFirstName(),
                 "",
                 ZonedDateTime.parse(urr.getStartDate()),
@@ -172,15 +178,15 @@ public abstract class AbstractResourseTests {
                         .andExpect(status().isCreated())
                         .andReturn();
 
-        RegistrationInvitationRepresentation registrationInvitationRepresentation =
-                gson.fromJson(mvcResult1.getResponse().getContentAsString(), RegistrationInvitationRepresentation.class);
+        RegistrationInvitationRespRepresentation registrationInvitationRespRepresentation =
+                gson.fromJson(mvcResult1.getResponse().getContentAsString(), RegistrationInvitationRespRepresentation.class);
 
-        System.out.println("\n\n registrationInvitationRepresentation  ===== " + registrationInvitationRepresentation);
-        System.out.println("\n\n registrationInvitationRepresentation  ===== " + registrationInvitationRepresentation);
-        System.out.println("\n\n registrationInvitationRepresentation  ===== " + registrationInvitationRepresentation);
-        System.out.println("\n\n registrationInvitationRepresentation  ===== " + registrationInvitationRepresentation);
+        System.out.println("\n\n registrationInvitationRespRepresentation  ===== " + registrationInvitationRespRepresentation);
+        System.out.println("\n\n registrationInvitationRespRepresentation  ===== " + registrationInvitationRespRepresentation);
+        System.out.println("\n\n registrationInvitationRespRepresentation  ===== " + registrationInvitationRespRepresentation);
+        System.out.println("\n\n registrationInvitationRespRepresentation  ===== " + registrationInvitationRespRepresentation);
 
-        urr.setInvitationIdentifier(registrationInvitationRepresentation.getInvitationId());
+        urr.setInvitationIdentifier(registrationInvitationRespRepresentation.getInvitationId());
         /////////
 
 
@@ -195,14 +201,14 @@ public abstract class AbstractResourseTests {
                         .andExpect(status().isCreated())
                         .andReturn();
 
-        return gson.fromJson(mvcResult1.getResponse().getContentAsString(), RegistrationInvitationRepresentation.class);
+        return gson.fromJson(mvcResult1.getResponse().getContentAsString(), RegistrationInvitationRespRepresentation.class);
     }
 
 
-    public RegistrationInvitationRepresentation offerRegistrationInvitation(ProvisionedTenantRepresentation bingoTenant, UserRegistrationReprensentation urr, MockMvc mockMvc) throws Exception {
+    public RegistrationInvitationRespRepresentation offerRegistrationInvitation(ProvisionedTenantRepresentation bingoTenant, UserRegistrationReprensentation urr, MockMvc mockMvc) throws Exception {
 
 
-        RegistrationInvitationRepresentation rir = new RegistrationInvitationRepresentation(
+        RegistrationInvitationRespRepresentation rir = new RegistrationInvitationRespRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Mrs. " + urr.getLastName() + " " + urr.getFirstName(),
                 "",
                 ZonedDateTime.parse(urr.getStartDate()),
@@ -220,7 +226,7 @@ public abstract class AbstractResourseTests {
                         .andExpect(status().isCreated())
                         .andReturn();
 
-        return gson.fromJson(mvcResult1.getResponse().getContentAsString(), RegistrationInvitationRepresentation.class);
+        return gson.fromJson(mvcResult1.getResponse().getContentAsString(), RegistrationInvitationRespRepresentation.class);
 
 
     }

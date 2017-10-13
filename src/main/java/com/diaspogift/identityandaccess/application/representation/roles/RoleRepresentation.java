@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.application.representation;
+package com.diaspogift.identityandaccess.application.representation.roles;
 
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import org.springframework.hateoas.ResourceSupport;

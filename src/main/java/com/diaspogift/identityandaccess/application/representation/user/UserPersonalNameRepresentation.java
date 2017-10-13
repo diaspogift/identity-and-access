@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.application.representation;
+package com.diaspogift.identityandaccess.application.representation.user;
 
 import com.diaspogift.identityandaccess.domain.model.identity.FullName;
 import org.springframework.hateoas.ResourceSupport;

@@ -4,7 +4,7 @@ package com.diaspogift.identityandaccess.resources;
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
 import com.diaspogift.identityandaccess.application.command.*;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
-import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.application.representation.user.*;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;

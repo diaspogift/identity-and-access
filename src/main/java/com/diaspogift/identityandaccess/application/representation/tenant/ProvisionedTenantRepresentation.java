@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.application.representation;
+package com.diaspogift.identityandaccess.application.representation.tenant;
 
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import org.springframework.hateoas.ResourceSupport;

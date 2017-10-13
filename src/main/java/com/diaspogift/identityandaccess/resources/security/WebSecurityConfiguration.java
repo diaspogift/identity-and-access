@@ -14,7 +14,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // do not call super, otherwise you'll get BeanCreationException: Error creating bean with name 'authenticationManagerBean' - org.springframework.beans.FatalBeanException: A dependency cycle was detected when trying to resolve the AuthenticationManager. Please ensure you have configured authentication.
-        final String sysadminPassword = "secret";
+        final String sysadminPassword = "ManagingMembers@@2017";
         auth.inMemoryAuthentication()
                 .withUser("sysadmin")
                 .password(sysadminPassword)

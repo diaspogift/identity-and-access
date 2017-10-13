@@ -1,4 +1,4 @@
-package com.diaspogift.identityandaccess.application.representation;
+package com.diaspogift.identityandaccess.application.representation.tenant;
 
 public class TenantAvailabilityRepresentation {
 

@@ -4,9 +4,9 @@ import com.diaspogift.identityandaccess.application.access.AccessApplicationServ
 import com.diaspogift.identityandaccess.application.command.AssignGroupToRoleCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionRoleCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
-import com.diaspogift.identityandaccess.application.representation.GroupRepresentation;
-import com.diaspogift.identityandaccess.application.representation.RoleCollectionRepresentation;
-import com.diaspogift.identityandaccess.application.representation.RoleRepresentation;
+import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleCollectionRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import io.swagger.annotations.Api;

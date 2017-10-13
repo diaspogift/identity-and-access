@@ -6,12 +6,13 @@ import com.diaspogift.identityandaccess.application.command.DeactivateTenantComm
 import com.diaspogift.identityandaccess.application.command.OfferRegistrationInvitationCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
-import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.application.representation.tenant.*;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,28 @@ public class TenantResource {
 
     @ApiOperation(value = "Provision a tenant")
     @PostMapping("/provisions")
-    public ResponseEntity<ProvisionedTenantRepresentation> provisionTenant(@RequestBody @Valid ProvisionTenantRepresentation provisionTenantRepresentation) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<ProvisionedTenantRepresentation> provisionTenant(@RequestBody @Valid
+                                                                           @ApiParam(value = "{\n" +
+                                                                                   "\t\n" +
+                                                                                   "\t\"tenantName\" : \"test tenant\",\n" +
+                                                                                   "\t\"tenantDescription\" : \"Super marche de boppi\",\n" +
+                                                                                   "\t\"administorFirstName\" : \"Didier\",\n" +
+                                                                                   "\t\"administorLastName\" : \"Nkalla\",\n" +
+                                                                                   "\t\"emailAddress\" : \"didier@yahoo.fr\",\n" +
+                                                                                   "\t\"primaryTelephone\" : \"669262656\",\n" +
+                                                                                   "\t\"secondaryTelephone\" : \"669262656\",\n" +
+                                                                                   "\t\"primaryCountryCode\" : \"CM\",\n" +
+                                                                                   "\t\"primaryDialingCountryCode\" : \"00237\",\n" +
+                                                                                   "\t\"secondaryCountryCode\" : \"CM\",\n" +
+                                                                                   "\t\"secondaryDialingCountryCode\" : \"00237\",\n" +
+                                                                                   "\t\"addressStreetAddress\" : \"Rond point laureat\",\n" +
+                                                                                   "\t\"addressCity\" : \"Douala\",\n" +
+                                                                                   "\t\"addressStateProvince\" : \"Littoral\",\n" +
+                                                                                   "\t\"addressPostalCode\" : \"80209\",\t\n" +
+                                                                                   "\t\"addressCountryCode\" : \"CM\"\n" +
+                                                                                   "\t\n" +
+                                                                                   "}")
+                                                                                   ProvisionTenantRepresentation provisionTenantRepresentation) throws DiaspoGiftRepositoryException {
 
         HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -117,21 +139,24 @@ public class TenantResource {
 
     }
 
-    @ApiOperation(value = "Offer a registration invitation to a tenant")
+    @ApiOperation(value = "Create a new registration invitation for the specified tenant.")
     @PostMapping("/{tenantId}/registration-invitations")
-    public ResponseEntity<RegistrationInvitationRepresentation> offerRegistrationInvitation(@PathVariable("tenantId") String tenantId,
-                                                                                            @RequestBody RegistrationInvitationRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<RegistrationInvitationRespRepresentation> offerRegistrationInvitation(@PathVariable("tenantId") String tenantId,
+                                                                                                @RequestBody @Valid @ApiParam(
+                                                                                                        name = "registrationInvitaion",
+                                                                                                        required = true,
+                                                                                                        example = "example") RegistrationInvitationReqRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
 
-        RegistrationInvitationRepresentation offeredRegistrationInvitationRepresentation =
-                new RegistrationInvitationRepresentation(
+        RegistrationInvitationRespRepresentation offeredRegistrationInvitationRespRepresentation =
+                new RegistrationInvitationRespRepresentation(
                         this.identityApplicationService().offerRegistrationInvitation(new OfferRegistrationInvitationCommand(tenantId, registrationInvitationRepresentation)));
 
 
-        return new ResponseEntity<RegistrationInvitationRepresentation>(offeredRegistrationInvitationRepresentation, HttpStatus.CREATED);
+        return new ResponseEntity<RegistrationInvitationRespRepresentation>(offeredRegistrationInvitationRespRepresentation, HttpStatus.CREATED);
 
     }
 
-    @ApiOperation(value = "Retrieve a tenant with the spcified identitifier")
+    @ApiOperation(value = "Retrieve a tenant with the specified identitifier")
     @GetMapping("/{tenantId}")
     public ResponseEntity<TenantRepresentation> getTenant(@PathVariable String tenantId) throws DiaspoGiftRepositoryException {
 

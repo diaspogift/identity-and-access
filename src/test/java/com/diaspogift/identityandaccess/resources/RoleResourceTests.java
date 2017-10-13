@@ -1,7 +1,11 @@
 package com.diaspogift.identityandaccess.resources;
 
 
-import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.application.representation.group.GroupMemberRepresentation;
+import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionedTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.RegistrationInvitationRespRepresentation;
 import com.google.gson.Gson;
 import org.junit.After;
 import org.junit.Before;
@@ -38,7 +42,7 @@ public class RoleResourceTests extends AbstractResourseTests {
     private GroupRepresentation groupRepresentation;
     private GroupMemberRepresentation userGroupMemberRepresentation;
     private GroupMemberRepresentation groupGroupMemberRepresentation;
-    private RegistrationInvitationRepresentation registrationInvitationRepresentation;
+    private RegistrationInvitationRespRepresentation registrationInvitationRespRepresentation;
     private RoleRepresentation roleRepresentation;
 
 

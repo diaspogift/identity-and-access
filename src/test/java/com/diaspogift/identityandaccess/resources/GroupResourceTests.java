@@ -1,7 +1,11 @@
 package com.diaspogift.identityandaccess.resources;
 
 
-import com.diaspogift.identityandaccess.application.representation.*;
+import com.diaspogift.identityandaccess.application.representation.group.GroupMemberRepresentation;
+import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionedTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.RegistrationInvitationRespRepresentation;
+import com.diaspogift.identityandaccess.application.representation.user.UserRegistrationReprensentation;
 import com.diaspogift.identityandaccess.domain.model.identity.GroupMemberType;
 import com.google.gson.Gson;
 import org.junit.After;
@@ -40,7 +44,7 @@ public class GroupResourceTests extends AbstractResourseTests {
     private GroupRepresentation groupRepresentation;
     private GroupMemberRepresentation userGroupMemberRepresentation;
     private GroupMemberRepresentation groupGroupMemberRepresentation;
-    private RegistrationInvitationRepresentation registrationInvitationRepresentation;
+    private RegistrationInvitationRespRepresentation registrationInvitationRespRepresentation;
 
 
     @Autowired
@@ -187,7 +191,7 @@ public class GroupResourceTests extends AbstractResourseTests {
                         "CM");
         this.groupRepresentation = this.provisionTenantWithAGroup(this.bingoTenant, gr1, this.mockMvc);
         this.provisionTenantWithAGroup(this.bingoTenant, gr2, this.mockMvc);
-        this.registrationInvitationRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        this.registrationInvitationRespRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         this.userGroupMemberRepresentation = this.addGroupMemberToGroup(this.bingoTenant, this.groupRepresentation, ugmr, this.mockMvc);
         this.groupGroupMemberRepresentation = this.addGroupMemberToGroup(this.bingoTenant, this.groupRepresentation, ggmr, this.mockMvc);
 
@@ -291,8 +295,8 @@ public class GroupResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
         this.groupRepresentation = this.provisionTenantWithAGroup(this.bingoTenant, gr1, this.mockMvc);
-        this.registrationInvitationRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
-        urr.setInvitationIdentifier(this.registrationInvitationRepresentation.getInvitationId());
+        this.registrationInvitationRespRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        urr.setInvitationIdentifier(this.registrationInvitationRespRepresentation.getInvitationId());
 
 
         MvcResult mvcResult =
@@ -413,9 +417,9 @@ public class GroupResourceTests extends AbstractResourseTests {
                         "80209",
                         "CM");
         this.groupRepresentation = this.provisionTenantWithAGroup(this.bingoTenant, gr1, this.mockMvc);
-        this.registrationInvitationRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
+        this.registrationInvitationRespRepresentation = this.provisionTenantWithAUser(this.bingoTenant, urr, this.mockMvc);
         this.userGroupMemberRepresentation = this.addGroupMemberToGroup(this.bingoTenant, this.groupRepresentation, ugmr, this.mockMvc);
-        urr.setInvitationIdentifier(this.registrationInvitationRepresentation.getInvitationId());
+        urr.setInvitationIdentifier(this.registrationInvitationRespRepresentation.getInvitationId());
 
 
         MvcResult mvcResult1 =

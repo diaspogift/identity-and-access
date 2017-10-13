@@ -1,6 +1,6 @@
 package com.diaspogift.identityandaccess.application.command;
 
-import com.diaspogift.identityandaccess.application.representation.RegistrationInvitationRepresentation;
+import com.diaspogift.identityandaccess.application.representation.tenant.RegistrationInvitationReqRepresentation;
 
 public class OfferRegistrationInvitationCommand {
 
@@ -18,13 +18,14 @@ public class OfferRegistrationInvitationCommand {
         this.until = until;
     }
 
-    public OfferRegistrationInvitationCommand(String aTenantId, RegistrationInvitationRepresentation aRegistrationInvitationRepresentation) {
+    public OfferRegistrationInvitationCommand(String aTenantId, RegistrationInvitationReqRepresentation aRegistrationInvitationRespRepresentation) {
 
-        this.description = aRegistrationInvitationRepresentation.getDescription();
-        this.startingOn = aRegistrationInvitationRepresentation.getStartingOn();
+        this.description = aRegistrationInvitationRespRepresentation.getDescription();
+        this.startingOn = aRegistrationInvitationRespRepresentation.getStartingOn();
         this.tenantId = aTenantId;
-        this.until = aRegistrationInvitationRepresentation.getUntil();
+        this.until = aRegistrationInvitationRespRepresentation.getUntil();
     }
+
 
     public String getDescription() {
         return description;

@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -41,7 +44,7 @@ public class swagger2RestApiDocs {
                 "Spring Boot REST API for Identity and Access",
                 "1.0",
                 "Terms of service",
-                new Contact("Felicien Fotio", "https://diaspogift.com/about/", "felicien.fotiomanfo@gmail.com"),
+                "Diaspo Gift",
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;
@@ -49,7 +52,7 @@ public class swagger2RestApiDocs {
 
 
     private ApiKey apiKey() {
-        return new ApiKey("Authorization", "api_key", "header");
+        return new ApiKey("Authorization", "Authorization", "header");
     }
 
 
