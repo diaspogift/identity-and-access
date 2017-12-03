@@ -2,7 +2,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
-import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;

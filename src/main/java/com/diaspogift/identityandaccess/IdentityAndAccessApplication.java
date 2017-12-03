@@ -5,13 +5,14 @@ import com.diaspogift.identityandaccess.application.command.ProvisionTenantComma
 import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
-import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
@@ -20,6 +21,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class IdentityAndAccessApplication {
+
+    ProviderManager providerManager;
 
     public static void main(String[] args) {
 
@@ -167,6 +170,5 @@ public class IdentityAndAccessApplication {
 
 
     }
-
 
 }

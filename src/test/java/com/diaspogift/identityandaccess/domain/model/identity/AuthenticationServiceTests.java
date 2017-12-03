@@ -2,7 +2,7 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.IdentityAndAccessTest;
-import com.diaspogift.identityandaccess.infrastructure.persistence.exception.DiaspoGiftRepositoryException;
+import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
