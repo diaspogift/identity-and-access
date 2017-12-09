@@ -22,14 +22,9 @@ public class GooglePhoneNumberValidatorService extends AssertionConcern implemen
         try {
             phoneNumber = phoneUtil.parse(number, countryCode);
         } catch (NumberParseException e) {
-            System.out.println("\n\n\nNumberParseException was thrown: " + e.toString() + "\n\n\n");
             return false;
         }
 
-        System.out.println("\n\nInfo: " + phoneNumber.toString() + "\n\n\ngetCountryCode: " + phoneNumber.getCountryCode() +
-                "  getPreferredDomesticCarrierCode: " + phoneNumber.getPreferredDomesticCarrierCode() + "   getCountryCodeSource: " +
-                phoneNumber.getCountryCodeSource() + "   getExtension: " +
-                phoneNumber.getExtension());
 
         return phoneUtil.isValidNumber(phoneNumber);
     }

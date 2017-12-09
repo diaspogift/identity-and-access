@@ -19,8 +19,6 @@ public final class Telephone extends AssertionConcern implements Serializable {
 
         this();
 
-        System.out.println(" \n\n Telephone countryCode = " + aCountryCode);
-        System.out.println(" \n\n Telephone  number = " + aNumber);
 
         this.assertArgumentTrue(DomainRegistry.phoneNumberValidatorService().validate(aCountryCode, aNumber), "Invalid phone number.");
         this.setCountryCode(aCountryCode);

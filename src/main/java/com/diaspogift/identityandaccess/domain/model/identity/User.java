@@ -216,7 +216,7 @@ public class User extends ConcurrencySafeEntity {
         return this.password();
     }
 
-    protected String password() {
+    public String password() {
         return this.password;
     }
 
@@ -273,6 +273,7 @@ public class User extends ConcurrencySafeEntity {
     public UserId userId() {
         return this.userId;
     }
+
 
 
     @Override

@@ -1,38 +1,36 @@
 package com.diaspogift.identityandaccess.port.adapter.resources.security;
 
 import com.diaspogift.identityandaccess.domain.model.identity.User;
+import com.google.gson.Gson;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DiaspoGiftClientDetails implements ClientDetails {
 
 
     private User user;
 
+    private DiaspoGiftGrantedAuthority diaspoGiftGrantedAuthority;
 
-    public DiaspoGiftClientDetails(User user) {
-
-
-        System.out.println(" \n IN DiaspoGiftClientDetails constructor \n ");
-
-
+    public DiaspoGiftClientDetails(User user, DiaspoGiftGrantedAuthority diaspoGiftGrantedAuthority) {
         this.user = user;
+        this.diaspoGiftGrantedAuthority = diaspoGiftGrantedAuthority;
     }
-
 
     @Override
     public String getClientId() {
 
-        return user.tenantId() + "-" + user.username();
+        Gson gson = new Gson();
+        String retVal = gson.toJson(user.userId());
+        System.out.println("\n\nclientId: " + retVal + "\n\n");
+        return retVal;
     }
 
     @Override
     public Set<String> getResourceIds() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -42,8 +40,7 @@ public class DiaspoGiftClientDetails implements ClientDetails {
 
     @Override
     public String getClientSecret() {
-
-        return null;
+        return user.password();
     }
 
     @Override
@@ -53,12 +50,12 @@ public class DiaspoGiftClientDetails implements ClientDetails {
 
     @Override
     public Set<String> getScope() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return null;
+        return new HashSet<>(Arrays.asList("password"));
     }
 
     @Override
@@ -68,17 +65,17 @@ public class DiaspoGiftClientDetails implements ClientDetails {
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return null;
+        return new HashSet<>(Arrays.asList(this.diaspoGiftGrantedAuthority));
     }
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return null;
+        return new Integer(60*60*1000);
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        return null;
+        return new Integer(60*60*1000);
     }
 
     @Override
@@ -89,5 +86,15 @@ public class DiaspoGiftClientDetails implements ClientDetails {
     @Override
     public Map<String, Object> getAdditionalInformation() {
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "DiaspoGiftClientDetails{" +
+                "user=" + user +
+                ", diaspoGiftGrantedAuthority=" + diaspoGiftGrantedAuthority +
+                '}' +
+                "\nAuthorities: " + this.getAuthorities() +
+                "\ngetClientId(): " + this.getClientId();
     }
 }

@@ -2,6 +2,6 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
     <logger name="org.springframework" level="INFO"/>
-    <logger name="org.jpa.type" level="INFO"/>
-    <logger name="org.jpa.SQL" level="INFO"/>
+    <logger name="org.springframework.security.authentication" level="TRACE"/>
+    <logger name="org.springframework.security.authentication.ProviderManager" level="TRACE"/>
 </configuration>

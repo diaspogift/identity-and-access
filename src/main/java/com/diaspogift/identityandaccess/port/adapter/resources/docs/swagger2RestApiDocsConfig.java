@@ -5,10 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -20,7 +17,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-public class swagger2RestApiDocs {
+public class swagger2RestApiDocsConfig {
 
 
     @Bean
@@ -40,13 +37,14 @@ public class swagger2RestApiDocs {
     private ApiInfo metaData() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "IAM REST API VERSION ONE  (01 snapshot may be? ) SPECIFICATIONS",
-                "Spring Boot REST API for Identity and Access",
+                "Spring Boot REST API",
+                "Spring Boot REST API for Online Store",
                 "1.0",
                 "Terms of service",
-                "Diaspo Gift",
+                "Diaspora Gift",
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0");
+
         return apiInfo;
     }
 
@@ -64,8 +62,7 @@ public class swagger2RestApiDocs {
     }
 
     List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope
-                = new AuthorizationScope("write", "accessEverything");
+        AuthorizationScope authorizationScope = new AuthorizationScope("write", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return Lists.newArrayList(
