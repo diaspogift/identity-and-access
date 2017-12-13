@@ -1,8 +1,11 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
 import com.diaspogift.identityandaccess.domain.model.common.DomainEventPublisher;
+
+import java.util.ArrayList;
 
 public class User extends ConcurrencySafeEntity {
 
@@ -143,7 +146,8 @@ public class User extends ConcurrencySafeEntity {
         return new UserDescriptor(
                 this.tenantId(),
                 this.username(),
-                this.person().emailAddress().address());
+                this.person().emailAddress().address(),
+                new ArrayList<RoleDescriptor>());
     }
 
 
@@ -273,7 +277,6 @@ public class User extends ConcurrencySafeEntity {
     public UserId userId() {
         return this.userId;
     }
-
 
 
     @Override

@@ -147,6 +147,15 @@ public class Role extends ConcurrencySafeEntity {
                         aUser.username()));
     }
 
+
+    public RoleDescriptor roleDescriptor() {
+        return new RoleDescriptor(
+                this.tenantId().id(),
+                this.roleId().name()
+        );
+    }
+
+
     @Override
     public boolean equals(Object anObject) {
         boolean equalObjects = false;

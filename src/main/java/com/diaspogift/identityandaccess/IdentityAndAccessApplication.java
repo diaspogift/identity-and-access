@@ -4,18 +4,14 @@ import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
-import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
-import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import com.diaspogift.identityandaccess.port.adapter.resources.security.DiaspoGiftUserDetails;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,89 +26,10 @@ import java.util.List;
 public class IdentityAndAccessApplication {
 
 
-
-    public void authenticationManager(AuthenticationManagerBuilder builder, IdentityApplicationService identityApplicationService) throws  Exception{
-
-        builder.userDetailsService(new UserDetailsService() {
-
-
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-                String data[] = username.split("_");
-                UserDetails userDetails = null;
-
-                try {
-
-
-                    userDetails  = new DiaspoGiftUserDetails(identityApplicationService.user(data[0], data[1]));
-
-
-                } catch (DiaspoGiftRepositoryException e) {
-                    e.printStackTrace();
-                }
-
-
-                return  userDetails;
-            }
-        });
-    }
-
-
     public static void main(String[] args) {
 
 
         ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //////////////////////////////
@@ -254,11 +171,33 @@ public class IdentityAndAccessApplication {
         }
 
 
+    }
+
+    public void authenticationManager(AuthenticationManagerBuilder builder, IdentityApplicationService identityApplicationService) throws Exception {
+
+        builder.userDetailsService(new UserDetailsService() {
 
 
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+                String data[] = username.split("_");
+                UserDetails userDetails = null;
+
+                try {
 
 
+                    userDetails = new DiaspoGiftUserDetails(identityApplicationService.user(data[0], data[1]));
 
+
+                } catch (DiaspoGiftRepositoryException e) {
+                    e.printStackTrace();
+                }
+
+
+                return userDetails;
+            }
+        });
     }
 
 }

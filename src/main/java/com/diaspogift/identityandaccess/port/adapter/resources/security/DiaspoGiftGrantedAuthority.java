@@ -1,6 +1,5 @@
 package com.diaspogift.identityandaccess.port.adapter.resources.security;
 
-import com.diaspogift.identityandaccess.domain.model.access.Role;
 import org.springframework.security.core.GrantedAuthority;
 
 public class DiaspoGiftGrantedAuthority implements GrantedAuthority {

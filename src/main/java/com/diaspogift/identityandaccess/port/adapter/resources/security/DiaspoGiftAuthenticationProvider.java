@@ -10,8 +10,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component("diaspoGiftAuthenticationProvider")
-public class DiaspoGiftAuthenticationProvider implements AuthenticationProvider{
-
+public class DiaspoGiftAuthenticationProvider implements AuthenticationProvider {
 
 
     @Autowired

@@ -70,12 +70,12 @@ public class DiaspoGiftClientDetails implements ClientDetails {
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return new Integer(60*60*1000);
+        return new Integer(60 * 60 * 1000);
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        return new Integer(60*60*1000);
+        return new Integer(60 * 60 * 1000);
     }
 
     @Override

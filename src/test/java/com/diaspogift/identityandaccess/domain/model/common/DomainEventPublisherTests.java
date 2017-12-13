@@ -71,7 +71,7 @@ public class DomainEventPublisherTests {
             @Override
             public void handleEvent(AnotherTestableDomainEvent aDomainEvent) {
                 // should never be reached due to blocked publisher
-                assertEquals(1000.0, aDomainEvent.value());
+                assertEquals(1000.0, aDomainEvent.value(), 0);
                 anotherEventHandled = true;
             }
 

@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-
 @Component
 public class SHA3BCryptEncryptionService extends AssertionConcern implements EncryptionService {
 
@@ -38,8 +35,8 @@ public class SHA3BCryptEncryptionService extends AssertionConcern implements Enc
         try {
             encryptedValue = passwordEncoder.encode(aPlainTextValue);
 
-            log.info("\n\n plain text password in SHA3BCryptEncryptionService  ==  "+ aPlainTextValue + "\n\n");
-            log.info("\n\n encryptedValue password in SHA3BCryptEncryptionService  ==  "+ encryptedValue + "\n\n");
+            log.info("\n\n plain text password in SHA3BCryptEncryptionService  ==  " + aPlainTextValue + "\n\n");
+            log.info("\n\n encryptedValue password in SHA3BCryptEncryptionService  ==  " + encryptedValue + "\n\n");
 
         } catch (Exception e) {
             throw new IllegalStateException(e);

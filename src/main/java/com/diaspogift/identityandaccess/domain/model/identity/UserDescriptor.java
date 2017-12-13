@@ -1,9 +1,12 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class UserDescriptor extends AssertionConcern implements Serializable {
 
@@ -13,12 +16,15 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
     private TenantId tenantId;
     private String username;
 
-    public UserDescriptor(TenantId aTenantId, String aUsername, String anEmailAddress) {
+    private List<RoleDescriptor> roleDescriptorList = new ArrayList<RoleDescriptor>();
+
+    public UserDescriptor(TenantId aTenantId, String aUsername, String anEmailAddress, List<RoleDescriptor> aRoleDescriptorList) {
         super();
 
         this.setEmailAddress(anEmailAddress);
         this.setTenantId(aTenantId);
         this.setUsername(aUsername);
+        this.setRoleDescriptorList(aRoleDescriptorList);
     }
 
     private UserDescriptor() {
@@ -93,5 +99,9 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
         this.assertArgumentNotEmpty(aUsername, "Username must not be set as null.");
 
         this.username = aUsername;
+    }
+
+    private void setRoleDescriptorList(List<RoleDescriptor> aRoleDescriptorList) {
+        this.roleDescriptorList = aRoleDescriptorList;
     }
 }

@@ -11,6 +11,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.regex;
@@ -41,11 +42,13 @@ public class swagger2RestApiDocsConfig {
                 "Spring Boot REST API for Online Store",
                 "1.0",
                 "Terms of service",
-                "Diaspora Gift",
+                new springfox.documentation.service.Contact("", "", ""),
                 "Apache License Version 2.0",
-                "https://www.apache.org/licenses/LICENSE-2.0");
+                "https://www.apache.org/licenses/LICENSE-2.0",
+                new ArrayList<VendorExtension>());
 
         return apiInfo;
+
     }
 
 

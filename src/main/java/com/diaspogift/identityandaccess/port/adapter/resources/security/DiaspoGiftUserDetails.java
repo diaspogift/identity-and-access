@@ -4,7 +4,6 @@ import com.diaspogift.identityandaccess.domain.model.identity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 

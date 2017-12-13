@@ -6,6 +6,9 @@ import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 @Service
 public class AuthorizationService extends AssertionConcern {
 
@@ -45,6 +48,29 @@ public class AuthorizationService extends AssertionConcern {
         }
 
         return authorized;
+    }
+
+
+    //////////// NOT TESTED ////
+    public Collection<RoleDescriptor> allRolesForIdentifiedUser(TenantId aTenantId, String aUsername) {
+
+        User user = this.userRepository().userWithUsername(aTenantId, aUsername);
+
+
+        Collection<RoleDescriptor> allUserRoleDescriptors = new HashSet<RoleDescriptor>();
+
+        Collection<Role> allTenantRoles = roleRepository().allRoles(aTenantId);
+
+        for (Role next : allTenantRoles) {
+
+            if (isUserInRole(user, next.roleId().name())) {
+
+                allUserRoleDescriptors.add(next.roleDescriptor());
+            }
+        }
+
+        return allUserRoleDescriptors;
+
     }
 
     private GroupRepository groupRepository() {

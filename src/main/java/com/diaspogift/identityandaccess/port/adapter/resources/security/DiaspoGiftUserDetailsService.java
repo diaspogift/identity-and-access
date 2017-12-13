@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service("userDetailsService")
-public class DiaspoGiftUserDetailsService implements UserDetailsService{
-
+public class DiaspoGiftUserDetailsService implements UserDetailsService {
 
 
     private static final Logger log = LoggerFactory.getLogger(AuthorizationServerOauth2Config.class);
@@ -26,9 +25,9 @@ public class DiaspoGiftUserDetailsService implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.info("\n\n username in loadUserByUsername  ==  "+ username + "\n\n");
-        log.info("\n\n username in loadUserByUsername  ==  "+ username + "\n\n");
-        log.info("\n\n username in loadUserByUsername  ==  "+ username + "\n\n");
+        log.info("\n\n username in loadUserByUsername  ==  " + username + "\n\n");
+        log.info("\n\n username in loadUserByUsername  ==  " + username + "\n\n");
+        log.info("\n\n username in loadUserByUsername  ==  " + username + "\n\n");
 
 
         String tenantId = username.split("_")[0];
