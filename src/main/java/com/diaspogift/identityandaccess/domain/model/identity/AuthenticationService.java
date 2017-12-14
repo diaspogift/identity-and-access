@@ -6,6 +6,7 @@ import com.diaspogift.identityandaccess.port.adapter.persistence.exception.Diasp
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,9 @@ public class AuthenticationService extends AssertionConcern {
     private TenantRepository tenantRepository;
     @Autowired
     private UserRepository userRepository;
+    //Should it really be here????
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserDescriptor authenticate(TenantId aTenantId, String aUsername, String aPassword) throws DiaspoGiftRepositoryException {
 
@@ -31,16 +35,35 @@ public class AuthenticationService extends AssertionConcern {
             Tenant tenant = this.tenantRepository().tenantOfId(aTenantId);
 
             if (tenant != null && tenant.isActive()) {
+
+
                 String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
 
-                User user =
+
+                System.out.println("\n\n authenticate aPassword = " + aPassword);
+                System.out.println("\n\n authenticate aPassword = " + aPassword);
+
+
+                System.out.println("\n\n authenticate encryptedPassword = " + encryptedPassword);
+                System.out.println("\n\n authenticate encryptedPassword = " + encryptedPassword);
+
+
+               /* User user =
                         this.userRepository
                                 .userFromAuthenticCredentials(
                                         aTenantId,
                                         aUsername,
-                                        encryptedPassword);
+                                        encryptedPassword);*/
 
-                if (user != null && user.isEnabled()) {
+
+                User user =
+                        this.userRepository
+                                .userWithUsername(
+                                        aTenantId,
+                                        aUsername);
+
+
+                if (user != null && user.isEnabled() && passwordEncoder.matches(aPassword, user.password())) {
                     userDescriptor = user.userDescriptor();
                 }
             }

@@ -1,45 +1,66 @@
 package com.diaspogift.identityandaccess.port.adapter.resources.security;
 
+import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
+import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 
-@Service("userDetailsService")
+@Service
 public class DiaspoGiftUserDetailsService implements UserDetailsService {
 
 
-    private static final Logger log = LoggerFactory.getLogger(AuthorizationServerOauth2Config.class);
-
     @Autowired
     private IdentityApplicationService identityApplicationService;
+
+    @Autowired
+    private AccessApplicationService accessApplicationService;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.info("\n\n username in loadUserByUsername  ==  " + username + "\n\n");
-        log.info("\n\n username in loadUserByUsername  ==  " + username + "\n\n");
-        log.info("\n\n username in loadUserByUsername  ==  " + username + "\n\n");
 
+        String data[] = username.split("_");
+        String tempTenantId = data[0];
+        String tempUsername = data[1];
 
-        String tenantId = username.split("_")[0];
-        String userName = username.split("_")[1];
 
         User user = null;
+        UserDescriptor userDescriptor = null;
+
         try {
-            user = identityApplicationService.user(tenantId, userName);
+
+
+            user = identityApplicationService.user(tempTenantId, tempUsername);
+
+            Collection<RoleDescriptor> roleDescriptors = accessApplicationService.allRolesForIdentifiedUser(tempTenantId, tempUsername);
+
+
+            userDescriptor = user.userDescriptor();
+
+            userDescriptor.setRoleDescriptorList(roleDescriptors);
+
+
         } catch (DiaspoGiftRepositoryException e) {
             e.printStackTrace();
         }
 
-        return new DiaspoGiftUserDetails(user);
+
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("User %s does not exist!", username));
+        }
+
+        return new DiaspoGiftUserDetails(user, userDescriptor);
     }
+
+
 }

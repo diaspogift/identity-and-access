@@ -2,25 +2,14 @@ package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
-import com.diaspogift.identityandaccess.port.adapter.resources.security.DiaspoGiftUserDetails;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class IdentityAndAccessApplication {
@@ -32,7 +21,6 @@ public class IdentityAndAccessApplication {
         ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
 
 
-        //////////////////////////////
         ProvisionTenantCommand provisionTenantCommand1 =
                 new ProvisionTenantCommand("BINGO1", "HOPITAL BINGO 1", "Bingo Adminun", "Bingoun", "didier1@gmail.com",
                         "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 1", "Douala 1", "Littoral 1", "80209",
@@ -103,13 +91,6 @@ public class IdentityAndAccessApplication {
 
         RestTemplate template = new RestTemplate();
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
-        acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(acceptableMediaTypes);
-
-        HttpEntity requestEntity = new HttpEntity(httpHeaders);
-
 
         ProvisionTenantRepresentation provisionTenantRepresentation =
                 new ProvisionTenantRepresentation(
@@ -132,27 +113,6 @@ public class IdentityAndAccessApplication {
                 );
 
 
-        // TenantRepresentation tr = template.postForObject("http://localhost:8083/api/v1/tenants/provisions", provisionTenantRepresentation, TenantRepresentation.class);
-
-
-        HttpEntity requestEntity1 = new HttpEntity(httpHeaders);
-
-
-        //HttpEntity result = template.exchange("http://localhost:8083/api/v1/tenants", HttpMethod.GET, requestEntity1, String.class);
-
-
-        // System.out.println("\n\n\n result  == " + result);
-        //System.out.println("\n\n\n result body == " + result.getBody());
-
-
-        //System.out.println(" \n\n tr ============================== " + tr);
-        //System.out.println(" \n\n tr ============================== " + tr);
-        //System.out.println(" \n\n tr ============================== " + tr);
-
-
-        //System.out.println(" \n\n\n\n yesterday " + yesterday + " tomorow " + tomorow);
-
-
         try {
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand1);
             ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand2);
@@ -173,31 +133,5 @@ public class IdentityAndAccessApplication {
 
     }
 
-    public void authenticationManager(AuthenticationManagerBuilder builder, IdentityApplicationService identityApplicationService) throws Exception {
-
-        builder.userDetailsService(new UserDetailsService() {
-
-
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-                String data[] = username.split("_");
-                UserDetails userDetails = null;
-
-                try {
-
-
-                    userDetails = new DiaspoGiftUserDetails(identityApplicationService.user(data[0], data[1]));
-
-
-                } catch (DiaspoGiftRepositoryException e) {
-                    e.printStackTrace();
-                }
-
-
-                return userDetails;
-            }
-        });
-    }
 
 }

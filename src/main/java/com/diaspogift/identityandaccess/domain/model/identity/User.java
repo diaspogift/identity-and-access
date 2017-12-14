@@ -49,7 +49,7 @@ public class User extends ConcurrencySafeEntity {
         this.setPerson(aPerson);
         this.setUserId(aUserId);
 
-        this.protectPassword("", aPassword);
+        //this.protectPassword("", aPassword);
 
         this.setPassword(this.asEncryptedValue(aPassword));
 

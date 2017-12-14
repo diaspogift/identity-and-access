@@ -1,26 +1,28 @@
 package com.diaspogift.identityandaccess.port.adapter.resources.security;
 
 import com.diaspogift.identityandaccess.domain.model.identity.User;
+import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 public class DiaspoGiftUserDetails implements UserDetails {
 
+
+    private UserDescriptor userDescriptor;
     private User user;
 
-    public DiaspoGiftUserDetails(User user) {
+
+    public DiaspoGiftUserDetails(User user, UserDescriptor userDescriptor) {
 
         this.user = user;
+        this.userDescriptor = userDescriptor;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-
-        return new HashSet<DiaspoGiftGrantedAuthority>();
+        return userDescriptor.roleDescriptorList();
     }
 
     @Override
@@ -30,7 +32,7 @@ public class DiaspoGiftUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.username();
+        return this.userDescriptor.username();
     }
 
     @Override
@@ -52,4 +54,5 @@ public class DiaspoGiftUserDetails implements UserDetails {
     public boolean isEnabled() {
         return user.isEnabled();
     }
+
 }

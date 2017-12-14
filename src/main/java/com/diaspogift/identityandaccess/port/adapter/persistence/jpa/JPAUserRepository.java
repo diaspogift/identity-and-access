@@ -36,6 +36,10 @@ public class JPAUserRepository implements UserRepository {
 
     public User userFromAuthenticCredentials(TenantId aTenantId, String aUsername, String anEncryptedPassword) {
 
+        System.out.println("\n\n aTenantId in userFromAuthenticCredentials = " + aTenantId);
+        System.out.println("\n\n aUsername in userFromAuthenticCredentials = " + aUsername);
+        System.out.println("\n\n anEncryptedPassword in userFromAuthenticCredentials = " + anEncryptedPassword);
+
         return this.entityManager()
                 .createNamedQuery("selectUserFromAuthenticCredentials", User.class)
                 .setParameter("tenantId", aTenantId)

@@ -6,6 +6,7 @@ import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public final class UserDescriptor extends AssertionConcern implements Serializable {
@@ -16,7 +17,7 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
     private TenantId tenantId;
     private String username;
 
-    private List<RoleDescriptor> roleDescriptorList = new ArrayList<RoleDescriptor>();
+    private Collection<RoleDescriptor> roleDescriptorList = new ArrayList<RoleDescriptor>();
 
     public UserDescriptor(TenantId aTenantId, String aUsername, String anEmailAddress, List<RoleDescriptor> aRoleDescriptorList) {
         super();
@@ -51,6 +52,38 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
         return this.username;
     }
 
+
+    public Collection<RoleDescriptor> roleDescriptorList() {
+        return roleDescriptorList;
+    }
+
+    public void setRoleDescriptorList(Collection<RoleDescriptor> roleDescriptorList) {
+        this.roleDescriptorList = roleDescriptorList;
+    }
+
+    private void setEmailAddress(String anEmailAddress) {
+        this.assertArgumentNotEmpty(anEmailAddress, "Email address must be provided.");
+
+        this.emailAddress = anEmailAddress;
+    }
+
+    private void setTenantId(TenantId aTenantId) {
+        this.assertArgumentNotNull(aTenantId, "TenantId must not be set as null.");
+
+        this.tenantId = aTenantId;
+    }
+
+    private void setUsername(String aUsername) {
+        this.assertArgumentNotEmpty(aUsername, "Username must not be set as null.");
+
+        this.username = aUsername;
+    }
+
+    private void setRoleDescriptorList(List<RoleDescriptor> aRoleDescriptorList) {
+        this.roleDescriptorList = aRoleDescriptorList;
+    }
+
+
     @Override
     public boolean equals(Object anObject) {
         boolean equalObjects = false;
@@ -83,25 +116,4 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
                 + ", tenantId=" + tenantId + ", username=" + username + "]";
     }
 
-    private void setEmailAddress(String anEmailAddress) {
-        this.assertArgumentNotEmpty(anEmailAddress, "Email address must be provided.");
-
-        this.emailAddress = anEmailAddress;
-    }
-
-    private void setTenantId(TenantId aTenantId) {
-        this.assertArgumentNotNull(aTenantId, "TenantId must not be set as null.");
-
-        this.tenantId = aTenantId;
-    }
-
-    private void setUsername(String aUsername) {
-        this.assertArgumentNotEmpty(aUsername, "Username must not be set as null.");
-
-        this.username = aUsername;
-    }
-
-    private void setRoleDescriptorList(List<RoleDescriptor> aRoleDescriptorList) {
-        this.roleDescriptorList = aRoleDescriptorList;
-    }
 }

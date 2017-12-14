@@ -1,7 +1,9 @@
 package com.diaspogift.identityandaccess.domain.model.access;
 
 
-public class RoleDescriptor {
+import org.springframework.security.core.GrantedAuthority;
+
+public class RoleDescriptor implements GrantedAuthority {
 
     private String tenantId;
     private String roleName;
@@ -14,6 +16,15 @@ public class RoleDescriptor {
 
     }
 
+
+    public String tenantId() {
+        return tenantId;
+    }
+
+    public String roleName() {
+        return roleName;
+    }
+
     @Override
     public String toString() {
 
@@ -21,5 +32,10 @@ public class RoleDescriptor {
                 "tenantId='" + tenantId + '\'' +
                 ", roleName='" + roleName + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.roleName;
     }
 }
