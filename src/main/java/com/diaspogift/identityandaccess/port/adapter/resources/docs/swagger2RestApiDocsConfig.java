@@ -1,10 +1,24 @@
 package com.diaspogift.identityandaccess.port.adapter.resources.docs;
 
-//@Configuration
-//@EnableSwagger2
+import com.google.common.collect.Lists;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.*;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static springfox.documentation.builders.PathSelectors.regex;
+
+@Configuration
+@EnableSwagger2
 public class swagger2RestApiDocsConfig {
 
-/*
 
     @Bean
     public Docket resourcesApi() {
@@ -45,7 +59,7 @@ public class swagger2RestApiDocsConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex("/anyPath.*"))
+                .forPaths(regex("/anyPath.*"))
                 .build();
     }
 
@@ -57,6 +71,5 @@ public class swagger2RestApiDocsConfig {
                 new SecurityReference("AUTHORIZATION", authorizationScopes));
     }
 
-*/
 
 }

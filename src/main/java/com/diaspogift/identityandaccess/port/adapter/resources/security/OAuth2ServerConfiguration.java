@@ -40,11 +40,13 @@ public class OAuth2ServerConfiguration {
 
             http.antMatcher("/api/v1/**").authorizeRequests()
                     .antMatchers(HttpMethod.GET, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_ADMINISTRATOR')")
-                    .antMatchers(HttpMethod.GET, "/api/greeting").access("#oauth2.hasScope('write')")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_ADMINISTRATOR')")
                     .and()
                     .csrf().disable()
                     .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+
         }
 
     }

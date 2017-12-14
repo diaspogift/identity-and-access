@@ -1,13 +1,17 @@
 package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
+import com.diaspogift.identityandaccess.application.command.ProvisionGroupCommand;
+import com.diaspogift.identityandaccess.application.command.ProvisionRoleCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.application.representation.tenant.ProvisionTenantRepresentation;
+import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
+import com.diaspogift.identityandaccess.domain.model.identity.Group;
+import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
 
@@ -21,110 +25,44 @@ public class IdentityAndAccessApplication {
         ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
 
 
-        ProvisionTenantCommand provisionTenantCommand1 =
-                new ProvisionTenantCommand("BINGO1", "HOPITAL BINGO 1", "Bingo Adminun", "Bingoun", "didier1@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 1", "Douala 1", "Littoral 1", "80209",
-                        "US");
-
-        ProvisionTenantCommand provisionTenantCommand2 =
-                new ProvisionTenantCommand("BINGO2", "HOPITAL BINGO 2", "Bingo Admindeux", "Bingodeux", "didier2@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 2", "Douala 2", "Littoral 2", "80209",
-                        "US");
+        ProvisionTenantCommand provisionBingoTenantCommand =
+                new ProvisionTenantCommand("BINGO", "HOPITAL BINGO", "Bingo Admin", "Bingoun", "bingo@gmail.com",
+                        "CM", "00237", "669262655", "CM", "00237", "669262657", "Valley 3 boutiques", "Douala", "Littoral", "80209",
+                        "CM");
 
 
-        ProvisionTenantCommand provisionTenantCommand3 =
-                new ProvisionTenantCommand("BINGO3", "HOPITAL BINGO 3", "Bingo Admintrois", "Bingotrois", "didier3@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 3", "Douala 3", "Littoral 3", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand4 =
-                new ProvisionTenantCommand("BINGO4", "HOPITAL BINGO 4", "Bingo Adminquatre", "Bingoquatre", "didier4@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 4", "Douala 4", "Littoral 4", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand5 =
-                new ProvisionTenantCommand("BINGO5", "HOPITAL BINGO 5", "Bingo Adminquatre", "Bingoquatre", "didier5@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 5", "Douala 5", "Littoral 5", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand6 =
-                new ProvisionTenantCommand("BINGO6", "HOPITAL BINGO 6", "Bingo Adminquatre", "Bingoquatre", "didier6@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 6", "Douala 6", "Littoral 6", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand7 =
-                new ProvisionTenantCommand("BINGO7", "HOPITAL BINGO 7", "Bingo Adminquatre", "Bingoquatre", "didier7@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 7", "Douala 7", "Littoral 7", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand8 =
-                new ProvisionTenantCommand("BINGO8", "HOPITAL BINGO 4", "Bingo Adminquatre", "Bingoquatre", "didier8@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 8", "Douala 8", "Littoral 8", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand9 =
-                new ProvisionTenantCommand("BINGO9", "HOPITAL BINGO 9", "Bingo Adminquatre", "Bingoquatre", "didier9@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 9", "Douala 9", "Littoral 9", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand10 =
-                new ProvisionTenantCommand("BINGO10", "HOPITAL BINGO 10", "Bingo Adminquatre", "Bingoquatre", "didier10@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 10", "Douala 10", "Littoral 10", "80209",
-                        "US");
-
-
-        ProvisionTenantCommand provisionTenantCommand11 =
-                new ProvisionTenantCommand("BINGO11", "HOPITAL BINGO 11", "Bingo Adminquatre", "Bingoquatre", "didier11@gmail.com",
-                        "US", "001", "303-807-3573", "US", "001", "303-807-3573", "3 boutiques 11", "Douala 11", "Littoral 11", "80209",
-                        "US");
+        ProvisionTenantCommand provisionCadeauxTenantCommand =
+                new ProvisionTenantCommand("CADEAUX", "Super Marche Cadeaux", "Cadeaux Admin", "Cadeaux", "cadeaux@gmail.com",
+                        "CM", "00237", "669262655", "CM", "00237", "669262658", "Rond Point Laureat", "Douala", "Littoral", "80210",
+                        "CM");
 
 
         ZonedDateTime yesterday = ZonedDateTime.now().minusDays(1l);
         ZonedDateTime tomorow = ZonedDateTime.now().plusDays(1l);
 
-        RestTemplate template = new RestTemplate();
-
-
-        ProvisionTenantRepresentation provisionTenantRepresentation =
-                new ProvisionTenantRepresentation(
-                        "Cadeaux",
-                        "Super marche de bonamoussadi",
-                        "Didier",
-                        "Nkalla",
-                        "didier@yahoo.fr",
-                        "669262656",
-                        "669262656",
-                        "CM",
-                        "00237",
-                        "CM",
-                        "00237",
-                        "Rond point laureat",
-                        "Douala",
-                        "Littoral",
-                        "80209",
-                        "CM"
-                );
-
 
         try {
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand1);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand2);
-              /*ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand3);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand4);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand5);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand6);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand7);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand8);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand9);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand10);
-            ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionTenantCommand11);*/
+
+            Tenant provisionedBingoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionBingoTenantCommand);
+
+
+            ProvisionRoleCommand provisionBingoRoleCommand =
+                    new ProvisionRoleCommand(provisionedBingoTenant.tenantId().id(), new RoleRepresentation("DG_BINGO_REP", "Groupe des representant de diaspogift aupres de Bingo.", true));
+
+
+            ApplicationServiceRegistry.accessApplicationService().provisionRole(provisionBingoRoleCommand);
+
+
+            Tenant provisionedCadeauxTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionCadeauxTenantCommand);
+
+
+            ProvisionGroupCommand provisionCadeauxGroupCommand =
+                    new ProvisionGroupCommand(provisionedBingoTenant.tenantId().id(), new GroupRepresentation("DG_CADEAUX_REP", "Groupe des representant de diaspogift aupres de Cadeaux."));
+
+
+            Group dgCadeauxRep = ApplicationServiceRegistry.identityApplicationService().provisionGroup(provisionCadeauxGroupCommand);
+
+
         } catch (DiaspoGiftRepositoryException e) {
 
             System.out.println(e.getMessage());
