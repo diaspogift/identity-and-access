@@ -6,6 +6,7 @@ import com.diaspogift.identityandaccess.port.adapter.persistence.exception.Diasp
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,22 +41,6 @@ public class AuthenticationService extends AssertionConcern {
                 String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
 
 
-                System.out.println("\n\n authenticate aPassword = " + aPassword);
-                System.out.println("\n\n authenticate aPassword = " + aPassword);
-
-
-                System.out.println("\n\n authenticate encryptedPassword = " + encryptedPassword);
-                System.out.println("\n\n authenticate encryptedPassword = " + encryptedPassword);
-
-
-               /* User user =
-                        this.userRepository
-                                .userFromAuthenticCredentials(
-                                        aTenantId,
-                                        aUsername,
-                                        encryptedPassword);*/
-
-
                 User user =
                         this.userRepository
                                 .userWithUsername(
@@ -71,9 +56,9 @@ public class AuthenticationService extends AssertionConcern {
             return userDescriptor;
 
         } catch (EmptyResultDataAccessException e) {
-            throw new DiaspoGiftRepositoryException(e.getMessage(), e, e.getClass().getSimpleName());
+            throw new BadCredentialsException("Bad Crredentials provided.");
         } catch (IncorrectResultSizeDataAccessException e) {
-            throw new DiaspoGiftRepositoryException(e.getMessage(), e, e.getClass().getSimpleName());
+            throw new BadCredentialsException("Bad Crredentials provided.");
 
         }
     }

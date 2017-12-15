@@ -51,7 +51,7 @@ public class DiaspoGiftUserDetailsService implements UserDetailsService {
 
 
         } catch (DiaspoGiftRepositoryException e) {
-            e.printStackTrace();
+            throw new UsernameNotFoundException("Bad credentials were provided.");
         }
 
 
