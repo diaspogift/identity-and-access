@@ -38,9 +38,60 @@ public class OAuth2ServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
 
+
+            //TODO review all regexxxxxxx Expressionssss
+            //TODO review all regexxxxxxx Expressionssss
+            //TODO review all regexxxxxxx Expressionssss
+
             http.antMatcher("/api/v1/**").authorizeRequests()
-                    .antMatchers(HttpMethod.GET, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_ADMINISTRATOR')")
-                    .antMatchers(HttpMethod.POST, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_ADMINISTRATOR')")
+
+                    //Tenant Resource
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_DG_ADMINISTRATOR')")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_DG_ADMINISTRATOR')")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/provisions").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_DG_ADMINISTRATOR')")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/provisions").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_DG_ADMINISTRATOR')")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/provisions").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/registration-invitations").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/registration-invitations").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/availability-status").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/availability-status").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+
+                    //Role Resource
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/roles").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/roles").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/roles/{roleName:(\\w+(\\s+\\w)*)}/groups").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/roles/{roleName:(\\w+(\\s+\\w)*)}/groups").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/roles/{roleName:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/roles/{roleName:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+
+
+                    //Group Resource
+
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/members").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/members").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.DELETE, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/members/{name:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+
+
+                    //User Resource
+
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/autenticated-with/{password:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/password").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/registrations").anonymous()
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/enablement").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/enablement").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/contact").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/contact").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/name").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/name").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/in-role/{roleName}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+
+
                     .and()
                     .csrf().disable()
                     .sessionManagement()

@@ -77,6 +77,10 @@ public class RoleResource {
         return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.CREATED);
     }
 
+    //TODO implement the get for the resource above
+    //TODO implement the get for the resource above
+    //TODO implement the get for the resource above
+
     @ApiOperation(value = "Retrieve a tenants role")
     @GetMapping("/{roleName}")
     public ResponseEntity<RoleRepresentation> getTenantRole(@PathVariable("tenantId") String tenantId,

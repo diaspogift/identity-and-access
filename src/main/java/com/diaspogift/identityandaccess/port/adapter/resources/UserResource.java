@@ -179,14 +179,8 @@ public class UserResource {
                                                             @PathVariable("roleName") String aRoleName) throws DiaspoGiftRepositoryException {
 
 
-        System.out.println(" \n\n tenantId ==== " + aTenantId + " username === " + aUsername + " roleName === " + aRoleName);
-        System.out.println(" \n\n tenantId ==== " + aTenantId + " username === " + aUsername + " roleName === " + aRoleName);
-
-        System.out.println("\n\n " + "HERE THE USER I MUST FIND LATER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
         User user1 = DomainRegistry.userRepository().userWithUsername(new TenantId(aTenantId), aUsername);
 
-        System.out.println("\n\n " + "HERE THE USER I MUST FIND LATER >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + user1);
 
         UserRepresentation userRepresentation = null;
 
