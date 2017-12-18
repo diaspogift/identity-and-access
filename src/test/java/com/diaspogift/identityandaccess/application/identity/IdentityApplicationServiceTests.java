@@ -300,7 +300,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
         User user = this.userAggregate();
         DomainRegistry.userRepository().add(user);
 
-        assertEquals(user.internalAccessOnlyEncryptedPassword(), DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD));
+        assertTrue(DomainRegistry.encryptionService().matchesPassword(FIXTURE_PASSWORD, user.internalAccessOnlyEncryptedPassword()));
         ApplicationServiceRegistry
                 .identityApplicationService()
                 .changeUserPassword(
@@ -320,7 +320,7 @@ public class IdentityApplicationServiceTests extends ApplicationServiceTests {
 
         assertNotNull(userDescriptor);
         assertEquals(user.userId().username(), userDescriptor.username());
-        assertEquals(user.internalAccessOnlyEncryptedPassword(), DomainRegistry.encryptionService().encryptedValue("THIS.IS.FELICIEN'S.NEW.PASSWORD"));
+        assertTrue(DomainRegistry.encryptionService().matchesPassword("THIS.IS.FELICIEN'S.NEW.PASSWORD", user.internalAccessOnlyEncryptedPassword()));
 
     }
 

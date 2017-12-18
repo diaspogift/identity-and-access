@@ -2,9 +2,9 @@ package com.diaspogift.identityandaccess.port.adapter.resources.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,10 +15,13 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+
+import javax.sql.DataSource;
+
 
 @Configuration
 public class OAuth2ServerConfiguration {
@@ -92,6 +95,15 @@ public class OAuth2ServerConfiguration {
                     .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
 
 
+                    //Service Resources
+
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/services").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_DG_REP'))")
+
+
+                    //Welcome pages
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/welcome").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_DG_USER') or hasRole('ROLE_USER'))")
+
+
                     .and()
                     .csrf().disable()
                     .sessionManagement()
@@ -106,7 +118,8 @@ public class OAuth2ServerConfiguration {
     @EnableAuthorizationServer
     protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-        private TokenStore tokenStore = new InMemoryTokenStore();
+        //private TokenStore tokenStore = new InMemoryTokenStore();
+
 
         @Autowired
         @Qualifier("authenticationManagerBean")
@@ -115,9 +128,15 @@ public class OAuth2ServerConfiguration {
         @Autowired
         private DiaspoGiftUserDetailsService userDetailsService;
 
+
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+            oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        }
+
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.tokenStore(this.tokenStore)
+            endpoints.tokenStore(this.tokenStore())
                     .authenticationManager(this.authenticationManager)
                     .userDetailsService(userDetailsService);
         }
@@ -126,36 +145,32 @@ public class OAuth2ServerConfiguration {
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
             clients.inMemory()
-                    .withClient("dg-identity-and-access-angular4-client")
-                    .authorizedGrantTypes("password", "refresh_token", "client_details")
-                    .authorities("DG_WEB_CLIENT")
+                    .withClient("identity-and-access-ui")
+                    .authorizedGrantTypes("password")
+                    .authorities("INTERNAL_CLIENT")
+                    .autoApprove(true)
                     .scopes("trusted")
-                    .resourceIds(RESOURCE_ID)
-                    .secret("123456")
-                    .and()
-                    .withClient("dg-collaboration-angular4-client")
-                    .authorizedGrantTypes("password", "refresh_token", "client_details")
-                    .authorities("DG_APP_CLIENT")
-                    .scopes("trusted")
-                    .resourceIds(RESOURCE_ID)
-                    .secret("123456")
-                    .and()
-                    .withClient("dg-trusted-client")
-                    .authorizedGrantTypes("authorization_code", "password", "refresh_token", "client_details")
-                    .authorities("THRID_PARTY_CLIENT")
-                    .scopes("trusted", "read")
-                    .resourceIds(RESOURCE_ID)
                     .secret("123456");
         }
 
         @Bean
-        @Primary
-        public DefaultTokenServices tokenServices() {
-            DefaultTokenServices tokenServices = new DefaultTokenServices();
-            tokenServices.setSupportRefreshToken(true);
-            tokenServices.setTokenStore(this.tokenStore);
-            return tokenServices;
+        public TokenStore tokenStore() {
+
+            DataSource tokenDataSource = DataSourceBuilder.create()
+                    .driverClassName("com.mysql.jdbc.Driver")
+                    .username("root")
+                    .password("mysql")
+                    .url("jdbc:mysql://localhost:3306/identityandaccess")
+                    .build();
+
+            TokenStore tokenStore = new JdbcTokenStore(tokenDataSource);
+
+
+            return tokenStore;
+
+
         }
+
 
     }
 

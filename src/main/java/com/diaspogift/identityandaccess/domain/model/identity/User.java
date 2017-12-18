@@ -51,6 +51,7 @@ public class User extends ConcurrencySafeEntity {
 
         //this.protectPassword("", aPassword);
 
+
         this.setPassword(this.asEncryptedValue(aPassword));
 
         //aPerson.internalOnlySetUser(this);
@@ -75,9 +76,7 @@ public class User extends ConcurrencySafeEntity {
                 aCurrentPassword,
                 "Current and new password must be provided.");
 
-        this.assertArgumentEquals(
-                this.password(),
-                this.asEncryptedValue(aCurrentPassword),
+        this.assertArgumentTrue(DomainRegistry.encryptionService().matchesPassword(aCurrentPassword, this.password()),
                 "Current password not confirmed.");
 
         this.protectPassword(aCurrentPassword, aNewPassword);

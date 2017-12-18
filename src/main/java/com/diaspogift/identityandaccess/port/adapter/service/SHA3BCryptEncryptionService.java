@@ -42,4 +42,10 @@ public class SHA3BCryptEncryptionService extends AssertionConcern implements Enc
 
         return encryptedValue;
     }
+
+
+    @Override
+    public Boolean matchesPassword(String aPlainTextValue, String aBcryptEncryptedPassword) {
+        return passwordEncoder.matches(aPlainTextValue, aBcryptEncryptedPassword);
+    }
 }

@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -234,17 +235,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         .andReturn();
 
         System.out.println(" \n\n mvcResult1 === " + mvcResult1.getResponse().getContentAsString());
-
-
-        MvcResult mvcResult2 =
-
-                mockMvc.perform(get("/api/v1/tenants/" + bingoTenant.getTenantId() + "/users/" + urr.getUsername() + "/autenticated-with/" + urr.getPassword())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(urr).toString()))
-                        .andExpect(status().isNotFound())
-                        .andReturn();
-
-        System.out.println(" \n\n mvcResult2 === " + mvcResult2.getResponse().getContentAsString());
 
 
         MvcResult mvcResult3 =
@@ -553,6 +543,7 @@ public class UserResourceTests extends AbstractResourseTests {
 
 
     @Test
+    @Rollback(value = false)
     public void getUserInRole2() throws Exception {
 
         GroupRepresentation gr1 = new GroupRepresentation("INFIRMIERS", "Tous infirmiers d'ici comme d'ailleur.");

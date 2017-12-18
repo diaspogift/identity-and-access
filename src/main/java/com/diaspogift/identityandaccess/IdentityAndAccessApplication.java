@@ -1,12 +1,7 @@
 package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
-import com.diaspogift.identityandaccess.application.command.ProvisionGroupCommand;
-import com.diaspogift.identityandaccess.application.command.ProvisionRoleCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
-import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
-import com.diaspogift.identityandaccess.domain.model.identity.Group;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.boot.SpringApplication;
@@ -25,9 +20,15 @@ public class IdentityAndAccessApplication {
         ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
 
 
+        ProvisionTenantCommand provisionDiaspoGiftTenantCommand =
+                new ProvisionTenantCommand("DASPOGIFT", "DIASPORA GIFT", "Diaspo Gift", "Collaboaration", "diaspogift@gmail.com",
+                        "CM", "00237", "669262655", "CM", "00237", "669262657", "Denver (derriere Laureat.)", "Douala", "Littoral", "80209",
+                        "CM");
+
+
         ProvisionTenantCommand provisionBingoTenantCommand =
                 new ProvisionTenantCommand("BINGO", "HOPITAL BINGO", "Bingo Admin", "Bingoun", "bingo@gmail.com",
-                        "CM", "00237", "669262655", "CM", "00237", "669262657", "Valley 3 boutiques", "Douala", "Littoral", "80209",
+                        "CM", "00237", "669262655", "CM", "00237", "669262657", "Valley 3 boutiques", "Douala", "Littoral", "80211",
                         "CM");
 
 
@@ -43,24 +44,17 @@ public class IdentityAndAccessApplication {
 
         try {
 
+
+            Tenant provisionedDiaspoGiftTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionDiaspoGiftTenantCommand);
             Tenant provisionedBingoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionBingoTenantCommand);
+            //Tenant provisionedCadeauxTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionCadeauxTenantCommand);
 
 
-            ProvisionRoleCommand provisionBingoRoleCommand =
-                    new ProvisionRoleCommand(provisionedBingoTenant.tenantId().id(), new RoleRepresentation("DG_BINGO_REP", "Groupe des representant de diaspogift aupres de Bingo.", true));
+            /*ProvisionRoleCommand provisionCadeauxRoleCommand =
+                    new ProvisionRoleCommand(provisionedCadeauxTenant.tenantId().id(), new RoleRepresentation("DG_REP", "Role des representant de diaspogift aupres de Cadeaux.", true));
 
 
-            ApplicationServiceRegistry.accessApplicationService().provisionRole(provisionBingoRoleCommand);
-
-
-            Tenant provisionedCadeauxTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionCadeauxTenantCommand);
-
-
-            ProvisionGroupCommand provisionCadeauxGroupCommand =
-                    new ProvisionGroupCommand(provisionedBingoTenant.tenantId().id(), new GroupRepresentation("DG_CADEAUX_REP", "Groupe des representant de diaspogift aupres de Cadeaux."));
-
-
-            Group dgCadeauxRep = ApplicationServiceRegistry.identityApplicationService().provisionGroup(provisionCadeauxGroupCommand);
+            ApplicationServiceRegistry.accessApplicationService().provisionRole(provisionCadeauxRoleCommand);*/
 
 
         } catch (DiaspoGiftRepositoryException e) {

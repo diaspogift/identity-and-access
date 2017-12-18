@@ -75,7 +75,7 @@ public class DiaspoGiftAuthenticationProvider implements AuthenticationProvider 
         }
 
 
-        return new UsernamePasswordAuthenticationToken(username, password, grantedAuthorities);
+        return new UsernamePasswordAuthenticationToken(tenantid_username, password, grantedAuthorities);
     }
 
 

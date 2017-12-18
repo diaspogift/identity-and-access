@@ -178,6 +178,14 @@
     </entity>
     <entity class="com.diaspogift.identityandaccess.domain.model.identity.Group" access="FIELD" name="tbl_group"
             metadata-complete="true">
+
+        <table>
+            <unique-constraint>
+                <column-name>tenant_id</column-name>
+                <column-name>name</column-name>
+            </unique-constraint>
+        </table>
+
         <attributes>
             <basic name="description">
                 <column name="description"/>
@@ -324,6 +332,7 @@
             </embedded>
         </attributes>
     </embeddable>
+
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.EmailAddress"/>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.PostalAddress"/>
     <embeddable class="com.diaspogift.identityandaccess.domain.model.identity.FullName"/>

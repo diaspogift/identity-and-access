@@ -40,6 +40,10 @@ public class AuthenticationService extends AssertionConcern {
 
                 String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
 
+                System.out.println("\n\n\n\n HERE IS MY aPassword === " + aPassword + " \n\n\n\n\n");
+                System.out.println("\n\n\n\n HERE IS MY aPassword === " + aPassword + " \n\n\n\n\n");
+                System.out.println("\n\n\n\n HERE IS MY aPassword === " + aPassword + " \n\n\n\n\n");
+
 
                 User user =
                         this.userRepository
@@ -48,10 +52,38 @@ public class AuthenticationService extends AssertionConcern {
                                         aUsername);
 
 
+                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
+                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
+                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
+                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
+
+
                 if (user != null && user.isEnabled() && passwordEncoder.matches(aPassword, user.password())) {
                     userDescriptor = user.userDescriptor();
                 }
+
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+                //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
+
+
+                else {
+
+                    throw new BadCredentialsException("Bad Crredentials provided.");
+
+                }
             }
+
+            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
+            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
+            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
+            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
+            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
+            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
 
             return userDescriptor;
 

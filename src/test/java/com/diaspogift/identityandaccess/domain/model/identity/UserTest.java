@@ -37,7 +37,7 @@ public class UserTest extends IdentityAndAccessTest {
         assertEquals(FIXTURE_USERNAME_1, user.userId().username());
         assertTrue(user.isEnabled());
         assertEquals(new Enablement(true, null, null), user.enablement());
-        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        assertTrue(DomainRegistry.encryptionService().matchesPassword(FIXTURE_PASSWORD, user.password()));
 
         User foundUser =
                 DomainRegistry.userRepository()
@@ -66,7 +66,7 @@ public class UserTest extends IdentityAndAccessTest {
         assertEquals(FIXTURE_USERNAME_1, user.userId().username());
         assertTrue(user.isEnabled());
         assertEquals(new Enablement(true, null, null), user.enablement());
-        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        assertTrue(DomainRegistry.encryptionService().matchesPassword(FIXTURE_PASSWORD, user.password()));
 
         User foundUser =
                 DomainRegistry.userRepository()
@@ -80,11 +80,12 @@ public class UserTest extends IdentityAndAccessTest {
 
         User user = this.userAggregate();
 
-        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        assertTrue(DomainRegistry.encryptionService().matchesPassword(FIXTURE_PASSWORD, user.password()));
 
         user.changePassword(FIXTURE_PASSWORD, "Ange__1308");
 
-        assertEquals(DomainRegistry.encryptionService().encryptedValue("Ange__1308"), user.password());
+        assertTrue(DomainRegistry.encryptionService().matchesPassword("Ange__1308", user.password()));
+
     }
 
     @Test
@@ -147,11 +148,11 @@ public class UserTest extends IdentityAndAccessTest {
 
         User user = this.userAggregate();
 
-        assertEquals(DomainRegistry.encryptionService().encryptedValue(FIXTURE_PASSWORD), user.password());
+        assertTrue(DomainRegistry.encryptionService().matchesPassword(FIXTURE_PASSWORD, user.password()));
 
         user.changePassword(FIXTURE_PASSWORD, "Ange__1308");
 
-        assertEquals(DomainRegistry.encryptionService().encryptedValue("Ange__1308"), user.password());
+        assertTrue(DomainRegistry.encryptionService().matchesPassword("Ange__1308", user.password()));
         this.expectedEvents(2);
         this.expectedEvent(UserRegistered.class, 1);
         this.expectedEvent(UserPasswordChanged.class, 1);

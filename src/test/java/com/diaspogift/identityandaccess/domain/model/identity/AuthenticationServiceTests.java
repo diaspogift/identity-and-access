@@ -6,12 +6,14 @@ import com.diaspogift.identityandaccess.port.adapter.persistence.exception.Diasp
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,7 +38,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
         assertEquals(user.userDescriptor(), userDescriptor);
     }
 
-    @Test(expected = DiaspoGiftRepositoryException.class)
+    @Test(expected = BadCredentialsException.class)
     public void wrongAuthenticateWithBadUsername() throws DiaspoGiftRepositoryException {
 
         Tenant tenant = this.actifTenantAggregate();
@@ -52,7 +54,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
     }
 
 
-    @Test(expected = DiaspoGiftRepositoryException.class)
+    @Test(expected = BadCredentialsException.class)
     public void wrongAuthenticateWithBadPassword() throws DiaspoGiftRepositoryException {
 
 
@@ -68,7 +70,7 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                                 FIXTURE_PASSWORD + "BAD PASSWORD");
     }
 
-    @Test(expected = DiaspoGiftRepositoryException.class)
+    @Test(expected = BadCredentialsException.class)
     public void wrongAuthenticateWithBadTenant() throws DiaspoGiftRepositoryException {
 
         TenantId wrongTenantId = new TenantId(UUID.fromString(UUID.randomUUID().toString()).toString().toUpperCase());
@@ -83,10 +85,10 @@ public class AuthenticationServiceTests extends IdentityAndAccessTest {
                                 user.userId().username(),
                                 FIXTURE_PASSWORD);
 
-        assertEquals(null, userDescriptor.username());
-        assertEquals(null, userDescriptor.tenantId());
-        assertEquals(null, userDescriptor.emailAddress());
-        assertTrue(userDescriptor.isNullDescriptor());
+        //assertEquals(null, userDescriptor.username());
+        //assertEquals(null, userDescriptor.tenantId());
+        //assertEquals(null, userDescriptor.emailAddress());
+        //assertTrue(userDescriptor.isNullDescriptor());
     }
 
 }

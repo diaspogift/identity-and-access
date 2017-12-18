@@ -5,8 +5,6 @@ import com.diaspogift.identityandaccess.application.access.AccessApplicationServ
 import com.diaspogift.identityandaccess.application.command.*;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.user.*;
-import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
-import com.diaspogift.identityandaccess.domain.model.identity.TenantId;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
@@ -179,7 +177,7 @@ public class UserResource {
                                                             @PathVariable("roleName") String aRoleName) throws DiaspoGiftRepositoryException {
 
 
-        User user1 = DomainRegistry.userRepository().userWithUsername(new TenantId(aTenantId), aUsername);
+        //User user1 = DomainRegistry.userRepository().userWithUsername(new TenantId(aTenantId), aUsername);
 
 
         UserRepresentation userRepresentation = null;

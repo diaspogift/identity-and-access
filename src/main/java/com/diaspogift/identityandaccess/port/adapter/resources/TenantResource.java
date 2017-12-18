@@ -6,6 +6,8 @@ import com.diaspogift.identityandaccess.application.command.DeactivateTenantComm
 import com.diaspogift.identityandaccess.application.command.OfferRegistrationInvitationCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
+import com.diaspogift.identityandaccess.application.representation.services.ServicesCollectionRepresentation;
+import com.diaspogift.identityandaccess.application.representation.services.StringRepresentation;
 import com.diaspogift.identityandaccess.application.representation.tenant.*;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
@@ -23,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -125,6 +128,25 @@ public class TenantResource {
         User user = this.identityApplicationService().user(provisionedTenantRepresentation.getTenantId(), "admin");
 
         return new ResponseEntity<ProvisionedTenantRepresentation>(provisionedTenantRepresentation, HttpStatus.CREATED);
+
+    }
+
+    @ApiOperation(value = "Welcome page for any other users")
+    @GetMapping("/{tenantId}/welcome")
+    public ResponseEntity<StringRepresentation> getWelcome(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
+
+
+        return new ResponseEntity<StringRepresentation>(new StringRepresentation(tenantId), HttpStatus.OK);
+
+    }
+
+
+    @ApiOperation(value = "Welcome page for any other users")
+    @GetMapping("/{tenantId}/services")
+    public ResponseEntity<ServicesCollectionRepresentation> getPendingServices(@PathVariable("tenantId") String tenantId) throws DiaspoGiftRepositoryException {
+
+
+        return new ResponseEntity<ServicesCollectionRepresentation>(new ServicesCollectionRepresentation(Arrays.asList("service1", "service2", "service3", "service4", "service5")), HttpStatus.OK);
 
     }
 
