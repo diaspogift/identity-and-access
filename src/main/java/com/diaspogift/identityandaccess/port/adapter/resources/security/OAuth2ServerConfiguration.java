@@ -109,6 +109,7 @@ public class OAuth2ServerConfiguration {
 
             http.antMatcher("/api/v1/**").authorizeRequests()
 
+
                     //Tenant Resource
                     .antMatchers(HttpMethod.GET, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_DG_ADMINISTRATOR')")
                     .antMatchers(HttpMethod.POST, "/api/v1/tenants").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and hasRole('ROLE_DG_ADMINISTRATOR')")
