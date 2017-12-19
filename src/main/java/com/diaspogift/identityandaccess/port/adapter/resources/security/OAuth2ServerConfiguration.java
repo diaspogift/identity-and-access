@@ -28,6 +28,67 @@ public class OAuth2ServerConfiguration {
 
     private static final String RESOURCE_ID = "restservice";
 
+
+    @Configuration
+    @EnableAuthorizationServer
+    protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
+        //private TokenStore tokenStore = new InMemoryTokenStore();
+
+
+        @Autowired
+        @Qualifier("authenticationManagerBean")
+        private AuthenticationManager authenticationManager;
+
+        @Autowired
+        private DiaspoGiftUserDetailsService userDetailsService;
+
+
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+            oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+        }
+
+        @Override
+        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+            endpoints.tokenStore(this.tokenStore())
+                    .authenticationManager(this.authenticationManager)
+                    .userDetailsService(userDetailsService);
+        }
+
+        @Override
+        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
+            clients.inMemory()
+                    .withClient("identity-and-access-ui")
+                    .authorizedGrantTypes("password")
+                    .authorities("INTERNAL_CLIENT")
+                    .scopes("trusted")
+                    .secret("123456");
+        }
+
+        @Bean
+        public TokenStore tokenStore() {
+
+            DataSource tokenDataSource = DataSourceBuilder.create()
+                    .driverClassName("com.mysql.jdbc.Driver")
+                    .username("root")
+                    .password("mysql")
+                    .url("jdbc:mysql://localhost:3306/identityandaccess")
+                    .build();
+
+            TokenStore tokenStore = new JdbcTokenStore(tokenDataSource);
+
+
+            return tokenStore;
+
+
+        }
+
+
+    }
+
+
     @Configuration
     @EnableResourceServer
     protected static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
@@ -97,7 +158,7 @@ public class OAuth2ServerConfiguration {
 
                     //Service Resources
 
-                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/services").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_DG_REP'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/services").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_DG_REP') or hasRole('ROLE_GES'))")
 
 
                     //Welcome pages
@@ -113,65 +174,4 @@ public class OAuth2ServerConfiguration {
         }
 
     }
-
-    @Configuration
-    @EnableAuthorizationServer
-    protected static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
-
-        //private TokenStore tokenStore = new InMemoryTokenStore();
-
-
-        @Autowired
-        @Qualifier("authenticationManagerBean")
-        private AuthenticationManager authenticationManager;
-
-        @Autowired
-        private DiaspoGiftUserDetailsService userDetailsService;
-
-
-        @Override
-        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-            oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
-        }
-
-        @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.tokenStore(this.tokenStore())
-                    .authenticationManager(this.authenticationManager)
-                    .userDetailsService(userDetailsService);
-        }
-
-        @Override
-        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
-            clients.inMemory()
-                    .withClient("identity-and-access-ui")
-                    .authorizedGrantTypes("password")
-                    .authorities("INTERNAL_CLIENT")
-                    .autoApprove(true)
-                    .scopes("trusted")
-                    .secret("123456");
-        }
-
-        @Bean
-        public TokenStore tokenStore() {
-
-            DataSource tokenDataSource = DataSourceBuilder.create()
-                    .driverClassName("com.mysql.jdbc.Driver")
-                    .username("root")
-                    .password("mysql")
-                    .url("jdbc:mysql://localhost:3306/identityandaccess")
-                    .build();
-
-            TokenStore tokenStore = new JdbcTokenStore(tokenDataSource);
-
-
-            return tokenStore;
-
-
-        }
-
-
-    }
-
 }
