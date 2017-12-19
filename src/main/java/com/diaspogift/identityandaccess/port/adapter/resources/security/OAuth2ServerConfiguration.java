@@ -158,7 +158,7 @@ public class OAuth2ServerConfiguration {
 
                     //Service Resources
 
-                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/services").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_DG_REP') or hasRole('ROLE_GES'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/services").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_DG_REP') or hasRole('ROLE_DG_GES'))")
 
 
                     //Welcome pages
