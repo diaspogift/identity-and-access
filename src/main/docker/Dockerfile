@@ -8,4 +8,4 @@ WORKDIR /usr/local/bin/
 
 COPY maven/identity-and-access-0.0.1-SNAPSHOT.jar iam.jar
 
-CMD ["java","-Dspring.profiles.active=docker", "-jar","iam.jar"]
+CMD ["java","-Dspring.profiles.active=developement", "-jar","iam.jar"]

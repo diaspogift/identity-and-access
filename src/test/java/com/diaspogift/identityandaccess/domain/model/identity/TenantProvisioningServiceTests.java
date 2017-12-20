@@ -42,12 +42,12 @@ public class TenantProvisioningServiceTests extends IdentityAndAccessTest {
 
         assertNotNull(provisionedTenant);
 
-        this.expectedEvents(6);
-        this.expectedEvent(UserRegistered.class, 1);
-        this.expectedEvent(RoleProvisioned.class, 1);
-        this.expectedEvent(GroupUserAdded.class, 1);
-        this.expectedEvent(UserAssignedToRole.class, 1);
-        this.expectedEvent(TenantAdministratorRegistered.class, 1);
+        this.expectedEvents(11);
+        this.expectedEvent(UserRegistered.class, 2);
+        this.expectedEvent(RoleProvisioned.class, 2);
+        this.expectedEvent(GroupUserAdded.class, 2);
+        this.expectedEvent(UserAssignedToRole.class, 2);
+        this.expectedEvent(TenantAdministratorRegistered.class, 2);
         this.expectedEvent(TenantProvisioned.class, 1);
     }
 

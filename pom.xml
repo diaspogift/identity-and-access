@@ -136,6 +136,15 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--  For standalone JAR file <configuration><executable>false</executable></configuration> -->
+                <configuration>
+                    <mainClass>com.diaspogift.identityandaccess.IdentityAndAccessApplication</mainClass>
+                </configuration>
+            </plugin>
+
 
             <plugin>
                 <groupId>io.fabric8</groupId>
@@ -153,7 +162,7 @@
 
                     <images>
                         <image>
-                            <name>diaspogift/identity-and-access:dev</name>
+                            <name>diaspogift/identity-and-access:latest</name>
                             <build>
                                 <dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
 
@@ -162,7 +171,7 @@
                                     <descriptorRef>artifact</descriptorRef>
                                 </assembly>
                                 <tags>
-                                    <tag>dev</tag>
+                                    <tag>latest</tag>
                                 </tags>
                             </build>
                         </image>

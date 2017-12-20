@@ -1,0 +1,30 @@
+version: "3"
+
+
+services:
+
+  identity-and-access:
+    image: diaspogift/identity-and-access
+    networks:
+      - iam-network
+    ports:
+      - 80:8080
+
+
+
+  identity-and-access-database:
+    image: mysql
+    networks:
+      - iam-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysql
+      - MYSQL_DATABASE=identityandaccess
+
+
+
+
+
+
+networks:
+
+  iam-network:
