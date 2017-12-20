@@ -74,7 +74,7 @@ public class OAuth2ServerConfiguration {
                     .driverClassName("com.mysql.jdbc.Driver")
                     .username("root")
                     .password("mysql")
-                    .url("jdbc:mysql://localhost:3306/identityandaccess")
+                    .url("jdbc:mysql://identity-and-access-database:3306/identityandaccess")
                     .build();
 
             TokenStore tokenStore = new JdbcTokenStore(tokenDataSource);
