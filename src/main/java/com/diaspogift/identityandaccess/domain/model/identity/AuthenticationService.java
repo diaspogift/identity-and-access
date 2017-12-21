@@ -1,6 +1,8 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+import com.diaspogift.identityandaccess.domain.model.access.AuthorizationService;
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
 
 @Service
 public class AuthenticationService extends AssertionConcern {
@@ -19,6 +23,10 @@ public class AuthenticationService extends AssertionConcern {
     private TenantRepository tenantRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AuthorizationService authorizationService;
+
+
     //Should it really be here????
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,10 +48,6 @@ public class AuthenticationService extends AssertionConcern {
 
                 String encryptedPassword = this.encryptionService.encryptedValue(aPassword);
 
-                System.out.println("\n\n\n\n HERE IS MY aPassword === " + aPassword + " \n\n\n\n\n");
-                System.out.println("\n\n\n\n HERE IS MY aPassword === " + aPassword + " \n\n\n\n\n");
-                System.out.println("\n\n\n\n HERE IS MY aPassword === " + aPassword + " \n\n\n\n\n");
-
 
                 User user =
                         this.userRepository
@@ -52,14 +56,24 @@ public class AuthenticationService extends AssertionConcern {
                                         aUsername);
 
 
-                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
-                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
-                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
-                System.out.println("\n\n\n\n HERE IS MY user === " + user + " \n\n\n\n\n");
-
-
                 if (user != null && user.isEnabled() && passwordEncoder.matches(aPassword, user.password())) {
+
+
+                    Collection<RoleDescriptor> allUserRoles = authorizationService.allRolesForIdentifiedUser(aTenantId, aUsername);
+
+
+                    System.out.println("\n\n\n\n HERE IS MY allUserRoles === " + allUserRoles + " \n\n\n\n\n");
+
+                    if (allUserRoles != null) {
+
+                        allUserRoles.stream().forEach(x -> System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + x.getRoleName() + " \n\n\n\n\n"));
+
+                    }
+
                     userDescriptor = user.userDescriptor();
+
+                    userDescriptor.setRoleDescriptorList(allUserRoles);
+
                 }
 
                 //TODO FIX THIS HUGE MESS THAT SPRING BROUGHT !!!!!
@@ -78,11 +92,7 @@ public class AuthenticationService extends AssertionConcern {
                 }
             }
 
-            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
-            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
-            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
-            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
-            System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
+
             System.out.println("\n\n\n\n HERE IS MY userDescriptor === " + userDescriptor + " \n\n\n\n\n");
 
             return userDescriptor;

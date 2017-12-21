@@ -9,6 +9,10 @@ public class RoleDescriptor implements GrantedAuthority {
     private String roleName;
 
 
+    public RoleDescriptor() {
+        super();
+    }
+
     public RoleDescriptor(String tenantId, String roleName) {
 
         this.tenantId = tenantId;
@@ -16,13 +20,20 @@ public class RoleDescriptor implements GrantedAuthority {
 
     }
 
-
-    public String tenantId() {
+    public String getTenantId() {
         return tenantId;
     }
 
-    public String roleName() {
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getRoleName() {
         return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     @Override

@@ -190,6 +190,7 @@
                         <id>mydeploy</id>
                         <phase>post-integration-test</phase>
                         <goals>
+                            <goal>stop</goal>
                             <goal>push</goal>
                         </goals>
                     </execution>

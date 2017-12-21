@@ -1,21 +1,27 @@
 package com.diaspogift.identityandaccess.application.representation.user;
 
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class UserDescriptorRepresentation extends ResourceSupport implements Serializable {
 
     private String tenantId;
     private String username;
     private String emailAddress;
+    private List<String> roles = new ArrayList<>();
 
     public UserDescriptorRepresentation() {
         super();
     }
 
     public UserDescriptorRepresentation(UserDescriptor aUserDescriptor) {
+
 
         this.intialyzeFrom(aUserDescriptor);
     }
@@ -25,6 +31,20 @@ public class UserDescriptorRepresentation extends ResourceSupport implements Ser
         this.tenantId = aUserDescriptor.tenantId().id();
         this.username = aUserDescriptor.username();
         this.emailAddress = aUserDescriptor.emailAddress();
+
+
+        //TODO CLEAN UP THS MESS BELOWWW
+
+
+        Collection<RoleDescriptor> allUserRoles = aUserDescriptor.getRoleDescriptorList();
+
+        for (RoleDescriptor next : aUserDescriptor.getRoleDescriptorList()) {
+
+            this.roles.add(next.getRoleName());
+
+        }
+
+
     }
 
     public String getTenantId() {
@@ -49,6 +69,14 @@ public class UserDescriptorRepresentation extends ResourceSupport implements Ser
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     @Override

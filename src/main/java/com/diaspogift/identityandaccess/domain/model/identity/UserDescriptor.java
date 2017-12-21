@@ -16,7 +16,6 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
     private String emailAddress;
     private TenantId tenantId;
     private String username;
-
     private Collection<RoleDescriptor> roleDescriptorList = new ArrayList<RoleDescriptor>();
 
     public UserDescriptor(TenantId aTenantId, String aUsername, String anEmailAddress, List<RoleDescriptor> aRoleDescriptorList) {
@@ -57,10 +56,6 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
         return roleDescriptorList;
     }
 
-    public void setRoleDescriptorList(Collection<RoleDescriptor> roleDescriptorList) {
-        this.roleDescriptorList = roleDescriptorList;
-    }
-
     private void setEmailAddress(String anEmailAddress) {
         this.assertArgumentNotEmpty(anEmailAddress, "Email address must be provided.");
 
@@ -79,10 +74,13 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
         this.username = aUsername;
     }
 
-    private void setRoleDescriptorList(List<RoleDescriptor> aRoleDescriptorList) {
-        this.roleDescriptorList = aRoleDescriptorList;
+    public Collection<RoleDescriptor> getRoleDescriptorList() {
+        return roleDescriptorList;
     }
 
+    public void setRoleDescriptorList(Collection<RoleDescriptor> roleDescriptorList) {
+        this.roleDescriptorList = roleDescriptorList;
+    }
 
     @Override
     public boolean equals(Object anObject) {
@@ -110,10 +108,14 @@ public final class UserDescriptor extends AssertionConcern implements Serializab
         return hashCodeValue;
     }
 
+
     @Override
     public String toString() {
-        return "UserDescriptor [emailAddress=" + emailAddress
-                + ", tenantId=" + tenantId + ", username=" + username + "]";
+        return "UserDescriptor{" +
+                "emailAddress='" + emailAddress + '\'' +
+                ", tenantId=" + tenantId +
+                ", username='" + username + '\'' +
+                ", roleDescriptorList=" + roleDescriptorList +
+                '}';
     }
-
 }

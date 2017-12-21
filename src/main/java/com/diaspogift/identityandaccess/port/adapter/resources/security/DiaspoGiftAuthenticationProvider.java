@@ -67,7 +67,7 @@ public class DiaspoGiftAuthenticationProvider implements AuthenticationProvider 
 
             for (RoleDescriptor next : userRoles) {
 
-                grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + next.roleName().toUpperCase()));
+                grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + next.getRoleName().toUpperCase()));
             }
 
         } catch (DiaspoGiftRepositoryException e) {

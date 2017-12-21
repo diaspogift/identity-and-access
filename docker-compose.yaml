@@ -3,12 +3,14 @@ version: "3"
 
 services:
 
-  identity-and-access:
+  identity-and-access-app:
     image: diaspogift/identity-and-access
     networks:
       - iam-network
     ports:
       - 80:8080
+    depends_on:
+      - identity-and-access-database
 
 
 

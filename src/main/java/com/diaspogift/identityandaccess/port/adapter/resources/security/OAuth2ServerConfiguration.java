@@ -82,8 +82,22 @@ public class OAuth2ServerConfiguration {
 
             return tokenStore;
 
-
         }
+
+
+      /*  @Bean
+        @Profile("docker")
+        public DataSource dataSource(){
+
+            DataSource dataSource = DataSourceBuilder.create()
+                    .driverClassName("com.mysql.jdbc.Driver")
+                    .username("root")
+                    .password("mysql")
+                    .url("jdbc:mysql://identity-and-access-database:3306/identityandaccess")
+                    .build();
+
+            return dataSource;
+        }*/
 
 
     }
