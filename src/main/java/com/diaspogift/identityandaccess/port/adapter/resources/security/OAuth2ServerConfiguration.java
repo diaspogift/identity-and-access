@@ -74,7 +74,7 @@ public class OAuth2ServerConfiguration {
                     .driverClassName("com.mysql.jdbc.Driver")
                     .username("root")
                     .password("mysql")
-                    .url("jdbc:mysql://identity-and-access-database:3306/identityandaccess")
+                    .url("jdbc:mysql://localhost:3306/identityandaccess")
                     .build();
 
             TokenStore tokenStore = new JdbcTokenStore(tokenDataSource);
@@ -162,6 +162,8 @@ public class OAuth2ServerConfiguration {
                     .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/password").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
                     .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/registrations").anonymous()
                     .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/enablement").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/groups").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/roles").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
                     .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/enablement").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
                     .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/contact").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")
                     .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/users/{username:(\\w+(\\s+\\w)*)}/contact").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read'))")

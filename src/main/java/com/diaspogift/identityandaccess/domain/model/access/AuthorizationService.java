@@ -1,6 +1,7 @@
 package com.diaspogift.identityandaccess.domain.model.access;
 
 
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 import com.diaspogift.identityandaccess.domain.model.identity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,34 @@ public class AuthorizationService extends AssertionConcern {
         return allUserRoleDescriptors;
 
     }
+
+    //////////// NOT TESTED ////
+    public Collection<GroupDescriptor> allGroupsForIdentifiedUser(TenantId aTenantId, String aUsername) {
+
+        User user = this.userRepository().userWithUsername(aTenantId, aUsername);
+
+
+        System.out.println("\n\n UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU " + user.toString() + "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\n\n");
+
+
+        Collection<GroupDescriptor> allUsersGroupsDescriptors = new HashSet<GroupDescriptor>();
+
+        Collection<Group> allTenantsGroups = this.groupRepository().allGroups(aTenantId);
+
+        for (Group next : allTenantsGroups) {
+
+            System.out.println("\n\n GGGGGGGGGGGGGGGGGGGGGGGGGGGGGG " + next.toString() + "GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\n\n");
+
+            if (next.isMember(user, DomainRegistry.groupMemberService())) {
+
+                allUsersGroupsDescriptors.add(next.toGroupDescriptor());
+            }
+        }
+
+        return allUsersGroupsDescriptors;
+
+    }
+
 
     private GroupRepository groupRepository() {
         return this.groupRepository;

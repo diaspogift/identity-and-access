@@ -14,6 +14,7 @@ public class UserDescriptorRepresentation extends ResourceSupport implements Ser
     private String tenantId;
     private String username;
     private String emailAddress;
+
     private List<String> roles = new ArrayList<>();
 
     public UserDescriptorRepresentation() {

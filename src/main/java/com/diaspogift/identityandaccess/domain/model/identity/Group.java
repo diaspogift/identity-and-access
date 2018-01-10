@@ -210,4 +210,12 @@ public class Group extends ConcurrencySafeEntity {
     }
 
 
+    public GroupDescriptor toGroupDescriptor() {
+
+        return new GroupDescriptor(
+                this.groupId().tenantId().id(),
+                this.groupId().name(),
+                this.description()
+        );
+    }
 }

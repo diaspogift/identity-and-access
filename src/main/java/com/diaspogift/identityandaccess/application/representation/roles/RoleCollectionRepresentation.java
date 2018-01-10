@@ -15,6 +15,7 @@ public class RoleCollectionRepresentation extends ResourceSupport {
         this.initializeFrom(roles);
     }
 
+
     private void initializeFrom(Collection<Role> someRoles) {
 
         for (Role next : someRoles) {

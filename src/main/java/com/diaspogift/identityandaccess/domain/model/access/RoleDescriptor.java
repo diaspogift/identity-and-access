@@ -20,6 +20,18 @@ public class RoleDescriptor implements GrantedAuthority {
 
     }
 
+    public RoleDescriptor(Role next) {
+
+        this.initializeFrom(next);
+    }
+
+
+    private void initializeFrom(Role aRole) {
+
+        this.tenantId = aRole.tenantId().id();
+        this.roleName = aRole.roleId().name();
+    }
+
     public String getTenantId() {
         return tenantId;
     }

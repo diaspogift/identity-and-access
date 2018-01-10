@@ -4,7 +4,11 @@ package com.diaspogift.identityandaccess.port.adapter.resources;
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
 import com.diaspogift.identityandaccess.application.command.*;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
+import com.diaspogift.identityandaccess.application.representation.group.GroupDescriptorCollectionRepresentation;
+import com.diaspogift.identityandaccess.application.representation.roles.RoleDescriptorCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.user.*;
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
+import com.diaspogift.identityandaccess.domain.model.identity.GroupDescriptor;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import com.diaspogift.identityandaccess.domain.model.identity.UserDescriptor;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
@@ -16,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 
 @RestController
@@ -167,8 +173,36 @@ public class UserResource {
         User user = this.identityApplicationService().user(aTenantId, aUsername);
 
 
-        return new ResponseEntity<User>(user, HttpStatus.FOUND);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
+
+    /////////////////////////////////
+
+
+    @ApiOperation(value = "Retrieve a users roles")
+    @GetMapping("{username}/roles")
+    public ResponseEntity<RoleDescriptorCollectionRepresentation> getAllUsersRoles(@PathVariable("tenantId") String aTenantId,
+                                                                                   @PathVariable("username") String aUsername) throws DiaspoGiftRepositoryException {
+
+        Collection<RoleDescriptor> allRolesForIdentifiedUser = this.accessApplicationService().allRolesForIdentifiedUser(aTenantId, aUsername);
+
+        return new ResponseEntity<RoleDescriptorCollectionRepresentation>(new RoleDescriptorCollectionRepresentation(allRolesForIdentifiedUser), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Retrieve a users groups")
+    @GetMapping("{username}/groups")
+    public ResponseEntity<GroupDescriptorCollectionRepresentation> getAllUsersGroups(@PathVariable("tenantId") String aTenantId,
+                                                                                     @PathVariable("username") String aUsername) throws DiaspoGiftRepositoryException {
+
+        Collection<GroupDescriptor> allGroupsForIdentifiedUser = this.accessApplicationService().allGroupsForIdentifiedUser(aTenantId, aUsername);
+
+
+        return new ResponseEntity<GroupDescriptorCollectionRepresentation>(new GroupDescriptorCollectionRepresentation(allGroupsForIdentifiedUser), HttpStatus.OK);
+    }
+
+
+    ////////////////////////////////////////////////
 
     @ApiOperation(value = "Retrieve a user in role")
     @GetMapping("{username}/in-role/{roleName}")
@@ -200,12 +234,12 @@ public class UserResource {
 
     @ApiOperation(value = "Retrieve all users")
     @GetMapping
-    public ResponseEntity<UserDescriptorCollectionRepresentation> getUsers(@PathVariable("tenantId") String aTenantId) throws DiaspoGiftRepositoryException {
+    public ResponseEntity<UserCollectionRepresentation> getUsers(@PathVariable("tenantId") String aTenantId) throws DiaspoGiftRepositoryException {
 
-        UserDescriptorCollectionRepresentation userDescriptorCollectionRepresentation =
-                new UserDescriptorCollectionRepresentation(this.identityApplicationService().allUserFor(aTenantId));
+        UserCollectionRepresentation userCollectionRepresentation =
+                new UserCollectionRepresentation(this.identityApplicationService().allUserFor(aTenantId));
 
-        return new ResponseEntity<UserDescriptorCollectionRepresentation>(userDescriptorCollectionRepresentation, HttpStatus.FOUND);
+        return new ResponseEntity<UserCollectionRepresentation>(userCollectionRepresentation, HttpStatus.OK);
     }
 
 

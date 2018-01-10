@@ -1,6 +1,7 @@
 package com.diaspogift.identityandaccess.application.representation.roles;
 
 import com.diaspogift.identityandaccess.domain.model.access.Role;
+import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import org.springframework.hateoas.ResourceSupport;
 
 public class RoleRepresentation extends ResourceSupport {
@@ -26,11 +27,22 @@ public class RoleRepresentation extends ResourceSupport {
         this.initializeFrom(aRole);
     }
 
+    public RoleRepresentation(RoleDescriptor aRoleDescriptor) {
+
+        this.initializeFrom(aRoleDescriptor);
+    }
+
+
     private void initializeFrom(Role aRole) {
 
         this.name = aRole.name();
         this.description = aRole.description();
         this.supportsNesting = aRole.supportsNesting();
+    }
+
+    private void initializeFrom(RoleDescriptor aRoleDescriptor) {
+
+        this.name = aRoleDescriptor.getRoleName();
     }
 
 

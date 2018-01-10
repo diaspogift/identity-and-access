@@ -1,5 +1,6 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
+import com.diaspogift.identityandaccess.application.representation.user.UserRepresentation;
 import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.access.RoleDescriptor;
 import com.diaspogift.identityandaccess.domain.model.common.ConcurrencySafeEntity;
@@ -149,6 +150,11 @@ public class User extends ConcurrencySafeEntity {
                 new ArrayList<RoleDescriptor>());
     }
 
+    public UserRepresentation userRepresentation() {
+
+        return new UserRepresentation(this);
+    }
+
 
     public String username() {
         return this.userId().username();
@@ -248,7 +254,7 @@ public class User extends ConcurrencySafeEntity {
         this.tenantId = aTenantId;
     }*/
 
-    protected GroupMember toGroupMember() {
+    public GroupMember toGroupMember() {
         GroupMember groupMember =
                 new GroupMember(
                         this.tenantId(),
