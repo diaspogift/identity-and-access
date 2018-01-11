@@ -12,16 +12,18 @@ public class RegistrationInvitationReqRepresentation extends ResourceSupport {
     private String startingOn;
     @NotEmpty
     private String until;
+    private String email;
 
 
     public RegistrationInvitationReqRepresentation() {
         super();
     }
 
-    public RegistrationInvitationReqRepresentation(String description, String startingOn, String until) {
+    public RegistrationInvitationReqRepresentation(String description, String startingOn, String until, String email) {
         this.description = description;
         this.startingOn = startingOn;
         this.until = until;
+        this.email = email;
     }
 
 
@@ -49,13 +51,13 @@ public class RegistrationInvitationReqRepresentation extends ResourceSupport {
         this.until = until;
     }
 
-
-    @Override
-    public String toString() {
-        return "RegistrationInvitationRespRepresentation{" +
-                "description='" + description + '\'' +
-                ", startingOn='" + startingOn + '\'' +
-                ", until='" + until + '\'' +
-                '}';
+    public String getEmail() {
+        return email;
     }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
 }

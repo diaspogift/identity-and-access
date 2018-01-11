@@ -127,7 +127,8 @@ public class TenantResourceTests extends AbstractResourseTests {
         RegistrationInvitationReqRepresentation rir = new RegistrationInvitationReqRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Bingo hospital",
                 ZonedDateTime.now().minusDays(1).toString(),
-                ZonedDateTime.now().plusDays(1).toString()
+                ZonedDateTime.now().plusDays(1).toString(),
+                "felicien.fotiomanfo@gmail.com"
                 /*""*/
         );
 

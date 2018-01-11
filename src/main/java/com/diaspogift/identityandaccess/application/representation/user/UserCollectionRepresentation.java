@@ -1,11 +1,12 @@
 package com.diaspogift.identityandaccess.application.representation.user;
 
 import com.diaspogift.identityandaccess.domain.model.identity.User;
+import org.springframework.hateoas.ResourceSupport;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-public class UserCollectionRepresentation {
+public class UserCollectionRepresentation extends ResourceSupport {
 
     private Collection<UserRepresentation> users = new HashSet<UserRepresentation>();
 

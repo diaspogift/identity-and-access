@@ -11,9 +11,6 @@ public class UserRegistrationReprensentation extends ResourceSupport {
     private String password;
     private String firstName;
     private String lastName;
-    private boolean enabled;
-    private String startDate;
-    private String endDate;
     private String emailAddress;
     private String primaryTelephone;
     private String secondaryTelephone;
@@ -34,7 +31,7 @@ public class UserRegistrationReprensentation extends ResourceSupport {
     }
 
     public UserRegistrationReprensentation(String tenantId, String invitationIdentifier, String username, String password, String firstName,
-                                           String lastName, boolean enabled, String startDate, String endDate, String emailAddress, String primaryTelephone,
+                                           String lastName, String emailAddress, String primaryTelephone,
                                            String secondaryTelephone, String primaryCountryCode, String primaryDialingCountryCode, String secondaryCountryCode,
                                            String secondaryDialingCountryCode, String addressStreetAddress, String addressCity, String addressStateProvince,
                                            String addressPostalCode, String addressCountryCode) {
@@ -44,9 +41,6 @@ public class UserRegistrationReprensentation extends ResourceSupport {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.enabled = enabled;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.emailAddress = emailAddress;
         this.primaryTelephone = primaryTelephone;
         this.secondaryTelephone = secondaryTelephone;
@@ -107,30 +101,6 @@ public class UserRegistrationReprensentation extends ResourceSupport {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
     }
 
     public String getEmailAddress() {

@@ -163,8 +163,8 @@ public abstract class AbstractResourseTests {
         RegistrationInvitationRespRepresentation rir = new RegistrationInvitationRespRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Mrs. " + urr.getLastName() + " " + urr.getFirstName(),
                 "",
-                ZonedDateTime.parse(urr.getStartDate()),
-                ZonedDateTime.parse(urr.getEndDate())
+                ZonedDateTime.now().minusDays(2),
+                ZonedDateTime.now().plusDays(2)
         );
 
         Gson gson = new Gson();
@@ -211,8 +211,8 @@ public abstract class AbstractResourseTests {
         RegistrationInvitationRespRepresentation rir = new RegistrationInvitationRespRepresentation(
                 "Cette invitation d'enregistrement aupres de diaspo gift est destinee a Mrs. " + urr.getLastName() + " " + urr.getFirstName(),
                 "",
-                ZonedDateTime.parse(urr.getStartDate()),
-                ZonedDateTime.parse(urr.getEndDate())
+                ZonedDateTime.now().minusDays(2),
+                ZonedDateTime.now().plusDays(2)
         );
 
         Gson gson = new Gson();

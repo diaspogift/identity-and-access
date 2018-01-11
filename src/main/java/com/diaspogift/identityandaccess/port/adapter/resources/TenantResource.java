@@ -165,7 +165,7 @@ public class TenantResource {
     @PostMapping("/{tenantId}/registration-invitations")
     public ResponseEntity<RegistrationInvitationRespRepresentation> offerRegistrationInvitation(@PathVariable("tenantId") String tenantId,
                                                                                                 @RequestBody @Valid @ApiParam(
-                                                                                                        name = "registrationInvitaion",
+                                                                                                        name = "registrationInvitation",
                                                                                                         required = true,
                                                                                                         example = "example") RegistrationInvitationReqRepresentation registrationInvitationRepresentation) throws DiaspoGiftRepositoryException {
 

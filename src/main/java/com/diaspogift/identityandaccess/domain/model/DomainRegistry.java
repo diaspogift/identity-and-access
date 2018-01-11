@@ -32,6 +32,10 @@ public class DomainRegistry implements ApplicationContextAware {
         return applicationContext.getBean(EncryptionService.class);
     }
 
+    public static EmailService emailService() {
+        return applicationContext.getBean(EmailService.class);
+    }
+
     public static GroupMemberService groupMemberService() {
         return applicationContext.getBean(GroupMemberService.class);
     }

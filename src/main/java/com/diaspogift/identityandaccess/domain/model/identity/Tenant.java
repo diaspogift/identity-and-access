@@ -1,6 +1,7 @@
 package com.diaspogift.identityandaccess.domain.model.identity;
 
 
+import com.diaspogift.identityandaccess.domain.model.DomainRegistry;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.domain.model.access.RoleId;
 import com.diaspogift.identityandaccess.domain.model.access.RoleProvisioned;
@@ -132,7 +133,7 @@ public class Tenant extends ConcurrencySafeEntity {
      * @param aDescription for the Registration invitation
      * @return
      */
-    public RegistrationInvitation offerRegistrationInvitation(String aDescription) {
+    public RegistrationInvitation offerRegistrationInvitation(String aDescription, EmailAddress anEmail) {
         this.assertStateTrue(this.isActive(), "Tenant is not active.");
 
         this.assertStateFalse(
@@ -148,6 +149,16 @@ public class Tenant extends ConcurrencySafeEntity {
         boolean added = this.registrationInvitations().add(invitation);
 
         this.assertStateTrue(added, "The invitation should have been added.");
+
+
+        //TODO IS THIS EMAIL STUFF SUPPOSED TO BE HERE???????????????????????????????????????????????
+        //TODO IS THIS EMAIL STUFF SUPPOSED TO BE HERE???????????????????????????????????????????????
+        //TODO IS THIS EMAIL STUFF SUPPOSED TO BE HERE???????????????????????????????????????????????
+        //TODO IS THIS EMAIL STUFF SUPPOSED TO BE HERE???????????????????????????????????????????????
+
+
+        DomainRegistry.emailService().sendEmail(anEmail.address(), "DIASPO-GIFT", "DIASPO-GIFT REGISTRATION INVITATION",
+                "http://localhost:4200/#/signup/" + this.tenantId().id() + "/" + invitation.invitationId());
 
         return invitation;
     }
@@ -301,7 +312,7 @@ public class Tenant extends ConcurrencySafeEntity {
      * @param anInvitationIdentifier
      * @return
      */
-    protected RegistrationInvitation invitation(String anInvitationIdentifier) {
+    public RegistrationInvitation invitation(String anInvitationIdentifier) {
         for (RegistrationInvitation invitation : this.registrationInvitations()) {
             if (invitation.isIdentifiedBy(anInvitationIdentifier)) {
                 return invitation;

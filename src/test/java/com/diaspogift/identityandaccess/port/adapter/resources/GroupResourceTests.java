@@ -22,8 +22,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.ZonedDateTime;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -174,9 +172,6 @@ public class GroupResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -279,9 +274,6 @@ public class GroupResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -401,9 +393,6 @@ public class GroupResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",

@@ -17,11 +17,15 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 
 @RestController
@@ -236,8 +240,23 @@ public class UserResource {
     @GetMapping
     public ResponseEntity<UserCollectionRepresentation> getUsers(@PathVariable("tenantId") String aTenantId) throws DiaspoGiftRepositoryException {
 
-        UserCollectionRepresentation userCollectionRepresentation =
-                new UserCollectionRepresentation(this.identityApplicationService().allUserFor(aTenantId));
+        UserCollectionRepresentation userCollectionRepresentation = new UserCollectionRepresentation(this.identityApplicationService().allUserFor(aTenantId));
+
+
+        Collection<UserRepresentation> allUsersRep = userCollectionRepresentation.getUsers();
+
+        System.out.println("\n\n NUMBER OF USERS : ================= " + allUsersRep.size());
+        System.out.println("\n\n NUMBER OF USERS : ================= " + allUsersRep.size());
+        System.out.println("\n\n NUMBER OF USERS : ================= " + allUsersRep.size());
+
+        for (UserRepresentation next : allUsersRep) {
+
+            Link link1 = linkTo(methodOn(UserResource.class).getAllUsersGroups(next.getTenantId(), next.getUsername())).withRel("groups");
+            Link link2 = linkTo(methodOn(UserResource.class).getAllUsersRoles(next.getTenantId(), next.getUsername())).withRel("roles");
+
+            next.add(link1);
+            next.add(link2);
+        }
 
         return new ResponseEntity<UserCollectionRepresentation>(userCollectionRepresentation, HttpStatus.OK);
     }

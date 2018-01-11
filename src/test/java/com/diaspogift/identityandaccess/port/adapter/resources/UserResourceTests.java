@@ -64,9 +64,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -79,6 +76,7 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Littoral",
                         "80209",
                         "CM");
+
 
         RegistrationInvitationRespRepresentation rir = this.offerRegistrationInvitation(this.bingoTenant, urr, this.mockMvc);
 
@@ -135,9 +133,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -186,9 +181,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -276,9 +268,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -333,9 +322,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -414,9 +400,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -489,9 +472,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -572,9 +552,6 @@ public class UserResourceTests extends AbstractResourseTests {
                         "Secret@@2008Password",
                         "Felicien",
                         "Fotio",
-                        true,
-                        ZonedDateTime.now().minusDays(1).toString(),
-                        ZonedDateTime.now().plusDays(1).toString(),
                         "felicien@yahoo.fr",
                         "669262656",
                         "669262656",
@@ -602,7 +579,6 @@ public class UserResourceTests extends AbstractResourseTests {
                 mockMvc.perform(get("/api/v1/tenants/" + this.bingoTenant.getTenantId() + "/users/" + ugmr.getName() + "/in-role/" + rr.getName()))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.emailAddress", is(urr.getEmailAddress())))
-                        .andExpect(jsonPath("$.enabled", is(urr.isEnabled())))
                         .andExpect(jsonPath("$.firstName", is(urr.getFirstName())))
                         .andExpect(jsonPath("$.lastName", is(urr.getLastName())))
                         .andExpect(jsonPath("$.tenantId", is(urr.getTenantId())))

@@ -177,7 +177,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
         RegistrationInvitation registrationInvitation =
-                tenant.offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1);
+                tenant.offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1, new EmailAddress("didnkallaehawe@gmail.com"));
 
         assertNotNull(registrationInvitation);
 
@@ -227,7 +227,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
         RegistrationInvitation registrationInvitation =
-                tenant.offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1);
+                tenant.offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1, new EmailAddress("felicien.fotiomanfo@gmail.com"));
         User user =
                 tenant.registerUser(
                         registrationInvitation.invitationId(),
@@ -290,7 +290,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
 
-        tenant.offerRegistrationInvitation("Open-Ended")
+        tenant.offerRegistrationInvitation("Open-Ended", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .openEnded();
 
         assertNotNull(tenant.redefineRegistrationInvitationAsOpenEnded("Open-Ended"));
@@ -301,7 +301,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
 
-        tenant.offerRegistrationInvitation("Open-Ended")
+        tenant.offerRegistrationInvitation("Open-Ended", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .openEnded();
 
         assertTrue(tenant.isRegistrationAvailableThrough("Open-Ended"));
@@ -312,7 +312,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
 
-        tenant.offerRegistrationInvitation("Yesterday-and-Tomorrow")
+        tenant.offerRegistrationInvitation("Yesterday-and-Tomorrow", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .startingOn(this.yesterday())
                 .until(this.tomorrow());
 
@@ -324,7 +324,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
 
-        tenant.offerRegistrationInvitation("Tomorrow-and-Day-After-Tomorrow")
+        tenant.offerRegistrationInvitation("Tomorrow-and-Day-After-Tomorrow", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .startingOn(this.tomorrow())
                 .until(this.dayAfterTomorrow());
 
@@ -336,9 +336,9 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
 
-        tenant.offerRegistrationInvitation("Open-Ended")
+        tenant.offerRegistrationInvitation("Open-Ended", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .openEnded();
-        tenant.offerRegistrationInvitation("Yesterday-and-Tomorrow")
+        tenant.offerRegistrationInvitation("Yesterday-and-Tomorrow", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .startingOn(this.yesterday())
                 .until(this.tomorrow());
 
@@ -350,7 +350,7 @@ public class TenantTest extends IdentityAndAccessTest {
 
         Tenant tenant = this.actifTenantAggregate();
 
-        tenant.offerRegistrationInvitation("Tomorrow-and-Day-After-Tomorrow")
+        tenant.offerRegistrationInvitation("Tomorrow-and-Day-After-Tomorrow", new EmailAddress("felicien.fotiomanfo@gmail.com"))
                 .startingOn(this.tomorrow())
                 .until(this.dayAfterTomorrow());
 
