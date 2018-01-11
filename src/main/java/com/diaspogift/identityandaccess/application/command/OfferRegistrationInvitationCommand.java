@@ -9,13 +9,15 @@ public class OfferRegistrationInvitationCommand {
     private String startingOn;
     private String tenantId;
     private String until;
+    private String email;
 
 
-    public OfferRegistrationInvitationCommand(String description, String startingOn, String tenantId, String until) {
+    public OfferRegistrationInvitationCommand(String description, String startingOn, String tenantId, String until, String email) {
         this.description = description;
         this.startingOn = startingOn;
         this.tenantId = tenantId;
         this.until = until;
+        this.email = email;
     }
 
     public OfferRegistrationInvitationCommand(String aTenantId, RegistrationInvitationReqRepresentation aRegistrationInvitationRespRepresentation) {
@@ -24,6 +26,7 @@ public class OfferRegistrationInvitationCommand {
         this.startingOn = aRegistrationInvitationRespRepresentation.getStartingOn();
         this.tenantId = aTenantId;
         this.until = aRegistrationInvitationRespRepresentation.getUntil();
+        this.email = aRegistrationInvitationRespRepresentation.getEmail();
     }
 
 
@@ -57,5 +60,13 @@ public class OfferRegistrationInvitationCommand {
 
     public void setUntil(String until) {
         this.until = until;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
