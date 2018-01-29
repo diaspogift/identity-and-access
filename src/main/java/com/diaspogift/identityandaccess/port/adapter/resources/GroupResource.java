@@ -54,9 +54,11 @@ public class GroupResource {
 
             Link link1 = linkTo(methodOn(GroupResource.class).getGroup(tenantId, next.getName())).withSelfRel();
             Link link2 = linkTo(methodOn(GroupResource.class).getGroupMembers(tenantId, next.getName())).withRel("members");
+            Link link3 = linkTo(methodOn(GroupResource.class).getNotGroupMembers(tenantId, next.getName())).withRel("notMembers");
 
             next.add(link1);
             next.add(link2);
+            next.add(link3);
 
         }
 
