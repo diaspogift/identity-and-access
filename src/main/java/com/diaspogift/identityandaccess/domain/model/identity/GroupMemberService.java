@@ -3,6 +3,8 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 @Service
@@ -115,6 +117,47 @@ public class GroupMemberService {
         }
 
         return isInNestedGroup;
+    }
+
+
+    public Collection<GroupMember> notInGoup(Group aGroup) {
+
+        Collection<GroupMember> allNonGroupMembers = new HashSet<GroupMember>();
+
+        Collection<Group> allGroupsForTenant = this.groupRepository().allGroups(aGroup.tenantId());
+
+        System.out.println("\n\n\n GROUPS STARTTT ========= ");
+
+        allGroupsForTenant.stream().forEach(s -> System.out.println("GROUP ========= " + s.toString() + "\n"));
+
+        System.out.println("\n\n\n GROUPS ENDDDDD ========= ");
+
+        Collection<User> allUsersForTenant = this.userRepository().allUserFor(aGroup.tenantId());
+
+
+        for (Group next : allGroupsForTenant) {
+
+            if (!this.isMemberGroup(aGroup, next.toGroupMember()) && !next.equals(aGroup)) {
+
+                allNonGroupMembers.add(next.toGroupMember());
+            }
+        }
+
+        for (User next : allUsersForTenant) {
+
+            if (!aGroup.groupMembers().contains(next.toGroupMember())) {
+
+                allNonGroupMembers.add(next.toGroupMember());
+
+            } else if (!this.isUserInNestedGroup(aGroup, next) && !aGroup.groupMembers().contains(next.toGroupMember())) {
+
+                allNonGroupMembers.add(next.toGroupMember());
+            } else {
+                ///// pass through
+            }
+        }
+
+        return allNonGroupMembers;
     }
 
     private GroupRepository groupRepository() {

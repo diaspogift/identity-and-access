@@ -128,6 +128,19 @@ public class GroupResource {
         return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Retrieve not groups members")
+    @GetMapping("{groupName}/not-members")
+    public ResponseEntity<GroupMemberCollectionRepresentation> getNotGroupMembers(@PathVariable("tenantId") String tenantId,
+                                                                                  @PathVariable("groupName") String groupName) throws DiaspoGiftRepositoryException {
+
+        Collection<GroupMember> groupMembers = this.identityApplicationService().notGroupMembers(tenantId, groupName);
+
+        GroupMemberCollectionRepresentation groupMemberCollectionRepresentation = new GroupMemberCollectionRepresentation(groupMembers);
+
+
+        return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Add a new group member")
     @PostMapping("{groupName}/members")
     public ResponseEntity<GroupMemberRepresentation> createGroupMember(@PathVariable("tenantId") String tenantId,

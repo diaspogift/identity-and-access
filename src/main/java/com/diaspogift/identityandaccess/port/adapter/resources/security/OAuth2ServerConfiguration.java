@@ -154,6 +154,7 @@ public class OAuth2ServerConfiguration {
                     .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/members").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
                     .antMatchers(HttpMethod.POST, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/members").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
                     .antMatchers(HttpMethod.DELETE, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/members/{name:(\\w+(\\s+\\w)*)}").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
+                    .antMatchers(HttpMethod.GET, "/api/v1/tenants/{tenantId:([A-Z0-9]{8}(-[A-Z0-9]{4}){3}-[A-Z0-9]{12})}/groups/{groupName:(\\w+(\\s+\\w)*)}/not-members").access("(#oauth2.hasScope('trusted') or #oauth2.hasScope('read')) and (hasRole('ROLE_ADMINISTRATOR') or hasRole('ROLE_DG_ADMINISTRATOR'))")
 
 
                     //User Resource
