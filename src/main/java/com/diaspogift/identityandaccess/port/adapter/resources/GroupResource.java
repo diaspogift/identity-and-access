@@ -143,36 +143,44 @@ public class GroupResource {
         return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMemberCollectionRepresentation, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Add a new group member")
+    @ApiOperation(value = "Add one or multiple group member(s)")
     @PostMapping("{groupName}/members")
-    public ResponseEntity<GroupMemberRepresentation> createGroupMember(@PathVariable("tenantId") String tenantId,
+    public ResponseEntity<GroupMemberCollectionRepresentation> createGroupMember(@PathVariable("tenantId") String tenantId,
                                                                        @PathVariable("groupName") String groupName,
-                                                                       @RequestBody GroupMemberRepresentation groupMemberRepresentation) throws DiaspoGiftRepositoryException {
+                                                                       @RequestBody GroupMemberCollectionRepresentation groupMembersCollectionRepresentation) throws DiaspoGiftRepositoryException {
+
+        System.out.println("\n\n GROUPMEMBERS START");
+        groupMembersCollectionRepresentation.getGroupMembers().stream().forEach(s->System.out.println("GROUP MEMBER == "+s));
+        System.out.println("\n\n GROUPMEMBERS END");
+        Collection<GroupMemberRepresentation> allGroupMembers = groupMembersCollectionRepresentation.getGroupMembers();
+
+        for (GroupMemberRepresentation next: allGroupMembers){
+
+            if (next.getType().equals(GroupMemberType.User.name())) {
+
+                this.identityApplicationService().addUserToGroup(
+                        new AddUserToGroupCommand(
+                                tenantId,
+                                groupName,
+                                next.getName()));
 
 
-        if (groupMemberRepresentation.getType().equals(GroupMemberType.User.name())) {
+            } else if (next.getType().equals(GroupMemberType.Group.name())) {
 
-            this.identityApplicationService().addUserToGroup(
-                    new AddUserToGroupCommand(
-                            tenantId,
-                            groupName,
-                            groupMemberRepresentation.getName()));
-
-
-        } else if (groupMemberRepresentation.getType().equals(GroupMemberType.Group.name())) {
-
-            this.identityApplicationService().addGroupToGroup(
-                    new AddGroupToGroupCommand(
-                            tenantId,
-                            groupName,
-                            groupMemberRepresentation.getName()));
+                this.identityApplicationService().addGroupToGroup(
+                        new AddGroupToGroupCommand(
+                                tenantId,
+                                groupName,
+                                next.getName()));
 
 
-        } else {
-            //Do nothing
+            } else {
+                //Do nothing
+            }
         }
 
-        return new ResponseEntity<GroupMemberRepresentation>(groupMemberRepresentation, HttpStatus.CREATED);
+
+        return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMembersCollectionRepresentation, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete a group member")
