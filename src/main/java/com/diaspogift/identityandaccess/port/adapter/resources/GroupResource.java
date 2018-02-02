@@ -146,15 +146,15 @@ public class GroupResource {
     @ApiOperation(value = "Add one or multiple group member(s)")
     @PostMapping("{groupName}/members")
     public ResponseEntity<GroupMemberCollectionRepresentation> createGroupMember(@PathVariable("tenantId") String tenantId,
-                                                                       @PathVariable("groupName") String groupName,
-                                                                       @RequestBody GroupMemberCollectionRepresentation groupMembersCollectionRepresentation) throws DiaspoGiftRepositoryException {
+                                                                                 @PathVariable("groupName") String groupName,
+                                                                                 @RequestBody GroupMemberCollectionRepresentation groupMembersCollectionRepresentation) throws DiaspoGiftRepositoryException {
 
         System.out.println("\n\n GROUPMEMBERS START");
-        groupMembersCollectionRepresentation.getGroupMembers().stream().forEach(s->System.out.println("GROUP MEMBER == "+s));
+        groupMembersCollectionRepresentation.getGroupMembers().stream().forEach(s -> System.out.println("GROUP MEMBER == " + s));
         System.out.println("\n\n GROUPMEMBERS END");
         Collection<GroupMemberRepresentation> allGroupMembers = groupMembersCollectionRepresentation.getGroupMembers();
 
-        for (GroupMemberRepresentation next: allGroupMembers){
+        for (GroupMemberRepresentation next : allGroupMembers) {
 
             if (next.getType().equals(GroupMemberType.User.name())) {
 

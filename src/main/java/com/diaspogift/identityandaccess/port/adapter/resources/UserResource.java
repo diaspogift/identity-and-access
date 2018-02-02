@@ -42,7 +42,7 @@ public class UserResource {
 
 
     @ApiOperation(value = "Authenticate a user with username and password")
-    @GetMapping("{username}/autenticated-with/{password}")
+    @GetMapping("{username}/autenticated-with/{password:.+}")
     public ResponseEntity<UserDescriptorRepresentation> getAuthenticUser(@PathVariable("tenantId") String aTenantId,
                                                                          @PathVariable("username") String aUsername,
                                                                          @PathVariable("password") String aPassword) throws DiaspoGiftRepositoryException {
@@ -170,7 +170,7 @@ public class UserResource {
     }
 
     @ApiOperation(value = "Retrieve a user")
-    @GetMapping("{username}")
+    @GetMapping("{username:.+}")
     public ResponseEntity<User> getUser(@PathVariable("tenantId") String aTenantId,
                                         @PathVariable("username") String aUsername) throws DiaspoGiftRepositoryException {
 
@@ -209,7 +209,7 @@ public class UserResource {
     ////////////////////////////////////////////////
 
     @ApiOperation(value = "Retrieve a user in role")
-    @GetMapping("{username}/in-role/{roleName}")
+    @GetMapping("{username}/in-role/{roleName:.+}")
     public ResponseEntity<UserRepresentation> getUserInRole(@PathVariable("tenantId") String aTenantId,
                                                             @PathVariable("username") String aUsername,
                                                             @PathVariable("roleName") String aRoleName) throws DiaspoGiftRepositoryException {

@@ -1,12 +1,15 @@
 package com.diaspogift.identityandaccess.port.adapter.resources;
 
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
-import com.diaspogift.identityandaccess.application.command.AssignGroupToRoleCommand;
+import com.diaspogift.identityandaccess.application.command.AssignGroupsToRoleCommand;
 import com.diaspogift.identityandaccess.application.command.ProvisionRoleCommand;
+import com.diaspogift.identityandaccess.application.command.UnassignGroupsFromRoleCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
+import com.diaspogift.identityandaccess.application.representation.group.GroupCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.group.GroupRepresentation;
 import com.diaspogift.identityandaccess.application.representation.roles.RoleCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.roles.RoleRepresentation;
+import com.diaspogift.identityandaccess.application.representation.user.UserCollectionRepresentation;
 import com.diaspogift.identityandaccess.domain.model.access.Role;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
 import io.swagger.annotations.Api;
@@ -65,21 +68,30 @@ public class RoleResource {
     }
 
 
-    @ApiOperation(value = "Add a new group to play a role")
+    @ApiOperation(value = "Assign a group or a collection of groups to play a role")
     @PostMapping(value = "/{roleName}/groups")
-    public ResponseEntity<GroupRepresentation> addGroupToRole(@PathVariable("tenantId") String tenantId,
-                                                              @PathVariable("roleName") String roleName,
-                                                              @RequestBody GroupRepresentation groupRepresentation) throws DiaspoGiftRepositoryException {
-
-        this.accessApplicationService().assignGroupToRole(new AssignGroupToRoleCommand(tenantId, roleName, groupRepresentation));
+    public ResponseEntity<GroupCollectionRepresentation> assignGroupsToRole(@PathVariable("tenantId") String tenantId,
+                                                                            @PathVariable("roleName") String roleName,
+                                                                            @RequestBody GroupCollectionRepresentation groupCollectionRepresentation) throws DiaspoGiftRepositoryException {
 
 
-        return new ResponseEntity<GroupRepresentation>(groupRepresentation, HttpStatus.CREATED);
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation.groups =========================== " + groupCollectionRepresentation.getGroups());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation.groups =========================== " + groupCollectionRepresentation.getGroups());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation.groups =========================== " + groupCollectionRepresentation.getGroups());
+
+        Collection<GroupRepresentation> allGroups = groupCollectionRepresentation.getGroups();
+
+
+        this.accessApplicationService().assignGroupsToRole(new AssignGroupsToRoleCommand(tenantId, roleName, allGroups));
+
+
+        return new ResponseEntity<GroupCollectionRepresentation>(groupCollectionRepresentation, HttpStatus.CREATED);
     }
 
-    //TODO implement the get for the resource above
-    //TODO implement the get for the resource above
-    //TODO implement the get for the resource above
 
     @ApiOperation(value = "Retrieve a tenants role")
     @GetMapping("/{roleName}")
@@ -98,6 +110,83 @@ public class RoleResource {
                                            @PathVariable("roleName") String roleName) throws DiaspoGiftRepositoryException {
         this.accessApplicationService().removeRoleNamed(tenantId, roleName);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+
+    @ApiOperation(value = "Unassign a group or a collection of groups to play a role")
+    @DeleteMapping(value = "/{roleName}/groups")
+    public ResponseEntity<GroupCollectionRepresentation> unassignGroupsFrom(@PathVariable("tenantId") String tenantId,
+                                                                            @PathVariable("roleName") String roleName,
+                                                                            @RequestBody GroupCollectionRepresentation groupCollectionRepresentation) throws DiaspoGiftRepositoryException {
+
+
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation =========================== " + groupCollectionRepresentation.toString());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation.groups =========================== " + groupCollectionRepresentation.getGroups());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation.groups =========================== " + groupCollectionRepresentation.getGroups());
+        System.out.println("\n\n  addGroupsToRole groupCollectionRepresentation.groups =========================== " + groupCollectionRepresentation.getGroups());
+
+        Collection<GroupRepresentation> allGroups = groupCollectionRepresentation.getGroups();
+
+
+        this.accessApplicationService().unassignGroupsFromRole(new UnassignGroupsFromRoleCommand(tenantId, roleName, allGroups));
+
+
+        return new ResponseEntity<GroupCollectionRepresentation>(groupCollectionRepresentation, HttpStatus.CREATED);
+    }
+    ///Read model
+
+
+    //TODO implement the get for the resource above
+    //TODO implement the get for the resource above
+    //TODO implement the get for the resource above
+
+    @ApiOperation(value = "Retrieve groups playing a given role")
+    @GetMapping(value = "/{roleName}/groups")
+    public ResponseEntity<GroupCollectionRepresentation> getGroupsPlayingRole(@PathVariable("tenantId") String tenantId,
+                                                                              @PathVariable("roleName") String roleName) throws DiaspoGiftRepositoryException {
+
+        GroupCollectionRepresentation allGroups = this.accessApplicationService().getGroupsPlayingRole(tenantId, roleName);
+
+
+        return new ResponseEntity<GroupCollectionRepresentation>(allGroups, HttpStatus.CREATED);
+    }
+
+
+    @ApiOperation(value = "Retrieve groups not in a given role")
+    @GetMapping(value = "/{roleName}/not-groups")
+    public ResponseEntity<GroupCollectionRepresentation> getGroupsNotPlayingRole(@PathVariable("tenantId") String tenantId,
+                                                                                 @PathVariable("roleName") String roleName) throws DiaspoGiftRepositoryException {
+
+        GroupCollectionRepresentation allGroups = this.accessApplicationService().getGroupsNotPlayingRole(tenantId, roleName);
+
+
+        return new ResponseEntity<GroupCollectionRepresentation>(allGroups, HttpStatus.CREATED);
+    }
+
+
+    @ApiOperation(value = "Retrieve users playing a given role")
+    @GetMapping(value = "/{roleName}/users")
+    public ResponseEntity<UserCollectionRepresentation> getUsersInRole(@PathVariable("tenantId") String tenantId,
+                                                                       @PathVariable("roleName") String roleName) throws DiaspoGiftRepositoryException {
+
+        UserCollectionRepresentation allUsers = this.accessApplicationService().getUsersInRole(tenantId, roleName);
+
+
+        return new ResponseEntity<UserCollectionRepresentation>(allUsers, HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Retrieve users not playing a given role")
+    @GetMapping(value = "/{roleName}/not-users")
+    public ResponseEntity<UserCollectionRepresentation> getUsersNotInRole(@PathVariable("tenantId") String tenantId,
+                                                                          @PathVariable("roleName") String roleName) throws DiaspoGiftRepositoryException {
+
+        UserCollectionRepresentation allUsers = this.accessApplicationService().getNotUsersNotInRole(tenantId, roleName);
+
+
+        return new ResponseEntity<UserCollectionRepresentation>(allUsers, HttpStatus.CREATED);
     }
 
 

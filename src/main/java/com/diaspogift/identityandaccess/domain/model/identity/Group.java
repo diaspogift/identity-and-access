@@ -171,7 +171,7 @@ public class Group extends ConcurrencySafeEntity {
     }
 
 
-    protected GroupMember toGroupMember() {
+    public GroupMember toGroupMember() {
         GroupMember groupMember =
                 new GroupMember(
                         this.tenantId(),

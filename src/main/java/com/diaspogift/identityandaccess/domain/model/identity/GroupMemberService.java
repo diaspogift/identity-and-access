@@ -160,6 +160,7 @@ public class GroupMemberService {
         return allNonGroupMembers;
     }
 
+
     private GroupRepository groupRepository() {
         return this.groupRepository;
     }

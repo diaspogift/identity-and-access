@@ -4,4 +4,6 @@
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.springframework.security.authentication" level="TRACE"/>
     <logger name="org.springframework.security.authentication.ProviderManager" level="TRACE"/>
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
 </configuration>

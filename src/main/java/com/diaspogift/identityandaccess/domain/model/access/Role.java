@@ -204,7 +204,7 @@ public class Role extends ConcurrencySafeEntity {
         this.description = aDescription;
     }
 
-    protected Group group() {
+    public Group group() {
         return this.group;
     }
 
