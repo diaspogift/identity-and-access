@@ -3,8 +3,7 @@ package com.diaspogift.identityandaccess.port.adapter.resources.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +34,9 @@ public class OAuth2ServerConfiguration {
 
         //private TokenStore tokenStore = new InMemoryTokenStore();
 
+        @Autowired
+        @Qualifier("dataSource")
+        private DataSource dataSource;
 
         @Autowired
         @Qualifier("authenticationManagerBean")
@@ -70,35 +72,11 @@ public class OAuth2ServerConfiguration {
         @Bean
         public TokenStore tokenStore() {
 
-            DataSource tokenDataSource = DataSourceBuilder.create()
-                    .driverClassName("com.mysql.jdbc.Driver")
-                    .username("root")
-                    .password("mysql")
-                    .url("jdbc:mysql://identity-and-access-database:3306/identityandaccess")
-                    .build();
-
-            TokenStore tokenStore = new JdbcTokenStore(tokenDataSource);
-
+            TokenStore tokenStore = new JdbcTokenStore(dataSource);
 
             return tokenStore;
 
         }
-
-
-      /*  @Bean
-        @Profile("docker")
-        public DataSource dataSource(){
-
-            DataSource dataSource = DataSourceBuilder.create()
-                    .driverClassName("com.mysql.jdbc.Driver")
-                    .username("root")
-                    .password("mysql")
-                    .url("jdbc:mysql://identity-and-access-database:3306/identityandaccess")
-                    .build();
-
-            return dataSource;
-        }*/
-
 
     }
 

@@ -2,9 +2,9 @@ package com.diaspogift.identityandaccess;
 
 import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
 import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.domain.model.identity.EmailService;
 import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
 import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -15,28 +15,28 @@ import java.time.ZonedDateTime;
 public class IdentityAndAccessApplication {
 
 
+
+    @Value("${spring.profiles.active}")
+    private static String ENVIRONMENT;
+
+
+
     public static void main(String[] args) {
 
 
         ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
 
 
-        EmailService emailService = ctx.getBean(EmailService.class);
 
-/*
-
-        emailService.sendEmail("felicien.fotiomanfo@gmail.com", "diaspogift",
-                "TESTING THE REGISTRATION INVITATION PROCESS OF DIASPOGIFT", "Hi Felicien");
-
-        emailService.sendEmail("mahess90@gmail.com", "diaspogift",
-                "TESTING THE REGISTRATION INVITATION PROCESS OF DIASPOGIFT", "Hi lovy");
-
-
-        emailService.sendEmail("didnkallaehawe@gmail.com", "diaspogift",
-                "TESTING THE REGISTRATION INVITATION PROCESS OF DIASPOGIFT", "Hello Didier");
-
-
-*/
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
+        System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
 
 
         ProvisionTenantCommand provisionDiaspoGiftTenantCommand =
@@ -66,15 +66,6 @@ public class IdentityAndAccessApplication {
 
             Tenant provisionedDiaspoGiftTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionDiaspoGiftTenantCommand);
             Tenant provisionedBingoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionBingoTenantCommand);
-            //Tenant provisionedCadeauxTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionCadeauxTenantCommand);
-
-
-            /*ProvisionRoleCommand provisionCadeauxRoleCommand =
-                    new ProvisionRoleCommand(provisionedCadeauxTenant.tenantId().id(), new RoleRepresentation("DG_REP", "Role des representant de diaspogift aupres de Cadeaux.", true));
-
-
-            ApplicationServiceRegistry.accessApplicationService().provisionRole(provisionCadeauxRoleCommand);*/
-
 
         } catch (DiaspoGiftRepositoryException e) {
 
