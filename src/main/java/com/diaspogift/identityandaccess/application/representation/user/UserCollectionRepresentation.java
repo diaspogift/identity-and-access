@@ -3,8 +3,10 @@ package com.diaspogift.identityandaccess.application.representation.user;
 import com.diaspogift.identityandaccess.domain.model.identity.User;
 import org.springframework.hateoas.ResourceSupport;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 public class UserCollectionRepresentation extends ResourceSupport {
 
@@ -30,6 +32,18 @@ public class UserCollectionRepresentation extends ResourceSupport {
 
     public void setUsers(Collection<UserRepresentation> users) {
         this.users = users;
+    }
+
+    public List<String> usernamesList() {
+
+        List<String> usernames = new ArrayList<>();
+
+        for (UserRepresentation next : users) {
+
+            usernames.add(next.getUsername());
+        }
+
+        return usernames;
     }
 
 

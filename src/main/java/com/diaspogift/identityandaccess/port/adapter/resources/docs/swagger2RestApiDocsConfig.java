@@ -37,13 +37,13 @@ public class swagger2RestApiDocsConfig {
     private ApiInfo metaData() {
 
         ApiInfo apiInfo = new ApiInfo(
-                "Spring Boot REST API",
-                "Spring Boot REST API for Online Store",
+                "IDENTITY AND ACCESS",
+                "Identity and Access REST API",
                 "1.0",
                 "Terms of service",
                 new springfox.documentation.service.Contact("", "", ""),
-                "Apache License Version 2.0",
-                "https://www.apache.org/licenses/LICENSE-2.0",
+                "iam license",
+                "https://www.diaspogift.com/licenses/LICENSE-2.0",
                 new ArrayList<VendorExtension>());
 
         return apiInfo;
