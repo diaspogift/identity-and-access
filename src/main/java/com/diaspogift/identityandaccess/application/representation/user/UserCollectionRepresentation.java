@@ -12,6 +12,10 @@ public class UserCollectionRepresentation extends ResourceSupport {
 
     private Collection<UserRepresentation> users = new HashSet<UserRepresentation>();
 
+    public UserCollectionRepresentation() {
+        super();
+    }
+
     public UserCollectionRepresentation(Collection<User> someUsers) {
 
         this.initializeFrom(someUsers);

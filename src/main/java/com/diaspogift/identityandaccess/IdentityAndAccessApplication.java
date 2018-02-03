@@ -15,17 +15,14 @@ import java.time.ZonedDateTime;
 public class IdentityAndAccessApplication {
 
 
-
     @Value("${spring.profiles.active}")
     private static String ENVIRONMENT;
-
 
 
     public static void main(String[] args) {
 
 
         ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
-
 
 
         System.out.println("------------------------------------------------ RUNNING IN  THE " + ENVIRONMENT + " PROFILE ------------------------------------------------");
