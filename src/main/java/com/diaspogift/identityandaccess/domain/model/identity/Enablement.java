@@ -61,6 +61,7 @@ public final class Enablement extends AssertionConcern implements Serializable {
             }
         }
 
+
         return enabled;
     }
 
@@ -75,6 +76,12 @@ public final class Enablement extends AssertionConcern implements Serializable {
             ZonedDateTime now = ZonedDateTime.now();
             if (now.isBefore(this.startDate()) ||
                     now.isAfter(this.endDate())) {
+                timeExpired = true;
+            }
+        }
+        else if(this.endDate() == null && this.startDate() != null){
+            ZonedDateTime now = ZonedDateTime.now();
+            if (now.isBefore(this.startDate())) {
                 timeExpired = true;
             }
         }
