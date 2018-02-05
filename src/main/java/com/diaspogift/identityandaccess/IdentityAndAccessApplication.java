@@ -21,13 +21,13 @@ public class IdentityAndAccessApplication {
 
 
         ProvisionTenantCommand provisionDiaspoGiftTenantCommand =
-                new ProvisionTenantCommand("DASPOGIFT", "DIASPORA GIFT", "Diaspo Admin", "Diaspo", "diaspogift@gmail.com",
+                new ProvisionTenantCommand("DASPOGIFT", "Diaspo Gift Primary Tenant", "Diaspo Admin", "Diaspo", "diaspogift@gmail.com",
                         "CM", "00237", "669262655", "CM", "00237", "669262657", "Denver (Derriere Laureat.)", "Douala", "Littoral", "80209",
                         "CM");
 
 
         ProvisionTenantCommand provisionBingoTenantCommand =
-                new ProvisionTenantCommand("BINGO", "BINGO HOPSITAL", "Bingo Admin", "Bingo", "bingo@gmail.com",
+                new ProvisionTenantCommand("BINGO", "Bingo Baptist Hospital", "Bingo Admin", "Bingo", "bingo@gmail.com",
                         "CM", "00237", "655262955", "CM", "00237", "655262955", "Mbopi (Rond point)", "Douala", "Littoral", "80211",
                         "CM");
 
