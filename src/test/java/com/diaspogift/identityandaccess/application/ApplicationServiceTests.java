@@ -76,7 +76,7 @@ public abstract class ApplicationServiceTests {
         Tenant tenant = this.activeTenantAggregate();
 
         RegistrationInvitation invitation =
-                tenant.offerRegistrationInvitation("open-ended", new EmailAddress("felicien.fotiomanfo@gmail.com")).openEnded();
+                tenant.offerRegistrationInvitation("open-ended", new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "").openEnded();
 
         User user =
                 tenant.registerUser(
@@ -105,7 +105,7 @@ public abstract class ApplicationServiceTests {
         Tenant tenant = this.activeTenantAggregate();
 
         RegistrationInvitation invitation =
-                tenant.offerRegistrationInvitation("open-ended", new EmailAddress("felicien.fotiomanfo@gmail.com")).openEnded();
+                tenant.offerRegistrationInvitation("open-ended", new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "").openEnded();
 
         User user =
                 tenant.registerUser(

@@ -26,7 +26,7 @@ public class IdentityAndAccessApplication {
                         "CM");
 
 
-        ProvisionTenantCommand provisionBingoTenantCommand =
+       /* ProvisionTenantCommand provisionBingoTenantCommand =
                 new ProvisionTenantCommand("BINGO", "Bingo Baptist Hospital", "Bingo Admin", "Bingo", "bingo@gmail.com",
                         "CM", "00237", "655262955", "CM", "00237", "655262955", "Mbopi (Rond point)", "Douala", "Littoral", "80211",
                         "CM");
@@ -41,7 +41,7 @@ public class IdentityAndAccessApplication {
                 new ProvisionTenantCommand("WAFO", "Groupe Scolaire Bilingue Wafo", "Wafo Admin", "Wafo", "wafo@gmail.com",
                         "CM", "00237", "657676543", "CM", "00237", "657676543", "Tradex Bonamoussadi", "Douala", "Littoral", "80213",
                         "CM");
-
+*/
 
         ZonedDateTime yesterday = ZonedDateTime.now().minusDays(1l);
         ZonedDateTime tomorow = ZonedDateTime.now().plusDays(1l);
@@ -51,9 +51,9 @@ public class IdentityAndAccessApplication {
 
 
             Tenant provisionedDiaspoGiftTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionDiaspoGiftTenantCommand);
-            Tenant provisionedBingoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionBingoTenantCommand);
-            Tenant provisionedCadeauxTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionCadeauxTenantCommand);
-            Tenant provisionedWafoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionWafoTenantCommand);
+            //Tenant provisionedBingoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionBingoTenantCommand);
+            //Tenant provisionedCadeauxTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionCadeauxTenantCommand);
+            //Tenant provisionedWafoTenant = ApplicationServiceRegistry.identityApplicationService().provisionTenant(provisionWafoTenantCommand);
 
         } catch (DiaspoGiftRepositoryException e) {
 

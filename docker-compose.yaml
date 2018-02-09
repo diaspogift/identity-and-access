@@ -23,6 +23,12 @@ services:
       - MYSQL_DATABASE=identityandaccess
 
 
+  identity-and-access-ui:
+    image: diaspogift/identity-and-access-ui
+    networks:
+      - iam-network
+    ports:
+      - 8090:4200
 
 
 

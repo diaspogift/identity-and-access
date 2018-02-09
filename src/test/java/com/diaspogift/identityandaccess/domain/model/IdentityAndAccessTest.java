@@ -154,7 +154,7 @@ public class IdentityAndAccessTest extends EventTrackingTests {
         ZonedDateTime tomorrow = ZonedDateTime.now().plusDays(1l);
 
         RegistrationInvitation registrationInvitation =
-                aTenant.offerRegistrationInvitation("Today-and-Tomorrow: " + today.toString() + " ---- " + tomorrow.toString(), new EmailAddress("felicien.fotiomanfo@gmail.com"))
+                aTenant.offerRegistrationInvitation("Today-and-Tomorrow: " + today.toString() + " ---- " + tomorrow.toString(), new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "")
                         .startingOn(today)
                         .until(tomorrow);
 
@@ -195,11 +195,11 @@ public class IdentityAndAccessTest extends EventTrackingTests {
                             true);
 
 
-            this.registrationInvitation1 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1, new EmailAddress("felicien.fotiomanfo@gmail.com"));
-            this.registrationInvitation2 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_2, new EmailAddress("felicien.fotiomanfo@gmail.com"));
+            this.registrationInvitation1 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1, new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "");
+            this.registrationInvitation2 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_2, new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "");
             this.registrationInvitation3 =
                     this.tenant()
-                            .offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_3, new EmailAddress("felicien.fotiomanfo@gmail.com"))
+                            .offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_3, new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "")
                             .startingOn(ZonedDateTime.now().plusDays(1l));
 
             DomainRegistry.tenantRepository().add(this.tenant());
@@ -222,11 +222,11 @@ public class IdentityAndAccessTest extends EventTrackingTests {
                             false);
 
 
-            this.registrationInvitation1 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1, new EmailAddress("felicien.fotiomanfo@gmail.com"));
-            this.registrationInvitation2 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_2, new EmailAddress("felicien.fotiomanfo@gmail.com"));
+            this.registrationInvitation1 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_1, new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "");
+            this.registrationInvitation2 = this.tenant().offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_2, new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "");
             this.registrationInvitation3 =
                     this.tenant()
-                            .offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_3, new EmailAddress("felicien.fotiomanfo@gmail.com"))
+                            .offerRegistrationInvitation(FIXTURE_REGISTRATION_INVITATION_DESCRIPTION_3, new EmailAddress("felicien.fotiomanfo@gmail.com"), 1, "", "")
                             .startingOn(ZonedDateTime.now().plusDays(1l));
 
             DomainRegistry.tenantRepository().add(this.tenant());

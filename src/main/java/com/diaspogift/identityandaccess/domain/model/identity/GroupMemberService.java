@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import static com.diaspogift.identityandaccess.domain.model.identity.Group.ROLE_GROUP_PREFIX;
+
 @Service
 public class GroupMemberService {
 
@@ -126,18 +128,13 @@ public class GroupMemberService {
 
         Collection<Group> allGroupsForTenant = this.groupRepository().allGroups(aGroup.tenantId());
 
-        System.out.println("\n\n\n GROUPS STARTTT ========= ");
-
-        allGroupsForTenant.stream().forEach(s -> System.out.println("GROUP ========= " + s.toString() + "\n"));
-
-        System.out.println("\n\n\n GROUPS ENDDDDD ========= ");
 
         Collection<User> allUsersForTenant = this.userRepository().allUserFor(aGroup.tenantId());
 
 
         for (Group next : allGroupsForTenant) {
 
-            if (!this.isMemberGroup(aGroup, next.toGroupMember()) && !next.equals(aGroup)) {
+            if (!this.isMemberGroup(aGroup, next.toGroupMember()) && !next.equals(aGroup) && !next.name().contains(ROLE_GROUP_PREFIX)) {
 
                 allNonGroupMembers.add(next.toGroupMember());
             }

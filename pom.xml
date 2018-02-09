@@ -128,6 +128,7 @@
         </dependency>
     </dependencies>
 
+
     <build>
 
         <plugins>
@@ -172,6 +173,11 @@
 
                     <verbose>true</verbose>
 
+                    <authConfig>
+                        <username>diaspogift</username>
+                        <password>ManagingMembers@@2017</password>
+                    </authConfig>
+
 
                     <images>
                         <image>
@@ -203,7 +209,6 @@
                         <id>mydeploy</id>
                         <phase>post-integration-test</phase>
                         <goals>
-                            <goal>stop</goal>
                             <goal>push</goal>
                         </goals>
                     </execution>

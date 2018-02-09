@@ -12,8 +12,9 @@ import java.util.*;
 
 public class Tenant extends ConcurrencySafeEntity {
 
+    public static final String HTTP_LOCALHOST = "http://34.210.56.148";
+    public static final String PORT = ":8090";
     private static final long serialVersionUID = 1L;
-
     /**
      * Specify wether the a tenant is active or not
      */
@@ -133,7 +134,7 @@ public class Tenant extends ConcurrencySafeEntity {
      * @param aDescription for the Registration invitation
      * @return
      */
-    public RegistrationInvitation offerRegistrationInvitation(String aDescription, EmailAddress anEmail) {
+    public RegistrationInvitation offerRegistrationInvitation(String aDescription, EmailAddress anEmail, int registrationType, String username, String password) {
         this.assertStateTrue(this.isActive(), "Tenant is not active.");
 
         this.assertStateFalse(
@@ -156,9 +157,33 @@ public class Tenant extends ConcurrencySafeEntity {
         //TODO IS THIS EMAIL STUFF SUPPOSED TO BE HERE???????????????????????????????????????????????
         //TODO IS THIS EMAIL STUFF SUPPOSED TO BE HERE???????????????????????????????????????????????
 
+        String emailSubject = "";
+        String emailMessage = "";
 
-        DomainRegistry.emailService().sendEmail(anEmail.address(), "DIASPO-GIFT", "DIASPO-GIFT REGISTRATION INVITATION",
-                "http://localhost:4200/#/signup/" + this.tenantId().id() + "/" + invitation.invitationId());
+
+        if (registrationType == 1) {
+            emailSubject = "DIASPO-GIFT REGISTRATION INVITATION";
+            emailMessage = this.name() + " is pleased to invite to register as their user by clicking on the link below: \r\n "
+                    + HTTP_LOCALHOST + PORT + "/#/signup/" + this.tenantId().id() + "/" + invitation.invitationId() + "\r\n" +
+                    "" + "\r\n" +
+                    "Thank you,";
+        } else {
+            emailSubject = "DIASPOGIFT LOGIN INFO";
+            emailMessage = "DIASPO GIFT is pleased to have you as one of his valuable patners. \r\n" +
+                    "Below is your default administrator account credentials to gain access to the system: \r\n" +
+                    "Username: " + username + "\r\n" +
+                    "Password: " + password + "\r\n" +
+                    "Link: " + HTTP_LOCALHOST + PORT + "/#/auth/" + this.tenantId().id() + "\r\n" +
+                    "" + "\r\n" +
+                    "Thank you,";
+
+        }
+
+
+        DomainRegistry.emailService().sendEmail(
+                anEmail.address(), "DIASPO-GIFT",
+                emailSubject,
+                emailMessage);
 
         return invitation;
     }
