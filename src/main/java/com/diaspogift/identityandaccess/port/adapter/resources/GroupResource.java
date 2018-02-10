@@ -1,7 +1,10 @@
 package com.diaspogift.identityandaccess.port.adapter.resources;
 
 import com.diaspogift.identityandaccess.application.access.AccessApplicationService;
-import com.diaspogift.identityandaccess.application.command.*;
+import com.diaspogift.identityandaccess.application.command.AddGroupToGroupCommand;
+import com.diaspogift.identityandaccess.application.command.AddUserToGroupCommand;
+import com.diaspogift.identityandaccess.application.command.ProvisionGroupCommand;
+import com.diaspogift.identityandaccess.application.command.RemoveGroupMembersFromGroupCommand;
 import com.diaspogift.identityandaccess.application.identity.IdentityApplicationService;
 import com.diaspogift.identityandaccess.application.representation.group.GroupCollectionRepresentation;
 import com.diaspogift.identityandaccess.application.representation.group.GroupMemberCollectionRepresentation;
@@ -183,27 +186,15 @@ public class GroupResource {
         return new ResponseEntity<GroupMemberCollectionRepresentation>(groupMembersCollectionRepresentation, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Delete a group member")
-    @DeleteMapping("{groupName}/members/{name}")
+    @ApiOperation(value = "Delete one or several group member(s)")
+    @DeleteMapping("{groupName}/members")
     public ResponseEntity removeGroupMember(@PathVariable("tenantId") String tenantId,
                                             @PathVariable("groupName") String groupName,
-                                            @PathVariable("name") String name,
-                                            @RequestParam("type") String type) throws DiaspoGiftRepositoryException {
+                                            @RequestBody GroupMemberCollectionRepresentation groupMemberCollectionRepresentation) throws DiaspoGiftRepositoryException {
 
 
-        if (type.equals(GroupMemberType.User.name())) {
+        this.identityApplicationService().removeGroupMembersFromGroup(new RemoveGroupMembersFromGroupCommand(tenantId, groupName, groupMemberCollectionRepresentation.getGroupMembers()));
 
-            this.identityApplicationService().removeUserFromGroup(new RemoveUserFromGroupCommand(tenantId, groupName, name));
-
-
-        } else if (type.equals(GroupMemberType.Group.name())) {
-
-            this.identityApplicationService().removeGroupFromGroup(new RemoveGroupFromGroupCommand(tenantId, groupName, name));
-
-
-        } else {
-            //Do nothhing
-        }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
