@@ -188,7 +188,7 @@ public class GroupResource {
 
     @ApiOperation(value = "Delete one or several group member(s)")
     @DeleteMapping("{groupName}/members")
-    public ResponseEntity removeGroupMember(@PathVariable("tenantId") String tenantId,
+    public ResponseEntity<GroupMemberCollectionRepresentation> removeGroupMember(@PathVariable("tenantId") String tenantId,
                                             @PathVariable("groupName") String groupName,
                                             @RequestBody GroupMemberCollectionRepresentation groupMemberCollectionRepresentation) throws DiaspoGiftRepositoryException {
 
@@ -196,7 +196,7 @@ public class GroupResource {
         this.identityApplicationService().removeGroupMembersFromGroup(new RemoveGroupMembersFromGroupCommand(tenantId, groupName, groupMemberCollectionRepresentation.getGroupMembers()));
 
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<GroupMemberCollectionRepresentation> (groupMemberCollectionRepresentation, HttpStatus.CREATED);
     }
 
 
