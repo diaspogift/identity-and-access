@@ -1,14 +1,6 @@
 package com.diaspogift.identityandaccess;
 
-import com.diaspogift.identityandaccess.application.ApplicationServiceRegistry;
-import com.diaspogift.identityandaccess.application.command.ProvisionTenantCommand;
-import com.diaspogift.identityandaccess.domain.model.identity.Tenant;
-import com.diaspogift.identityandaccess.port.adapter.persistence.exception.DiaspoGiftRepositoryException;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-
-import java.time.ZonedDateTime;
 
 @SpringBootApplication
 public class IdentityAndAccessApplication {
@@ -17,7 +9,7 @@ public class IdentityAndAccessApplication {
     public static void main(String[] args) {
 
 
-        ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
+        /*  ConfigurableApplicationContext ctx = SpringApplication.run(IdentityAndAccessApplication.class, args);
 
 
         ProvisionTenantCommand provisionDiaspoGiftTenantCommand =
@@ -26,7 +18,7 @@ public class IdentityAndAccessApplication {
                         "CM");
 
 
-       /* ProvisionTenantCommand provisionBingoTenantCommand =
+      ProvisionTenantCommand provisionBingoTenantCommand =
                 new ProvisionTenantCommand("BINGO", "Bingo Baptist Hospital", "Bingo Admin", "Bingo", "bingo@gmail.com",
                         "CM", "00237", "655262955", "CM", "00237", "655262955", "Mbopi (Rond point)", "Douala", "Littoral", "80211",
                         "CM");
@@ -41,7 +33,7 @@ public class IdentityAndAccessApplication {
                 new ProvisionTenantCommand("WAFO", "Groupe Scolaire Bilingue Wafo", "Wafo Admin", "Wafo", "wafo@gmail.com",
                         "CM", "00237", "657676543", "CM", "00237", "657676543", "Tradex Bonamoussadi", "Douala", "Littoral", "80213",
                         "CM");
-*/
+
 
         ZonedDateTime yesterday = ZonedDateTime.now().minusDays(1l);
         ZonedDateTime tomorow = ZonedDateTime.now().plusDays(1l);
@@ -58,7 +50,7 @@ public class IdentityAndAccessApplication {
         } catch (DiaspoGiftRepositoryException e) {
 
             System.out.println(e.getMessage());
-        }
+        }*/
 
 
     }
