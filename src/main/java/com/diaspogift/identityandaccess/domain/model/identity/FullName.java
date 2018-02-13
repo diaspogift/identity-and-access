@@ -4,7 +4,6 @@ package com.diaspogift.identityandaccess.domain.model.identity;
 import com.diaspogift.identityandaccess.domain.model.common.AssertionConcern;
 
 import java.io.Serializable;
-import java.util.regex.Pattern;
 
 public final class FullName extends AssertionConcern implements Serializable {
 
@@ -79,20 +78,15 @@ public final class FullName extends AssertionConcern implements Serializable {
 
     private void setFirstName(String aFirstName) {
         this.assertArgumentNotEmpty(aFirstName, "First name is required.");
-        this.assertArgumentLength(aFirstName, 1, 50, "First name must be 50 characters or less.");
-        this.assertArgumentTrue(
-                Pattern.matches("[A-Z][a-z]+(\\s([A-Z][a-z]+))*", aFirstName),
-                "First name must be at least one character in length, starting with a capital letter.");
+        //this.assertArgumentLength(aFirstName, 1, 50, "First name must be 50 characters or less.");
+        //this.assertArgumentTrue(Pattern.matches("[A-Z][a-z]+(\\s([A-Z][a-z]+))*", aFirstName),"First name must be at least one character in length, starting with a capital letter.");
 
         this.firstName = aFirstName;
     }
 
     private void setLastName(String aLastName) {
         this.assertArgumentNotEmpty(aLastName, "The last name is required.");
-        this.assertArgumentLength(aLastName, 1, 50, "The last name must be 50 characters or less.");
-        this.assertArgumentTrue(
-                Pattern.matches("^[a-zA-Z'][ a-zA-Z'-]*[a-zA-Z']?", aLastName),
-                "Last name must be at least one character in length.");
+        //this.assertArgumentLength(aLastName, 1, 50, "The last name must be 50 characters or less.");this.assertArgumentTrue(Pattern.matches("^[a-zA-Z'][ a-zA-Z'-]*[a-zA-Z']?", aLastName),"Last name must be at least one character in length.");
 
         this.lastName = aLastName;
     }

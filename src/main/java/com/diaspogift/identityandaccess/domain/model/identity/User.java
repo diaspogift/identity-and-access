@@ -80,7 +80,7 @@ public class User extends ConcurrencySafeEntity {
         this.assertArgumentTrue(DomainRegistry.encryptionService().matchesPassword(aCurrentPassword, this.password()),
                 "Current password not confirmed.");
 
-        this.protectPassword(aCurrentPassword, aNewPassword);
+        //this.protectPassword(aCurrentPassword, aNewPassword);
 
         this.setPassword(this.asEncryptedValue(aNewPassword));
 
