@@ -13,7 +13,7 @@ import java.util.*;
 public class Tenant extends ConcurrencySafeEntity {
 
     public static final String HTTP_LOCALHOST = "http://34.210.56.148";
-    public static final String PORT = ":8090";
+    public static final String PORT = "";
     private static final long serialVersionUID = 1L;
     /**
      * Specify wether the a tenant is active or not
