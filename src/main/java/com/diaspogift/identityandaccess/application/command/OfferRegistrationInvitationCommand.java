@@ -70,3 +70,4 @@ public class OfferRegistrationInvitationCommand {
         this.email = email;
     }
 }
+
